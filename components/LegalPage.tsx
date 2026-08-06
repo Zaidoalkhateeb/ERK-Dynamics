@@ -1,0 +1,1 @@
+export function LegalPage({title,children}:{title:string;children:React.ReactNode}){return <main><section className="legal-hero"><p className="eyebrow">LEGAL / REVIEW REQUIRED</p><h1>{title}</h1><p>Draft framework — this content must be reviewed by qualified Turkish legal counsel before launch.</p></section><article className="legal section">{children}</article></main>}
