@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { FormEvent, PointerEvent as ReactPointerEvent, useRef, useState } from "react";
 
 const whatsapp =
@@ -63,7 +62,7 @@ export function ContactExperience() {
     if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid work email address.";
     if (!String(data.get("phone") || "").trim()) next.phone = "Enter your phone number.";
     if (!data.get("interest")) next.interest = "Select how we can help.";
-    if (!data.get("consent")) next.consent = "You must accept the Privacy Policy to submit this form.";
+    if (!data.get("consent")) next.consent = "You must provide consent to submit this form.";
     setErrors(next);
     const first = Object.keys(next)[0];
     if (first) (form.elements.namedItem(first) as HTMLElement | null)?.focus();
@@ -114,15 +113,13 @@ export function ContactExperience() {
         <div className="contact-hero-side">
           <div className="contact-portrait" onPointerMove={move} onPointerLeave={resetTilt}>
             <Image
-              src="/media/liftsuit-work.webp"
-              alt="Worker using an Auxivo LiftSuit during an industrial task"
+              className="contact-brand-symbol"
+              src="/media/erk-dragonfly.png"
+              alt="ERK Dynamics dragonfly logo"
               fill
               priority
               sizes="(max-width: 800px) 86vw, 43vw"
             />
-            <span className="contact-badge" aria-hidden="true">
-              ✉
-            </span>
           </div>
         </div>
       </section>
@@ -166,7 +163,7 @@ export function ContactExperience() {
               <label className={`consent-field ${errors.consent ? "invalid" : ""}`}>
                 <input type="checkbox" name="consent" />
                 <span>
-                  I have read the <Link href="/privacy">Privacy Policy</Link> and consent to ERK Dynamics using this information to respond to my request. *
+                  I consent to ERK Dynamics using this information to respond to my request. *
                 </span>
               </label>
               {errors.consent && (

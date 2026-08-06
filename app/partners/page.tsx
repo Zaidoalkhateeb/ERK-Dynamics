@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PartnerTechnologyHero } from "@/components/PartnerTechnologyHero";
 
 const partners = [
   {
@@ -36,32 +37,12 @@ export const metadata: Metadata = {
 export default function PartnersPage() {
   return (
     <main className="partners-page">
-      <section className="page-hero animated-page-hero hero-partners">
-        <Image
-          className="partners-hero-image"
-          src="/media/partners/partners-hero.jpeg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-        />
-        <div className="partners-hero-wash" aria-hidden="true" />
-        <div className="partners-hero-copy">
-          <h1>
-            <span>Global Technology</span>
-            <span>Local Expertise</span>
-          </h1>
-          <p>
-            We partner with leading technology manufacturers to bring innovative industrial solutions to the Turkish
-            market through local expertise, technical support, and business development.
-          </p>
-        </div>
-      </section>
+      <PartnerTechnologyHero />
 
       <section className="partner-directory section" aria-labelledby="partner-directory-title">
         <header className="partner-directory-head">
           <p className="eyebrow"></p>
-          <h2 id="partner-directory-title">Meet our partners.</h2>
+          <h2 id="partner-directory-title">Meet our partners</h2>
         </header>
 
         <div className="partner-list">

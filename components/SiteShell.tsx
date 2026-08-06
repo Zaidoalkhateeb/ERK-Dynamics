@@ -140,13 +140,6 @@ function Footer() {
           <a href="mailto:info@erkdynamics.com">info@erkdynamics.com</a>
           <a href="https://www.linkedin.com/company/erk-dynamics/">LinkedIn</a>
         </div>
-        <div>
-          <b>LEGAL</b>
-          <Link href="/privacy">Privacy Policy</Link>
-          <Link href="/cookies">Cookie Policy</Link>
-          <Link href="/terms">Terms and Conditions</Link>
-          <Link href="/shipping-returns">Shipping and Returns</Link>
-        </div>
       </div>
     </footer>
   );

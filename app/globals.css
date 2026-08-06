@@ -830,38 +830,19 @@ p {
 }
 .contact-portrait {
   position: relative;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(8, 125, 145, 0.35);
-}
-.contact-portrait:before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  inset: -18px;
-  border: 1px solid rgba(8, 125, 145, 0.25);
-  border-radius: 50%;
-  pointer-events: none;
+  aspect-ratio: 1.6;
+  overflow: visible;
 }
 .contact-portrait img {
   object-fit: cover;
   transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1.04);
   transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.contact-badge {
-  position: absolute;
-  z-index: 3;
-  right: 8%;
-  bottom: 8%;
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #087d91;
-  color: #fff;
-  font-size: 18px;
+.contact-portrait img.contact-brand-symbol {
+  z-index: 1;
+  object-fit: contain;
+  padding: 0;
+  transform: translate(var(--mx, 0px), var(--my, 0px));
 }
 .form-section {
   display: grid;
@@ -935,27 +916,6 @@ p {
   font-size: 40px;
   color: var(--cyan);
 }
-.legal-hero {
-  padding: 190px var(--pad) 90px;
-  background: var(--graphite);
-}
-.legal-hero h1 {
-  font-size: clamp(55px, 8vw, 100px);
-  margin: 30px 0;
-}
-.legal-hero p:last-child {
-  font-size: 18px;
-}
-.legal {
-  max-width: 900px;
-}
-.legal h2 {
-  font-size: 32px;
-  margin-top: 60px;
-}
-.legal p {
-  font-size: 18px;
-}
 .error-page {
   min-height: 100vh;
   display: flex;
@@ -999,7 +959,7 @@ footer .button.primary {
   padding: 40px 0;
 }
 .footer-grid.expanded {
-  grid-template-columns: 1.5fr repeat(4, 1fr);
+  grid-template-columns: 1.5fr repeat(3, 1fr);
 }
 .footer-grid > div {
   display: flex;
@@ -2812,9 +2772,10 @@ footer .button.primary {
 .hero-partners {
   height: auto;
   padding: 190px var(--pad) 100px;
-  display: flex;
-  align-items: flex-start;
-  background: #edf8fa;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  background: #effbfe;
 }
 .hero-partners h1,
 .contact-hero h1 {
@@ -2828,7 +2789,7 @@ footer .button.primary {
 }
 .partners-hero-copy {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   max-width: 920px;
 }
 .partners-hero-copy,
@@ -2844,16 +2805,123 @@ footer .button.primary {
   font-size: clamp(18px, 1.4vw, 20px);
   line-height: 1.65;
 }
-.partners-hero-image {
-  z-index: 0;
-  object-fit: cover;
-  object-position: center;
-}
-.partners-hero-wash {
+.technology-hero__background {
   position: absolute;
+  inset: -4%;
+  z-index: 0;
+  background-image: url("/media/partners/partners-hero.jpeg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.82;
+  filter: saturate(0.9) contrast(0.94);
+  animation: technologyBackgroundBreathe 24s ease-in-out infinite alternate;
+}
+.technology-hero__objects {
+  position: absolute;
+  inset: -5%;
   z-index: 1;
+  width: 110%;
+  height: 110%;
+  pointer-events: none;
+  overflow: visible;
+}
+.technology-hero__wash {
+  position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 52%, rgba(255, 255, 255, 0.18) 100%);
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.99) 0%,
+    rgba(255, 255, 255, 0.97) 28%,
+    rgba(255, 255, 255, 0.78) 48%,
+    rgba(246, 253, 255, 0.3) 70%,
+    rgba(236, 250, 254, 0.08) 100%
+  );
+}
+.technology-hero__content {
+  position: relative;
+  z-index: 3;
+  width: min(920px, 100%);
+}
+.parallax-layer {
+  transform: translate3d(var(--move-x, 0), var(--move-y, 0), 0);
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.object-spin,
+.object-spin-reverse,
+.object-float,
+.object-float-reverse {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+.object-spin {
+  animation: technologyObjectSpin 36s linear infinite;
+}
+.object-spin-reverse {
+  animation: technologyObjectSpinReverse 28s linear infinite;
+}
+.object-float {
+  animation: technologyObjectFloat 14s ease-in-out infinite alternate;
+}
+.object-float-reverse {
+  animation: technologyObjectFloatReverse 19s ease-in-out infinite alternate;
+}
+.object-line-flow {
+  animation: technologyLineFlow 13s linear infinite;
+}
+.object-wave {
+  animation: technologyWaveFlow 18s linear infinite;
+}
+.object-wave--delayed {
+  animation-delay: -6s;
+}
+@keyframes technologyBackgroundBreathe {
+  from {
+    transform: scale(1.035) translate3d(-0.3%, -0.2%, 0);
+  }
+  to {
+    transform: scale(1.075) translate3d(0.7%, 0.45%, 0);
+  }
+}
+@keyframes technologyObjectSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes technologyObjectSpinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes technologyObjectFloat {
+  from {
+    transform: translate3d(-10px, -8px, 0) rotate(-0.5deg);
+  }
+  to {
+    transform: translate3d(18px, 16px, 0) rotate(1.1deg);
+  }
+}
+@keyframes technologyObjectFloatReverse {
+  from {
+    transform: translate3d(14px, 12px, 0) rotate(0.6deg);
+  }
+  to {
+    transform: translate3d(-20px, -12px, 0) rotate(-1.2deg);
+  }
+}
+@keyframes technologyLineFlow {
+  to {
+    stroke-dashoffset: -360;
+  }
+}
+@keyframes technologyWaveFlow {
+  to {
+    stroke-dashoffset: -820;
+  }
 }
 .partner-directory {
   background: #ffffff;
@@ -2963,8 +3031,13 @@ footer .button.primary {
   .contact-hero h1 {
     font-size: clamp(29px, 9vw, 50px);
   }
-  .partners-hero-wash {
+  .technology-hero__wash {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.65));
+  }
+  .technology-hero__objects {
+    inset: -10%;
+    width: 120%;
+    height: 120%;
   }
   .partner-directory-head,
   .partner-feature {
@@ -2989,6 +3062,19 @@ footer .button.primary {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .technology-hero__background,
+  .object-spin,
+  .object-spin-reverse,
+  .object-float,
+  .object-float-reverse,
+  .object-line-flow,
+  .object-wave {
+    animation: none !important;
+  }
+  .parallax-layer {
+    transform: none !important;
+    transition: none !important;
+  }
   .partner-logo-stage::after {
     animation: none;
   }
