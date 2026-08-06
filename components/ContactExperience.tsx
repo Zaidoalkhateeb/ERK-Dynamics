@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, PointerEvent as ReactPointerEvent, useRef, useState } from "react";
+import { FormEvent, PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 
 const whatsapp =
   "https://wa.me/905372574543?text=Hello%20ERK%20Dynamics%2C%20I%20would%20like%20to%20discuss%20an%20industrial%20technology%20requirement.";
@@ -41,16 +41,42 @@ export function ContactExperience() {
   const [reference, setReference] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const contactHeroRef = useRef<HTMLElement>(null);
+  const contactVisualRef = useRef<HTMLDivElement>(null);
+  const contactFrameRef = useRef<number | null>(null);
 
-  const move = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (matchMedia("(pointer: coarse)").matches) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width - 0.5) * 8}px`);
-    e.currentTarget.style.setProperty("--my", `${((e.clientY - r.top) / r.height - 0.5) * 8}px`);
+  useEffect(
+    () => () => {
+      if (contactFrameRef.current !== null) cancelAnimationFrame(contactFrameRef.current);
+    },
+    [],
+  );
+
+  const move = (event: ReactPointerEvent<HTMLElement>) => {
+    if (
+      matchMedia("(pointer: coarse)").matches ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+
+    const clientX = event.clientX;
+    const clientY = event.clientY;
+    if (contactFrameRef.current !== null) cancelAnimationFrame(contactFrameRef.current);
+
+    contactFrameRef.current = requestAnimationFrame(() => {
+      const hero = contactHeroRef.current;
+      const visual = contactVisualRef.current;
+      if (!hero || !visual) return;
+      const rect = hero.getBoundingClientRect();
+      const x = (clientX - rect.left) / rect.width - 0.5;
+      const y = (clientY - rect.top) / rect.height - 0.5;
+      visual.style.setProperty("--parallax-x", `${(x * 30).toFixed(2)}px`);
+      visual.style.setProperty("--parallax-y", `${(y * 20).toFixed(2)}px`);
+    });
   };
-  const resetTilt = (e: ReactPointerEvent<HTMLDivElement>) => {
-    e.currentTarget.style.setProperty("--mx", "0px");
-    e.currentTarget.style.setProperty("--my", "0px");
+  const resetTilt = () => {
+    contactVisualRef.current?.style.setProperty("--parallax-x", "0px");
+    contactVisualRef.current?.style.setProperty("--parallax-y", "0px");
   };
 
   const validate = (form: HTMLFormElement) => {
@@ -94,32 +120,56 @@ export function ContactExperience() {
 
   return (
     <main className="contact-simple">
-      <section className="contact-hero">
-        <div className="contact-hero-copy">
-          <h1>
-            <span>Connect With</span>
-            <span>Our Experts</span>
-          </h1>
-          <p>Tell us about your project, product requirements, or operational challenges.</p>
-          <div>
-            <a className="button primary" href="#contact-form">
-              Send an Enquiry <span>↗</span>
-            </a>
-            <a className="button contact-secondary" href="tel:+905372574543">
-              Talk to a Specialist <span>↗</span>
-            </a>
+      <section
+        ref={contactHeroRef}
+        className="contact-hero"
+        id="contactHero"
+        onPointerMove={move}
+        onPointerLeave={resetTilt}
+      >
+        <div className="contact-hero__grid" aria-hidden="true" />
+        <div className="contact-hero__inner">
+          <div className="contact-hero-copy contact-hero__copy">
+            <span className="contact-hero__eyebrow">Let’s solve your next challenge</span>
+            <h1>
+              <span>Connect With</span>
+              <span>Our Experts</span>
+            </h1>
+            <p className="contact-hero__description">
+              Tell us about your project, product requirements, or operational challenges.
+            </p>
+            <div className="contact-hero__actions">
+              <a className="contact-button contact-button--primary" href="#contact-form">
+                <span>Send an Enquiry</span>
+                <span className="contact-button__arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <a className="contact-button contact-button--secondary" href="tel:+905372574543">
+                <span>Talk to a Specialist</span>
+                <span className="contact-button__arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            </div>
+            <p className="contact-hero__response"></p>
           </div>
-        </div>
-        <div className="contact-hero-side">
-          <div className="contact-portrait" onPointerMove={move} onPointerLeave={resetTilt}>
+
+          <div ref={contactVisualRef} className="contact-hero__visual" data-parallax aria-hidden="true">
+            <div className="contact-hero__halo" />
             <Image
-              className="contact-brand-symbol"
+              className="contact-hero__dragonfly"
               src="/media/erk-dragonfly.png"
-              alt="ERK Dynamics dragonfly logo"
-              fill
+              alt=""
+              width={833}
+              height={479}
               priority
-              sizes="(max-width: 800px) 86vw, 43vw"
+              sizes="(max-width: 900px) 90vw, 36vw"
             />
+            <span className="contact-particle contact-particle--1" />
+            <span className="contact-particle contact-particle--2" />
+            <span className="contact-particle contact-particle--3" />
+            <span className="contact-particle contact-particle--4" />
           </div>
         </div>
       </section>

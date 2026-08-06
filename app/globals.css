@@ -808,42 +808,6 @@ p {
   background: var(--cyan);
   color: white;
 }
-.contact-hero {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 10vw;
-  align-items: center;
-  background: var(--graphite);
-}
-.contact-hero-copy > p:not(.eyebrow) {
-  max-width: 620px;
-  font-size: clamp(16px, 1.4vw, 19px);
-  color: #4b5960;
-}
-.contact-hero-copy > div {
-  margin-top: 30px;
-}
-.contact-hero-side {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-.contact-portrait {
-  position: relative;
-  aspect-ratio: 1.6;
-  overflow: visible;
-}
-.contact-portrait img {
-  object-fit: cover;
-  transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1.04);
-  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.contact-portrait img.contact-brand-symbol {
-  z-index: 1;
-  object-fit: contain;
-  padding: 0;
-  transform: translate(var(--mx, 0px), var(--my, 0px));
-}
 .form-section {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -3083,6 +3047,299 @@ footer .button.primary {
 /* ================================================================
    CONTACT — SIMPLE
    ================================================================ */
+.contact-hero {
+  position: relative;
+  min-height: calc(100svh - 1px);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 79% 52%, rgba(31, 166, 190, 0.09) 0, rgba(31, 166, 190, 0.035) 24%, transparent 52%),
+    #f3f5f6;
+}
+.contact-hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(18, 63, 80, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 63, 80, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.32;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 72%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 72%, #000 100%);
+}
+.contact-hero__inner {
+  position: relative;
+  z-index: 1;
+  width: min(1695px, calc(100% - 8vw));
+  min-height: calc(100svh - 1px);
+  margin-inline: auto;
+  padding-block: 150px 100px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
+  align-items: center;
+  gap: clamp(40px, 6vw, 130px);
+}
+.contact-hero__copy {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  margin-top: 0;
+}
+.contact-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  color: #087f96;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.contact-hero__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+.contact-hero h1 {
+  margin: 0;
+  color: #111a20;
+  font-size: clamp(44px, 5vw, 72px);
+  font-weight: 450;
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  animation: contactTextEnter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.contact-hero__copy > .contact-hero__description {
+  max-width: 720px;
+  margin: 38px 0 0;
+  color: #33434c;
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.55;
+  animation: contactTextEnter 900ms 100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.contact-hero__copy > .contact-hero__actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin-top: 31px;
+  animation: contactTextEnter 900ms 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.contact-button {
+  min-width: 190px;
+  min-height: 56px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  color: #12212a;
+  border: 1px solid rgba(16, 55, 70, 0.17);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    color 220ms ease;
+}
+.contact-button--primary {
+  color: #fff;
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+.contact-button--secondary {
+  background: rgba(255, 255, 255, 0.38);
+}
+.contact-button:hover {
+  transform: translateY(-3px);
+}
+.contact-button--primary:hover {
+  background: #056f83;
+  border-color: #056f83;
+  box-shadow: 0 14px 30px rgba(4, 111, 132, 0.17);
+}
+.contact-button--secondary:hover {
+  color: #057c91;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(5, 124, 145, 0.35);
+  box-shadow: 0 12px 25px rgba(20, 62, 76, 0.08);
+}
+.contact-button__arrow {
+  transition: transform 220ms ease;
+}
+.contact-button:hover .contact-button__arrow {
+  transform: translate(3px, -3px);
+}
+.contact-hero__copy > .contact-hero__response {
+  max-width: none;
+  margin: 17px 0 0;
+  color: #6d7b82;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.contact-hero__visual {
+  position: relative;
+  min-height: 470px;
+  display: grid;
+  place-items: center;
+  transform: translate3d(var(--parallax-x, 0), var(--parallax-y, 0), 0);
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.contact-hero__halo {
+  position: absolute;
+  width: min(40vw, 610px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(28, 169, 194, 0.14) 0%, rgba(28, 169, 194, 0.055) 38%, transparent 69%);
+  animation: contactHalo 6s ease-in-out infinite alternate;
+}
+.contact-hero__dragonfly {
+  position: relative;
+  z-index: 2;
+  width: min(39vw, 590px);
+  height: auto;
+  filter: drop-shadow(0 18px 22px rgba(17, 52, 69, 0.08));
+  animation: contactDragonflyFloat 7s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.contact-particle {
+  position: absolute;
+  z-index: 1;
+  width: 5px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #0b8ba3;
+  opacity: 0.24;
+  animation: contactParticleDrift 6s ease-in-out infinite alternate;
+}
+.contact-particle--1 {
+  top: 25%;
+  left: 23%;
+  animation-duration: 7s;
+}
+.contact-particle--2 {
+  top: 65%;
+  left: 20%;
+  width: 3px;
+  animation-delay: -3s;
+}
+.contact-particle--3 {
+  top: 19%;
+  right: 17%;
+  width: 4px;
+  animation-duration: 8s;
+  animation-delay: -5s;
+}
+.contact-particle--4 {
+  right: 12%;
+  bottom: 21%;
+  width: 6px;
+  animation-duration: 9s;
+  animation-delay: -2s;
+}
+@keyframes contactTextEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes contactDragonflyFloat {
+  0% {
+    transform: translate3d(-4px, -7px, 0) rotate(-0.4deg);
+  }
+  50% {
+    transform: translate3d(8px, 4px, 0) rotate(0.45deg);
+  }
+  100% {
+    transform: translate3d(-2px, 10px, 0) rotate(-0.15deg);
+  }
+}
+@keyframes contactHalo {
+  from {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+@keyframes contactParticleDrift {
+  from {
+    transform: translate3d(-5px, -8px, 0);
+  }
+  to {
+    transform: translate3d(9px, 12px, 0);
+  }
+}
+@media (max-width: 900px) {
+  .contact-hero {
+    min-height: auto;
+  }
+  .contact-hero__inner {
+    width: min(calc(100% - 40px), 720px);
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 45px;
+    padding-block: 125px 70px;
+  }
+  .contact-hero__visual {
+    min-height: 300px;
+  }
+  .contact-hero__dragonfly {
+    width: min(90vw, 520px);
+  }
+  .contact-hero__halo {
+    width: min(95vw, 540px);
+  }
+  .contact-hero__grid {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 50%, #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, transparent 50%, #000 100%);
+  }
+}
+@media (max-width: 560px) {
+  .contact-hero__inner {
+    width: calc(100% - 32px);
+    padding-top: 105px;
+  }
+  .contact-hero h1 {
+    font-size: clamp(29px, 9vw, 50px);
+  }
+  .contact-hero__copy > .contact-hero__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .contact-button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-hero h1,
+  .contact-hero__description,
+  .contact-hero__actions,
+  .contact-hero__halo,
+  .contact-hero__dragonfly,
+  .contact-particle {
+    animation: none !important;
+  }
+  .contact-hero__visual {
+    transform: none !important;
+    transition: none !important;
+  }
+}
 .contact-form-section {
   background: var(--graphite);
   color: #11191e;
