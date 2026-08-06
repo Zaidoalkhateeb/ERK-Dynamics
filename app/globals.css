@@ -171,22 +171,20 @@ p {
   font-weight: 400;
   color: var(--muted);
 }
-.logo-mark {
-  width: 31px;
-  height: 25px;
-  display: grid;
-  gap: 4px;
-}
-.logo-mark i {
+.company-logo-mark {
+  width: 54px;
+  height: 31px;
   display: block;
-  height: 3px;
-  background: var(--cyan);
+  flex: none;
 }
-.logo-mark i:nth-child(2) {
-  width: 75%;
+.company-logo-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-.logo-mark i:nth-child(3) {
-  width: 50%;
+.header.home:not(.scrolled) .company-logo-mark img,
+.header.on-dark:not(.scrolled) .company-logo-mark img {
+  filter: brightness(0) invert(1);
 }
 .desktop-nav {
   display: flex;
@@ -986,8 +984,8 @@ footer .logo,
 footer .logo b {
   color: #ffffff;
 }
-footer .logo-mark i {
-  background: #ffffff;
+footer .company-logo-mark img {
+  filter: brightness(0) invert(1);
 }
 footer .button.primary {
   background: #ffffff;

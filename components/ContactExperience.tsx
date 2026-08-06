@@ -191,7 +191,7 @@ export function ContactExperience() {
 
       <section className="contact-location section">
         <div>
-          <p className="eyebrow">ERK DYNAMICS / İSTANBUL</p>
+          <p className="eyebrow">ERK DYNAMICS / ISTANBUL</p>
           <h2>Prefer a direct conversation?</h2>
           <dl>
             <div>
