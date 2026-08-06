@@ -2807,13 +2807,55 @@ footer .button.primary {
 }
 
 /* Partner directory */
-.hero-partners h1 {
-  max-width: 1050px;
-  font-size: clamp(50px, 7vw, 100px);
+.hero-partners,
+.contact-hero {
+  min-height: clamp(720px, 100svh, 820px);
 }
-.hero-partners h1 span {
+.hero-partners {
+  height: auto;
+  padding: 190px var(--pad) 100px;
+  display: flex;
+  align-items: flex-start;
+  background: #edf8fa;
+}
+.hero-partners h1,
+.contact-hero h1 {
+  max-width: none;
+  font-size: clamp(44px, 5vw, 72px);
+}
+.hero-partners h1 span,
+.contact-hero h1 span {
   display: block;
   white-space: nowrap;
+}
+.partners-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+}
+.partners-hero-copy,
+.contact-hero-copy {
+  align-self: start;
+  margin-top: 80px;
+}
+.partners-hero-copy > p,
+.contact-hero-copy > p:not(.eyebrow) {
+  max-width: 720px;
+  margin: 0;
+  color: #405159;
+  font-size: clamp(18px, 1.4vw, 20px);
+  line-height: 1.65;
+}
+.partners-hero-image {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center;
+}
+.partners-hero-wash {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 52%, rgba(255, 255, 255, 0.18) 100%);
 }
 .partner-directory {
   background: #ffffff;
@@ -2841,6 +2883,9 @@ footer .button.primary {
   min-height: 540px;
   padding: clamp(56px, 8vw, 110px) 0;
   border-bottom: 1px solid rgba(16, 24, 29, 0.16);
+}
+.partner-feature:last-child {
+  border-bottom: 0;
 }
 .partner-feature:nth-child(even) .partner-logo-stage {
   order: 2;
@@ -2906,8 +2951,22 @@ footer .button.primary {
   }
 }
 @media (max-width: 800px) {
-  .hero-partners h1 {
-    font-size: clamp(32px, 10vw, 50px);
+  .hero-partners,
+  .contact-hero {
+    height: auto;
+    min-height: 620px;
+    padding-top: 150px;
+  }
+  .partners-hero-copy,
+  .contact-hero-copy {
+    margin-top: 0;
+  }
+  .hero-partners h1,
+  .contact-hero h1 {
+    font-size: clamp(29px, 9vw, 50px);
+  }
+  .partners-hero-wash {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.65));
   }
   .partner-directory-head,
   .partner-feature {

@@ -37,20 +37,25 @@ export default function PartnersPage() {
   return (
     <main className="partners-page">
       <section className="page-hero animated-page-hero hero-partners">
-        <p className="eyebrow"></p>
-        <h1>
-          <span>Global technology</span>
-          <span>Local expertise</span>
-        </h1>
-        <p>
-          We work with proven technology manufacturers whose products solve clear, practical industrial challenges
-        </p>
-        <span className="page-orbit" aria-hidden="true" />
-        <span className="page-motion-shape" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
+        <Image
+          className="partners-hero-image"
+          src="/media/partners/partners-hero.jpeg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className="partners-hero-wash" aria-hidden="true" />
+        <div className="partners-hero-copy">
+          <h1>
+            <span>Global Technology</span>
+            <span>Local Expertise</span>
+          </h1>
+          <p>
+            We partner with leading technology manufacturers to bring innovative industrial solutions to the Turkish
+            market through local expertise, technical support, and business development.
+          </p>
+        </div>
       </section>
 
       <section className="partner-directory section" aria-labelledby="partner-directory-title">
@@ -98,7 +103,7 @@ export default function PartnersPage() {
       </section>
 
       <section className="inline-cta section">
-        <p className="eyebrow">START A CONVERSATION</p>
+        <p className="eyebrow"></p>
         <h2>
           Let’s evaluate what fits
           <br />

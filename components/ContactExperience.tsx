@@ -97,7 +97,10 @@ export function ContactExperience() {
     <main className="contact-simple">
       <section className="contact-hero">
         <div className="contact-hero-copy">
-          <h1>Connect With Our Experts</h1>
+          <h1>
+            <span>Connect With</span>
+            <span>Our Experts</span>
+          </h1>
           <p>Tell us about your project, product requirements, or operational challenges.</p>
           <div>
             <a className="button primary" href="#contact-form">
