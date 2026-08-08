@@ -17,9 +17,31 @@ const helpOptions = [
 const productOptions = [
   "Auxivo LiftSuit",
   "Auxivo OmniSuit",
-  "Industrial exoskeletons",
-  "Other",
-  "Not sure yet",
+];
+const countryOptions = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
+  "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
+  "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
+  "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad",
+  "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the",
+  "Costa Rica", "Côte d’Ivoire", "Croatia", "Cuba", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica",
+  "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini",
+  "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada",
+  "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia",
+  "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati",
+  "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+  "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands",
+  "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco",
+  "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
+  "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama",
+  "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia",
+  "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
+  "São Tomé and Príncipe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
+  "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain",
+  "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania",
+  "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan",
+  "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+  "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe",
 ];
 const processSteps = [
   {
@@ -83,12 +105,11 @@ export function ContactExperience() {
     const data = new FormData(form);
     const next: Record<string, string> = {};
     if (!String(data.get("name") || "").trim()) next.name = "Enter your full name.";
-    if (!String(data.get("company") || "").trim()) next.company = "Enter your company name.";
     const email = String(data.get("email") || "");
-    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid work email address.";
-    if (!String(data.get("phone") || "").trim()) next.phone = "Enter your phone number.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid email address.";
+    if (!String(data.get("company") || "").trim()) next.company = "Enter your company name.";
+    if (!String(data.get("country") || "").trim()) next.country = "Select your country.";
     if (!data.get("interest")) next.interest = "Select how we can help.";
-    if (!data.get("consent")) next.consent = "You must provide consent to submit this form.";
     setErrors(next);
     const first = Object.keys(next)[0];
     if (first) (form.elements.namedItem(first) as HTMLElement | null)?.focus();
@@ -130,7 +151,6 @@ export function ContactExperience() {
         <div className="contact-hero__grid" aria-hidden="true" />
         <div className="contact-hero__inner">
           <div className="contact-hero-copy contact-hero__copy">
-            <span className="contact-hero__eyebrow">Let’s solve your next challenge</span>
             <h1>
               <span>Connect With</span>
               <span>Our Experts</span>
@@ -152,7 +172,6 @@ export function ContactExperience() {
                 </span>
               </a>
             </div>
-            <p className="contact-hero__response"></p>
           </div>
 
           <div ref={contactVisualRef} className="contact-hero__visual" data-parallax aria-hidden="true">
@@ -201,26 +220,14 @@ export function ContactExperience() {
             </aside>
             <form ref={formRef} className="contact-form" onSubmit={submit} noValidate>
               <div className="contact-field-grid">
-                <FloatingField name="name" label="Full name *" error={errors.name} autoComplete="name" />
-                <FloatingField name="company" label="Company *" error={errors.company} autoComplete="organization" />
-                <FloatingField name="email" label="Work email *" type="email" error={errors.email} autoComplete="email" />
-                <FloatingField name="phone" label="Phone *" type="tel" error={errors.phone} autoComplete="tel" required />
-                <FloatingField as="select" name="interest" label="How can we help? *" options={helpOptions} error={errors.interest} />
-                <FloatingField as="select" name="product" label="Product or solution" options={productOptions} />
+                <FloatingField name="name" label="Full name " error={errors.name} autoComplete="name" required />
+                <FloatingField name="email" label="Email " type="email" error={errors.email} autoComplete="email" required />
+                <FloatingField name="company" label="Company " error={errors.company} autoComplete="organization" required />
+                <FloatingField as="select" name="country" label="Country " options={countryOptions} error={errors.country} autoComplete="country-name" required />
+                <FloatingField as="select" name="interest" label="Reason Of Contact " options={helpOptions} error={errors.interest} required />
+                <FloatingField as="select" name="product" label="Product" options={productOptions} />
               </div>
-              <FloatingField as="textarea" name="message" label="Tell us about the task or requirement" />
-              <ChoiceGroup legend="Preferred contact method" name="contactMethod" options={["Email", "Phone", "WhatsApp"]} defaultValue="Email" />
-              <label className={`consent-field ${errors.consent ? "invalid" : ""}`}>
-                <input type="checkbox" name="consent" />
-                <span>
-                  I consent to ERK Dynamics using this information to respond to my request. *
-                </span>
-              </label>
-              {errors.consent && (
-                <p className="field-error" role="alert">
-                  {errors.consent}
-                </p>
-              )}
+              <FloatingField as="textarea" name="message" label="Project Details" />
               <input name="website" className="honeypot" tabIndex={-1} autoComplete="off" />
               <button className={`button primary submit-request ${status === "sending" ? "sending" : ""}`} disabled={status === "sending"}>
                 {status === "sending" ? "Sending…" : "Send Request"} <span>↗</span>
@@ -238,7 +245,7 @@ export function ContactExperience() {
 
       <section className="contact-location section">
         <div>
-          <p className="eyebrow">ERK DYNAMICS / ISTANBUL</p>
+          <p className="eyebrow"></p>
           <h2>Prefer a direct conversation?</h2>
           <dl>
             <div>
@@ -251,7 +258,7 @@ export function ContactExperience() {
             <div>
               <dt>WHATSAPP</dt>
               <dd>
-                <a href={whatsapp}>Start a WhatsApp conversation</a>
+                <a href={whatsapp} target="_blank" rel="noopener noreferrer">+90 537 257 45 43</a>
               </dd>
             </div>
             <div>
@@ -269,7 +276,7 @@ export function ContactExperience() {
             <a className="button contact-secondary" href="tel:+905372574543">
               Call Our Team
             </a>
-            <a className="button primary" href={whatsapp}>
+            <a className="button primary" href={whatsapp} target="_blank" rel="noopener noreferrer">
               Open WhatsApp
             </a>
           </div>
@@ -277,7 +284,7 @@ export function ContactExperience() {
         <div className="istanbul-map">
           <div className="map-label">
             <i />
-            ERK DYNAMICS / ISTANBUL
+            
           </div>
           <iframe
             src="https://www.google.com/maps?q=Istanbul%2C%20Turkey&z=11&output=embed"
@@ -321,7 +328,7 @@ function FloatingField({
     <label className={`floating-field ${error ? "invalid" : ""}`}>
       <span>{label}</span>
       {as === "select" && (
-        <select name={name} defaultValue="" required={required} aria-required={required} aria-invalid={!!error} aria-describedby={describedBy}>
+        <select name={name} defaultValue="" autoComplete={autoComplete} required={required} aria-required={required} aria-invalid={!!error} aria-describedby={describedBy}>
           <option value="" disabled>
             Select an option
           </option>
@@ -336,7 +343,7 @@ function FloatingField({
         <textarea
           name={name}
           rows={5}
-          placeholder="Describe your task, challenge, or what you would like to achieve…"
+          placeholder="Please provide any additional details that will help us understand your project or inquiry"
           required={required}
           aria-required={required}
           aria-invalid={!!error}
@@ -361,29 +368,5 @@ function FloatingField({
         </p>
       )}
     </label>
-  );
-}
-
-function ChoiceGroup({
-  legend,
-  name,
-  options,
-  defaultValue,
-}: {
-  legend: string;
-  name: string;
-  options: string[];
-  defaultValue?: string;
-}) {
-  return (
-    <fieldset className="radio-group">
-      <legend>{legend}</legend>
-      {options.map((option) => (
-        <label key={option}>
-          <input type="radio" name={name} value={option} defaultChecked={defaultValue === option} />
-          <span>{option}</span>
-        </label>
-      ))}
-    </fieldset>
   );
 }

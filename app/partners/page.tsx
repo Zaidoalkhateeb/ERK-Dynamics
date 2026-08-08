@@ -86,9 +86,8 @@ export default function PartnersPage() {
       <section className="inline-cta section">
         <p className="eyebrow"></p>
         <h2>
-          Let’s evaluate what fits
-          <br />
-          your operation.
+          <span>Move your operations forward</span>
+          <span>with the right technology</span>
         </h2>
         <Link href="/contact" className="button primary">
           Contact our team <span>↗</span>
