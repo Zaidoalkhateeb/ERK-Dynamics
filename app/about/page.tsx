@@ -1,2 +1,11 @@
-import type {Metadata} from "next";import {ContentPage} from "@/components/ContentPage";import {pageContent} from "@/content/site";
-export const metadata:Metadata={title:"About ERK Dynamics | Industrial Technology Company in Türkiye",description:"Meet ERK Dynamics, connecting global industrial innovation with local expertise in Türkiye."};export default function Page(){return <ContentPage {...pageContent.about}/>}
+import type { Metadata } from "next";
+import { AboutExperience } from "@/components/AboutExperience";
+
+export const metadata: Metadata = {
+  title: "About ERK Dynamics | Industrial Technology Company in Türkiye",
+  description: "Meet ERK Dynamics, connecting global industrial innovation with local expertise in Türkiye.",
+};
+
+export default function Page() {
+  return <AboutExperience />;
+}

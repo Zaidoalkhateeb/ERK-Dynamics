@@ -6,7 +6,7 @@ import { Product } from "@/content/products";
 import { useEffect, useRef, useState } from "react";
 
 const productMedia = {
-  "auxivo-liftsuit": ["/media/liftsuit-hero.webp", "/media/liftsuit-detail.webp", "/media/liftsuit-work.webp", "/media/liftsuit-hero.webp"],
+  "auxivo-liftsuit": ["/media/liftsuit-hero.webp", "/media/liftsuit-work.webp", "/media/liftsuit-hero.webp", "/media/liftsuit-work.webp"],
   "auxivo-omnisuit": ["/media/omnisuit-work.webp", "/media/omnisuit-detail.webp", "/media/dual-product.webp", "/media/omnisuit-work.webp"],
 } as const;
 
@@ -27,7 +27,6 @@ export function ProductExperience({ product: p }: { product: Product }) {
   }, [p.features.length]);
 
   return <main className="product-experience">
-    <Link href="/contact" className="demo-dock"><i/>Contact Us <span>↗</span></Link>
     <section className="product-motion-hero">
       <div className="product-hero-media"><Image src={media[0]} alt={`Auxivo ${p.name} shown in an industrial task`} fill priority sizes="100vw"/><div className="product-hero-wash"/></div>
       <div className="product-motion-title"><p className="eyebrow">{p.number} / AUXIVO / {p.category.toUpperCase()}</p><h1>{p.name}</h1><p>{p.tagline}</p><div><Link href="#product-story" className="button primary">Inspect the system ↓</Link><Link href="/contact" className="button glass">Request a quote</Link></div></div>

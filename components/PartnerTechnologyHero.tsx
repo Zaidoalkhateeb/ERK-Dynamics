@@ -205,6 +205,9 @@ export function PartnerTechnologyHero() {
           market through local expertise, technical support, and business development.
         </p>
       </div>
+      <a className="page-scroll-cue" href="#partner-directory">
+        <span>Scroll to discover</span><i aria-hidden="true" />
+      </a>
     </section>
   );
 }

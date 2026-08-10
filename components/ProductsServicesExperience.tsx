@@ -1,0 +1,248 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { PointerEvent, useEffect, useRef, useState } from "react";
+
+const exoskeletons = [
+  {
+    id: "liftsuit",
+    number: "01",
+    name: "LiftSuit",
+    image: "/media/liftsuit-work.webp",
+    detail: "/media/liftsuit-hero.webp",
+    alt: "Worker using the Auxivo LiftSuit during industrial work",
+    focus: "Lower back + hips",
+    description: "Lightweight passive support for repetitive lifting, low handling, and prolonged forward-leaning work.",
+    tasks: ["Lifting", "Forward leaning", "Repetitive handling"],
+    href: "/products/auxivo-liftsuit",
+  },
+  {
+    id: "omnisuit",
+    number: "02",
+    name: "OmniSuit",
+    image: "/media/omnisuit-work.webp",
+    detail: "/media/omnisuit-detail.webp",
+    alt: "Worker using the Auxivo OmniSuit during an overhead task",
+    focus: "Shoulders + lower back",
+    description: "One passive system for work that moves between overhead activity, lifting, and forward-leaning positions.",
+    tasks: ["Overhead work", "Lifting", "Mixed tasks"],
+    href: "/products/auxivo-omnisuit",
+  },
+] as const;
+
+export function ProductsServicesExperience() {
+  const [activeProduct, setActiveProduct] = useState<0 | 1>(0);
+  const heroVisualRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const product = exoskeletons[activeProduct];
+
+  useEffect(() => () => {
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+  }, []);
+
+  const moveHero = (event: PointerEvent<HTMLDivElement>) => {
+    const visual = heroVisualRef.current;
+    if (!visual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = visual.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    frameRef.current = requestAnimationFrame(() => {
+      visual.style.setProperty("--portfolio-x", `${(x * 22).toFixed(2)}px`);
+      visual.style.setProperty("--portfolio-y", `${(y * 16).toFixed(2)}px`);
+    });
+  };
+
+  const resetHero = () => {
+    heroVisualRef.current?.style.setProperty("--portfolio-x", "0px");
+    heroVisualRef.current?.style.setProperty("--portfolio-y", "0px");
+  };
+
+  return (
+    <main className="portfolio-page">
+      <section className="portfolio-hero" aria-labelledby="portfolio-title">
+        <div className="portfolio-hero-grid" aria-hidden="true" />
+        <div className="portfolio-hero-inner">
+          <div className="portfolio-hero-copy">
+            <h1 id="portfolio-title">Technology selected<br />for real operations</h1>
+            <p className="portfolio-hero-intro">
+              ERK Dynamics connects industrial teams with wearable robotics, sensing systems, and remote power
+              technologies then supports the evaluation, adoption, and deployment around them.
+            </p>
+            <div className="portfolio-hero-actions">
+              <a className="portfolio-button portfolio-button--primary" href="#technology-portfolio">Explore the portfolio <Arrow /></a>
+              <Link className="portfolio-button portfolio-button--secondary" href="/contact">Discuss a requirement <Arrow /></Link>
+            </div>
+          </div>
+
+          <div ref={heroVisualRef} className="portfolio-hero-visual" onPointerMove={moveHero} onPointerLeave={resetHero} aria-hidden="true">
+            <svg className="portfolio-exoskeleton-system" viewBox="0 0 900 650" role="presentation">
+              <defs>
+                <radialGradient id="portfolio-exo-halo">
+                  <stop offset="0" stopColor="#30bdd0" stopOpacity=".18" />
+                  <stop offset="1" stopColor="#30bdd0" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              <ellipse cx="450" cy="330" rx="365" ry="282" fill="url(#portfolio-exo-halo)" />
+              <g className="portfolio-exo-frame">
+                <path d="M246 181 Q450 76 654 181" />
+                <path d="M246 181 Q304 211 326 258 L292 472 Q450 564 608 472 L574 258 Q596 211 654 181" />
+                <path d="M326 258 Q450 318 574 258" />
+                <path d="M292 472 Q450 408 608 472" />
+                <path d="M450 117 V526" />
+                <path d="M287 201 450 423 613 201" />
+                <path d="M326 258 450 526 574 258" />
+              </g>
+              <g className="portfolio-exo-support-paths">
+                <path d="M286 205 C332 286 340 406 305 467" />
+                <path d="M614 205 C568 286 560 406 595 467" />
+              </g>
+              <g className="portfolio-exo-joints">
+                <circle cx="246" cy="181" r="9" /><circle cx="654" cy="181" r="9" />
+                <circle cx="326" cy="258" r="8" /><circle cx="574" cy="258" r="8" />
+                <circle cx="292" cy="472" r="10" /><circle cx="608" cy="472" r="10" />
+                <circle cx="450" cy="117" r="8" /><circle cx="450" cy="526" r="9" />
+              </g>
+              <g className="portfolio-exo-core">
+                <circle cx="450" cy="327" r="49" />
+                <circle cx="450" cy="327" r="24" />
+                <path d="M450 303v48M426 327h48" />
+              </g>
+              <g className="portfolio-exo-measure">
+                <path d="M190 181h38M190 472h82M672 181h38M628 472h82" />
+                <path d="M206 181v291M694 181v291" />
+              </g>
+            </svg>
+            <div className="portfolio-hero-image portfolio-hero-image--rear">
+              <Image src="/media/liftsuit-hero.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 36vw" />
+            </div>
+            <div className="portfolio-hero-image portfolio-hero-image--front">
+              <Image src="/media/omnisuit-work.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 39vw" />
+            </div>
+            <span className="portfolio-hero-index portfolio-hero-index--one">Exoskeletons / Human support</span>
+          </div>
+        </div>
+        <a className="page-scroll-cue" href="#technology-portfolio"><span>Scroll to discover</span><i aria-hidden="true" /></a>
+      </section>
+
+      <nav id="technology-portfolio" className="portfolio-category-nav" aria-label="Technology categories">
+        <a href="#exoskeletons"><span>01</span><strong>Exoskeletons</strong><i>People</i></a>
+        <a href="#lidar"><span>02</span><strong>LiDAR</strong><i>Intelligence</i></a>
+        <a href="#remote-power"><span>03</span><strong>Power Supply</strong><i>Infrastructure</i></a>
+      </nav>
+
+      <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
+        <header className="portfolio-section-heading">
+          <div><span>01 / Wearable robotics</span><h2 id="exo-title">Support engineered<br />around movement  </h2></div>
+          <p></p>
+        </header>
+
+        <div className="portfolio-product-stage">
+          <div className="portfolio-product-media">
+            {exoskeletons.map((item, index) => (
+              <div className={`portfolio-product-image ${activeProduct === index ? "is-active" : ""}`} key={item.id}>
+                <Image src={item.image} alt={activeProduct === index ? item.alt : ""} fill sizes="(max-width: 900px) 100vw, 64vw" />
+              </div>
+            ))}
+            <div className="portfolio-product-detail" aria-hidden="true">
+              <Image src={product.detail} alt="" fill sizes="240px" key={product.detail} />
+            </div>
+            <span className="portfolio-product-motion-label">Product in operation</span>
+          </div>
+
+          <div className="portfolio-product-panel">
+            <div className="portfolio-product-switcher" role="tablist" aria-label="Choose an exoskeleton">
+              {exoskeletons.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeProduct === index}
+                  className={activeProduct === index ? "is-active" : ""}
+                  onClick={() => setActiveProduct(index as 0 | 1)}
+                >
+                  <span>{item.number}</span>{item.name}
+                </button>
+              ))}
+            </div>
+            <div className="portfolio-product-copy" key={product.id}>
+              <p className="portfolio-kicker">Auxivo / {product.focus}</p>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <div className="portfolio-task-list">{product.tasks.map((task) => <span key={task}>{task}</span>)}</div>
+              <dl>
+                <div><dt>System</dt><dd>Passive / battery-free</dd></div>
+                <div><dt>Sizes</dt><dd>S/M · L/XL</dd></div>
+              </dl>
+              <Link className="portfolio-button portfolio-button--primary" href={product.href}>Experience {product.name} <Arrow /></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="lidar" className="portfolio-tech portfolio-tech--lidar" aria-labelledby="lidar-title">
+        <div className="portfolio-tech-visual portfolio-lidar-visual" aria-hidden="true">
+          <svg viewBox="0 0 760 650" role="presentation">
+            <defs>
+              <linearGradient id="lidar-beam" x1="380" y1="500" x2="380" y2="60">
+                <stop offset="0" stopColor="#0a8ca3" stopOpacity=".65" />
+                <stop offset="1" stopColor="#58d7e8" stopOpacity="0" />
+              </linearGradient>
+              <radialGradient id="lidar-halo"><stop offset="0" stopColor="#33bfd2" stopOpacity=".18" /><stop offset="1" stopColor="#33bfd2" stopOpacity="0" /></radialGradient>
+            </defs>
+            <circle cx="380" cy="322" r="276" fill="url(#lidar-halo)" />
+            <g className="portfolio-lidar-rings"><circle cx="380" cy="322" r="245"/><circle cx="380" cy="322" r="188"/><circle cx="380" cy="322" r="128"/></g>
+            <g className="portfolio-lidar-crosshair"><path d="M80 322h600M380 24v596"/><path d="m168 110 424 424M592 110 168 534"/></g>
+            <path className="portfolio-lidar-beam" d="m337 500 43-432 43 432Z" fill="url(#lidar-beam)" />
+            <g className="portfolio-lidar-scan"><path d="M380 500 605 238"/><circle cx="605" cy="238" r="8"/></g>
+            <g className="portfolio-lidar-unit"><path d="m300 508 28-58h104l28 58-20 76H320Z"/><path d="M328 450h104l-18-41h-68Z"/><circle cx="380" cy="428" r="12"/></g>
+          </svg>
+          <span className="portfolio-data-tag portfolio-data-tag--one">Wind field / live</span>
+          <span className="portfolio-data-tag portfolio-data-tag--two">Remote sensing</span>
+          <span className="portfolio-data-tag portfolio-data-tag--three">360° scan</span>
+        </div>
+        <div className="portfolio-tech-copy">
+          <p className="portfolio-kicker">02 / LiDAR systems</p>
+          <h2 id="lidar-title"><span>See the atmosphere</span><span>in motion.</span></h2>
+          <p>Advanced LiDAR systems for measurement-led applications across wind power, meteorology, environmental monitoring, and aviation.</p>
+          <ul><li>Wind measurement</li><li>Meteorology</li><li>Environmental monitoring</li><li>Aviation applications</li></ul>
+          <div className="portfolio-group-note"><span>ERK Group Company</span><strong>Explore this category through Think Metric.</strong></div>
+          <a className="portfolio-button portfolio-button--primary" href="https://think-metric.co/products/lidars" target="_blank" rel="noopener noreferrer">Explore LiDAR systems <Arrow /></a>
+        </div>
+      </section>
+
+      <section id="remote-power" className="portfolio-tech portfolio-tech--power" aria-labelledby="power-title">
+        <div className="portfolio-tech-copy">
+          <p className="portfolio-kicker">03 / Remote power supply</p>
+          <h2 id="power-title"><span>Remote power.</span><span>Beyond the grid.</span></h2>
+          <p>Remote power supply systems for equipment and monitoring infrastructure deployed where conventional power access is limited or unavailable.</p>
+          <ul><li>Remote monitoring sites</li><li>Field infrastructure</li><li>System-level evaluation</li><li>Application-led configuration</li></ul>
+          <div className="portfolio-group-note"><span>ERK Group Company</span><strong>Explore this category through Think Metric.</strong></div>
+          <a className="portfolio-button portfolio-button--light" href="https://think-metric.co/products/remote-power-supply-systems" target="_blank" rel="noopener noreferrer">Explore power systems <Arrow /></a>
+        </div>
+        <div className="portfolio-tech-visual portfolio-power-visual" aria-hidden="true">
+          <svg viewBox="0 0 760 650" role="presentation">
+            <defs><linearGradient id="power-cell" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#71d9e7" stopOpacity=".8"/><stop offset="1" stopColor="#0a8ca3" stopOpacity=".15"/></linearGradient></defs>
+            <g className="portfolio-power-grid">
+              {Array.from({ length: 24 }).map((_, index) => {
+                const x = 84 + (index % 6) * 96;
+                const y = 92 + Math.floor(index / 6) * 86;
+                return <path key={index} d={`M${x} ${y}h72l18 35-18 35h-72l-18-35Z`} />;
+              })}
+            </g>
+            <g className="portfolio-power-lines"><path d="M96 504h180l64-64h172l62-62h94"/><path d="M151 552h228l62-62h176"/></g>
+            <g className="portfolio-power-core"><rect x="282" y="224" width="196" height="224" rx="18"/><rect x="313" y="256" width="134" height="114" rx="8"/><path d="m390 274-39 57h34l-17 29 51-61h-34Z"/><path d="M334 404h92"/></g>
+            <g className="portfolio-power-pulses"><circle cx="96" cy="504" r="6"/><circle cx="668" cy="378" r="6"/><circle cx="617" cy="490" r="6"/></g>
+          </svg>
+          <span className="portfolio-power-status">System status / active</span>
+        </div>
+      </section>
+
+    </main>
+  );
+}
+
+function Arrow() {
+  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>;
+}

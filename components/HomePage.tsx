@@ -24,7 +24,7 @@ function useProgress<T extends HTMLElement>() {
 
 const tasks = [
   { id: "lifting", label: "Repetitive lifting", product: "LiftSuit", image: "/media/liftsuit-work.webp", text: "Lower-back and hip support for repeated lifting and forward-leaning work." },
-  { id: "leaning", label: "Forward leaning", product: "LiftSuit", image: "/media/liftsuit-detail.webp", text: "A lightweight textile system designed around freedom of movement." },
+  { id: "leaning", label: "Forward leaning", product: "LiftSuit", image: "/media/liftsuit-hero.webp", text: "A lightweight textile system designed around freedom of movement." },
   { id: "overhead", label: "Overhead work", product: "OmniSuit", image: "/media/omnisuit-work.webp", text: "Integrated shoulder and back support for mixed vertical workflows." },
   { id: "mixed", label: "Mixed tasks", product: "OmniSuit", image: "/media/omnisuit-detail.webp", text: "One passive system for work that shifts between lifting, leaning, and reaching." },
 ];
@@ -43,8 +43,6 @@ export function HomePage() {
   ];
 
   return <main className="cinematic-home">
-    <Link href="/contact" className="demo-dock"><i aria-hidden="true"/>Contact Us <span>↗</span></Link>
-
     <section ref={heroRef} className="motion-hero" style={heroStyle}>
       <div className="motion-hero-sticky">
         <div className="hero-media-layer hero-media-back"><Image src="/media/liftsuit-hero.webp" alt="Worker wearing an Auxivo LiftSuit in a warehouse" fill priority sizes="100vw"/></div>
@@ -85,7 +83,7 @@ export function HomePage() {
     </section>
 
     <section className="engineering-section">
-      <div className="engineering-stage"><Image src={engineering===0?"/media/liftsuit-detail.webp":"/media/omnisuit-detail.webp"} alt="Close view of Auxivo exoskeleton engineering" fill sizes="60vw"/><div className={`engineering-hotspot hotspot-${engineering}`} aria-hidden="true"><i/><span>0{engineering+1}</span></div><div className="engineering-sweep" aria-hidden="true"/></div>
+      <div className="engineering-stage"><Image src={engineering===0?"/media/liftsuit-work.webp":"/media/omnisuit-detail.webp"} alt="Auxivo exoskeleton shown in an industrial application" fill sizes="60vw"/><div className={`engineering-hotspot hotspot-${engineering}`} aria-hidden="true"><i/><span>0{engineering+1}</span></div><div className="engineering-sweep" aria-hidden="true"/></div>
       <div className="engineering-copy"><p className="eyebrow">ENGINEERING / 04</p><h2>Support without standing in the way.</h2><ol>{engineeringSteps.map(([title,text],i)=><li key={title} className={engineering===i?'active':''}><button onClick={()=>setEngineering(i)}><span>0{i+1}</span><b>{title}</b></button><p>{text}</p></li>)}</ol></div>
     </section>
 

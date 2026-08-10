@@ -1,3 +1,11 @@
-import type { Metadata } from "next";import Link from "next/link";import { ContentPage } from "@/components/ContentPage";import { pageContent } from "@/content/site";import {products} from "@/content/products";
-export const metadata:Metadata={title:"Industrial Exoskeletons & Technology Solutions",description:"Explore industrial exoskeletons, pilots, training, and deployment support from ERK Dynamics."};
-export default function Page(){return <ContentPage {...pageContent['products-services']}><section className="product-list section"><p className="eyebrow">CURRENT PORTFOLIO</p>{products.filter(p=>p.status==='published').map(p=><Link key={p.slug} href={`/products/${p.slug}`}><span>{p.number}</span><div><small>{p.manufacturer} / {p.category}</small><h2>{p.name}</h2><p>{p.tagline}</p></div><b>EXPLORE ↗</b></Link>)}</section></ContentPage>}
+import type { Metadata } from "next";
+import { ProductsServicesExperience } from "@/components/ProductsServicesExperience";
+
+export const metadata: Metadata = {
+  title: "Industrial Technology Products & Services",
+  description: "Explore industrial exoskeletons, LiDAR systems, remote power supply systems, and deployment support from ERK Dynamics.",
+};
+
+export default function Page() {
+  return <ProductsServicesExperience />;
+}

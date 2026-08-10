@@ -6,12 +6,31 @@ import { useEffect, useState } from "react";
 import { CookieControls } from "./CookieControls";
 
 const nav = [
-  ["products-services", "Products & Services"],
-  ["solutions", "Solutions"],
-  ["industries", "Industries"],
+  ["products-services", "Products"],
   ["about", "About Us"],
   ["partners", "Partners"],
   ["contact", "Contact Us"],
+] as const;
+
+const productCategories = [
+  {
+    name: "Exoskeletons",
+    description: "Wearable robotics for safer industrial work.",
+    href: "/products-services",
+    external: false,
+  },
+  {
+    name: "LiDAR",
+    description: "From Think Metric, an ERK group company.",
+    href: "https://think-metric.co/products/lidars",
+    external: true,
+  },
+  {
+    name: "Power Supply",
+    description: "From Think Metric, an ERK group company.",
+    href: "https://think-metric.co/products/remote-power-supply-systems",
+    external: true,
+  },
 ] as const;
 function Logo() {
   return (
@@ -45,12 +64,45 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       >
         <Logo />
         <nav className="desktop-nav" aria-label="Primary">
-          {nav.map(([href, label]) => (
-            <Link
-              key={href}
-              href={`/${href}`}
-              className={pathname === `/${href}` ? "active" : ""}
-            >
+          {nav.map(([href, label]) => href === "products-services" ? (
+            <div className="nav-products" key={href}>
+              <Link
+                href={`/${href}`}
+                className={pathname === `/${href}` || pathname.startsWith("/products/") ? "active" : ""}
+                aria-haspopup="true"
+              >
+                {label}
+              </Link>
+              <div className="nav-products-dropdown">
+                <span className="nav-products-eyebrow">Product categories</span>
+                <div className="nav-products-grid">
+                  {productCategories.map((category) => category.name === "Exoskeletons" ? (
+                    <div key={category.name} className="nav-product-category nav-product-category--exoskeletons">
+                      <strong>{category.name}</strong>
+                      <span>{category.description}</span>
+                      <div className="nav-exoskeleton-products">
+                        <Link href="/products/auxivo-liftsuit">
+                          <b>Auxivo LiftSuit</b>
+                          <em>S/M · L/XL</em>
+                        </Link>
+                        <Link href="/products/auxivo-omnisuit">
+                          <b>Auxivo OmniSuit</b>
+                          <em>S/M · L/XL</em>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    <a key={category.name} className="nav-product-category" href={category.href} target="_blank" rel="noopener noreferrer">
+                      <strong>{category.name}</strong>
+                      <span>{category.description}</span>
+                      <i>Visit Think Metric ↗</i>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Link key={href} href={`/${href}`} className={pathname === `/${href}` ? "active" : ""}>
               {label}
             </Link>
           ))}
@@ -75,7 +127,34 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       >
         <div className="menu-grid">
           <div className="menu-links">
-            {nav.map(([href, label], i) => (
+            {nav.map(([href, label], i) => href === "products-services" ? (
+              <div className="menu-product-group" key={href}>
+                <Link href={`/${href}`}>
+                  <small>0{i + 1}</small>
+                  {label}
+                </Link>
+                <div className="menu-product-categories">
+                  {productCategories.map((category) => category.name === "Exoskeletons" ? (
+                    <div key={category.name} className="menu-exoskeleton-category">
+                      <strong>{category.name}</strong>
+                      <Link href="/products/auxivo-liftsuit">
+                        <span>Auxivo LiftSuit</span>
+                        <small>S/M · L/XL</small>
+                      </Link>
+                      <Link href="/products/auxivo-omnisuit">
+                        <span>Auxivo OmniSuit</span>
+                        <small>S/M · L/XL</small>
+                      </Link>
+                    </div>
+                  ) : (
+                    <a key={category.name} href={category.href} target="_blank" rel="noopener noreferrer">
+                      <strong>{category.name}</strong>
+                      <span>ERK group company · Think Metric ↗</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
               <Link key={href} href={`/${href}`}>
                 <small>0{i + 1}</small>
                 {label}
@@ -183,9 +262,6 @@ function Footer() {
         </div>
         <div>
           <b>EXPLORE</b>
-          <Link href="/products-services">Products & Services</Link>
-          <Link href="/solutions">Solutions</Link>
-          <Link href="/industries">Industries</Link>
           <Link href="/about">About Us</Link>
           <Link href="/partners">Partners</Link>
           <Link href="/become-a-partner">Become a Partner</Link>

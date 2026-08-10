@@ -191,9 +191,17 @@ export function ContactExperience() {
             <span className="contact-particle contact-particle--4" />
           </div>
         </div>
+        <a className="page-scroll-cue" href="#contact-form">
+          <span>Scroll to discover</span><i aria-hidden="true" />
+        </a>
       </section>
 
       <section id="contact-form" className="contact-form-section section">
+        <div className="contact-flight-box" aria-hidden="true">
+          <i className="contact-flight-dot contact-flight-dot--one" />
+          <i className="contact-flight-dot contact-flight-dot--two" />
+          <i className="contact-flight-dot contact-flight-dot--three" />
+        </div>
         {status === "success" ? (
           <div className="contact-success" role="status">
             <span>✓</span>
@@ -241,6 +249,25 @@ export function ContactExperience() {
             </form>
           </div>
         )}
+        <svg className="contact-routing-diagram" aria-hidden="true" viewBox="0 0 430 220">
+          <path className="routing-guide" d="M18 48h102l56 62h72l58-62h106" />
+          <path className="routing-guide" d="M18 110h158M248 110h164" />
+          <path className="routing-guide" d="M18 172h102l56-62M248 110l58 62h106" />
+          <path className="routing-flow routing-flow--one" d="M18 48h102l56 62" pathLength="1" />
+          <path className="routing-flow routing-flow--two" d="M18 110h158" pathLength="1" />
+          <path className="routing-flow routing-flow--three" d="M18 172h102l56-62" pathLength="1" />
+          <g className="routing-rotor">
+            <circle cx="212" cy="110" r="43" />
+            <circle cx="212" cy="110" r="31" />
+            <path d="m212 68 14 25 29 4-21 20 5 29-27-14-27 14 5-29-21-20 29-4 14-25Z" />
+          </g>
+          <circle className="routing-core" cx="212" cy="110" r="8" />
+          <path className="routing-flow routing-flow--out" d="M248 110h164" pathLength="1" />
+          <circle className="routing-node routing-node--one" cx="18" cy="48" r="5" />
+          <circle className="routing-node routing-node--two" cx="18" cy="110" r="5" />
+          <circle className="routing-node routing-node--three" cx="18" cy="172" r="5" />
+          <circle className="routing-node routing-node--out" cx="412" cy="110" r="6" />
+        </svg>
       </section>
 
       <section className="contact-location section">
