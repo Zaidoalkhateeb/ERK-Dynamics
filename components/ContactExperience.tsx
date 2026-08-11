@@ -60,9 +60,9 @@ const processSteps = [
 
 export function ContactExperience() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [reference, setReference] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const formRef = useRef<HTMLFormElement>(null);
   const contactHeroRef = useRef<HTMLElement>(null);
   const contactVisualRef = useRef<HTMLDivElement>(null);
   const contactFrameRef = useRef<number | null>(null);
@@ -226,7 +226,7 @@ export function ContactExperience() {
                 ))}
               </ol>
             </aside>
-            <form ref={formRef} className="contact-form" onSubmit={submit} noValidate>
+            <form className="contact-form" onSubmit={submit} noValidate>
               <div className="contact-field-grid">
                 <FloatingField name="name" label="Full name " error={errors.name} autoComplete="name" required />
                 <FloatingField name="email" label="Email " type="email" error={errors.email} autoComplete="email" required />
@@ -272,7 +272,6 @@ export function ContactExperience() {
 
       <section className="contact-location section">
         <div>
-          <p className="eyebrow"></p>
           <h2>Prefer a direct conversation?</h2>
           <dl>
             <div>
@@ -308,16 +307,21 @@ export function ContactExperience() {
             </a>
           </div>
         </div>
-        <div className="istanbul-map">
+        <div className={`istanbul-map ${mapLoaded ? "is-loaded" : ""}`}>
           <div className="map-label">
             <i />
-            
+            <span>ISTANBUL / TÜRKİYE</span>
+          </div>
+          <div className="map-skeleton" aria-hidden="true">
+            <span className="map-skeleton__pin" />
+            <span className="map-skeleton__text">Loading map…</span>
           </div>
           <iframe
             src="https://www.google.com/maps?q=Istanbul%2C%20Turkey&z=11&output=embed"
             title="ERK Dynamics — Istanbul, Turkey"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            onLoad={() => setMapLoaded(true)}
           />
           <div className="map-caption">
             <a href="https://www.google.com/maps/search/?api=1&query=Istanbul%2C+Turkey" target="_blank" rel="noopener noreferrer">

@@ -154,7 +154,7 @@ export function AboutExperience() {
         <div className="erkAboutStatementPanel">
           <div className="erkAboutStatementDecoration" aria-hidden="true" />
           <div className="erkAboutStatementInner">
-            <h2 id="point-title" className="erkAboutStatementTitle">Technology should create progress, not complexity </h2>
+            <h2 id="point-title" className="erkAboutStatementTitle">Technology should create progress, not complexity</h2>
             <p className="erkAboutStatementCopy">
               We bring proven industrial technologies from global manufacturers to businesses in Türkiye, combining
               local market knowledge, product expertise, and support beyond the sale.
@@ -163,7 +163,6 @@ export function AboutExperience() {
           </div>
         </div>
         <div className="erkAboutPrinciplesPanel">
-          <p className="erkAboutPrinciplesIntro"></p>
           <ol className="erkAboutPrinciplesList">
             {principles.map((principle, index) => (
               <li className="erkAboutPrinciple" key={principle.title}>

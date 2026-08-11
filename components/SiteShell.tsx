@@ -248,7 +248,11 @@ function LinkedInIcon() {
   return <svg viewBox="0 0 24 24"><path d="M6.5 8.5V19M6.5 5.2v.1M10.5 19v-6c0-2.1 1.3-3.5 3.3-3.5s3.7 1.3 3.7 4V19M10.5 9.8V19" /></svg>;
 }
 
+const whatsappLink =
+  "https://wa.me/905372574543?text=Hello%20ERK%20Dynamics%2C%20I%20would%20like%20to%20discuss%20an%20industrial%20technology%20requirement.";
+
 function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer>
       <div className="footer-grid expanded">
@@ -262,23 +266,36 @@ function Footer() {
         </div>
         <div>
           <b>EXPLORE</b>
+          <Link href="/products-services">Products</Link>
           <Link href="/about">About Us</Link>
           <Link href="/partners">Partners</Link>
-          <Link href="/become-a-partner">Become a Partner</Link>
+          <Link href="/contact">Contact Us</Link>
         </div>
         <div>
           <b>PRODUCTS</b>
           <Link href="/products/auxivo-liftsuit">Auxivo LiftSuit</Link>
           <Link href="/products/auxivo-omnisuit">Auxivo OmniSuit</Link>
-          <Link href="/products-services#compare">Compare Products</Link>
+          <Link href="/become-a-partner">Become a Partner</Link>
         </div>
         <div>
           <b>CONNECT</b>
           <a href="tel:+905372574543">Phone</a>
-          <a href="https://wa.me/905372574543">WhatsApp</a>
+          <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </a>
           <a href="mailto:info@erkdynamics.com">Email</a>
-          <a href="https://www.linkedin.com/company/erk-dynamics/">LinkedIn</a>
+          <a
+            href="https://www.linkedin.com/company/erk-dynamics/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
         </div>
+      </div>
+      <div className="footer-bottom">
+        <small>© {year} ERK Dynamics. All rights reserved.</small>
+        <small>Istanbul, Türkiye</small>
       </div>
     </footer>
   );

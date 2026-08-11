@@ -156,8 +156,7 @@ export function ProductsServicesExperience() {
 
       <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
         <header className="portfolio-section-heading">
-          <div><span>01 / Wearable robotics</span><h2 id="exo-title">Support engineered<br />around movement  </h2></div>
-          <p></p>
+          <div><span>01 / Wearable robotics</span><h2 id="exo-title">Support engineered<br />around movement</h2></div>
         </header>
 
         <div className="portfolio-product-stage">
