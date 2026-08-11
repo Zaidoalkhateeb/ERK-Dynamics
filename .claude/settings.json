@@ -15,7 +15,15 @@
       "Bash(pkill -f \"next dev\")",
       "Bash(pkill -f \"next-server\")",
       "Bash(curl -sL -o /tmp/maps_test.html -w \"FINAL HTTP %{http_code}, size %{size_download} bytes\\\\n\" --max-time 10 \"https://www.google.com/maps?q=%C4%B0stanbul%2C%20T%C3%BCrkiye&z=11&output=embed\")",
-      "Bash(echo \"TSC EXIT: $?\")"
+      "Bash(echo \"TSC EXIT: $?\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(chromium-cli --help)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(mkdir -p \"/c/Users/zaido/AppData/Local/Temp/claude/c--Users-zaido-ERK-Dynamics-1/9ebe2ffc-b133-4c3f-ac70-2880d3163af9/scratchpad/shots\")",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(npm init *)",
+      "Bash(node shot.js)"
     ]
   }
 }
