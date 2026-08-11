@@ -96,7 +96,7 @@ export function ProductsServicesExperience() {
 
       <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
         <header className="portfolio-section-heading">
-          <div><span>01 / Wearable robotics</span><h2 id="exo-title">Support engineered<br />around movement</h2></div>
+          <div><span>01 / Wearable robotics</span><h2 id="exo-title"><br /></h2></div>
         </header>
 
         <div className="portfolio-product-stage">
@@ -176,7 +176,7 @@ export function ProductsServicesExperience() {
       <section id="remote-power" className="portfolio-tech portfolio-tech--power" aria-labelledby="power-title">
         <div className="portfolio-tech-copy">
           <p className="portfolio-kicker">03 / Remote power supply</p>
-          <h2 id="power-title">Power beyond<br />the conventional grid.</h2>
+          <h2 id="power-title">Power beyond<br />the conventional grid</h2>
           <p>Remote power supply systems for equipment and monitoring infrastructure deployed where conventional power access is limited or unavailable.</p>
           <ul><li>Remote monitoring sites</li><li>Field infrastructure</li><li>System-level evaluation</li><li>Application-led configuration</li></ul>
           <div className="portfolio-group-note"><span>ERK Group Company</span><strong>Explore this category through Think Metric.</strong></div>
