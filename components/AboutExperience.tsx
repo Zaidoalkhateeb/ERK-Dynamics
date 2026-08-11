@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { PointerEvent, useEffect, useRef } from "react";
+import { GlobalRouteGlobe } from "./GlobalRouteGlobe";
 
 const principles = [
   {
@@ -20,13 +21,31 @@ const principles = [
 
 export function AboutExperience() {
   const visualRef = useRef<HTMLDivElement>(null);
-  const globeRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
-  const globeFrameRef = useRef<number | null>(null);
 
-  useEffect(() => () => {
-    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    if (globeFrameRef.current !== null) cancelAnimationFrame(globeFrameRef.current);
+  useEffect(() => {
+    const items = Array.from(document.querySelectorAll<HTMLElement>(".erkAboutPrinciple"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      items.forEach((item) => item.classList.add("is-visible"));
+    }
+
+    const observer = reducedMotion ? null : new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer?.unobserve(entry.target);
+      });
+    }, { threshold: 0.28 });
+
+    observer?.observe(items[0]);
+    items.slice(1).forEach((item) => observer?.observe(item));
+
+    return () => {
+      observer?.disconnect();
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
   }, []);
 
   const moveVisual = (event: PointerEvent<HTMLDivElement>) => {
@@ -47,29 +66,6 @@ export function AboutExperience() {
     visualRef.current?.style.setProperty("--erk-about-parallax-y", "0px");
   };
 
-  const moveGlobe = (event: PointerEvent<HTMLDivElement>) => {
-    const globe = globeRef.current;
-    if (!globe || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = globe.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    if (globeFrameRef.current !== null) cancelAnimationFrame(globeFrameRef.current);
-    globeFrameRef.current = requestAnimationFrame(() => {
-      globe.style.setProperty("--erk-globe-rotate-x", `${(-y * 14).toFixed(2)}deg`);
-      globe.style.setProperty("--erk-globe-rotate-y", `${(x * 18).toFixed(2)}deg`);
-      globe.style.setProperty("--erk-globe-shift-x", `${(x * 10).toFixed(2)}px`);
-      globe.style.setProperty("--erk-globe-shift-y", `${(y * 8).toFixed(2)}px`);
-    });
-  };
-
-  const resetGlobe = () => {
-    const globe = globeRef.current;
-    globe?.style.setProperty("--erk-globe-rotate-x", "0deg");
-    globe?.style.setProperty("--erk-globe-rotate-y", "0deg");
-    globe?.style.setProperty("--erk-globe-shift-x", "0px");
-    globe?.style.setProperty("--erk-globe-shift-y", "0px");
-  };
-
   return (
     <main className="erkAboutPage" id="about-top">
       <section className="erkAboutHero" aria-labelledby="about-title">
@@ -78,7 +74,7 @@ export function AboutExperience() {
         <div className="erkAboutHeroInner">
           <div className="erkAboutHeroCopy">
             <h1 id="about-title" className="erkAboutHeroTitle">
-              Global Technology.<br />Local Expertise.
+              Global Technology<br />Local Expertise
             </h1>
             <p className="erkAboutHeroLead">
               ERK Dynamics brings advanced technologies from global manufacturers to the Turkish market, providing
@@ -184,7 +180,9 @@ export function AboutExperience() {
             <p>By combining product expertise, local market knowledge, and ongoing support, we turn advanced technologies into practical operational value.</p>
           </div>
           <div className="erkAboutJourney" aria-label="İstanbul connected with global industrial markets">
-            <div ref={globeRef} className="erkAboutGlobe" onPointerMove={moveGlobe} onPointerLeave={resetGlobe} aria-hidden="true">
+            <div className="erkAboutGlobe erkAboutGlobe--interactive">
+              <GlobalRouteGlobe />
+              {false && (
               <svg viewBox="0 0 720 520" role="presentation">
                 <defs>
                   <radialGradient id="erk-globe-fill" cx="38%" cy="30%" r="70%">
@@ -276,6 +274,7 @@ export function AboutExperience() {
                   <text x="538" y="198">BAKU</text>
                 </g>
               </svg>
+              )}
             </div>
           </div>
         </div>

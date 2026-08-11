@@ -124,7 +124,7 @@ export default function PartnersPage() {
               <h3>Become a partner</h3>
               <p>
                 We work with manufacturers and specialists whose technologies solve clear industrial challenges across
-                Türkiye. If that sounds like you, let&rsquo;s talk.
+                Türkiye If that sounds like you, let&rsquo;s talk.
               </p>
               <div className="partner-actions">
                 <Link className="button primary" href="/become-a-partner">

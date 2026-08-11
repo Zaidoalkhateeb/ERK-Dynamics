@@ -77,72 +77,12 @@ export function ProductsServicesExperience() {
           </div>
 
           <div ref={heroVisualRef} className="portfolio-hero-visual" onPointerMove={moveHero} onPointerLeave={resetHero} aria-hidden="true">
-            <svg className="portfolio-business-system" viewBox="0 0 900 650" role="presentation">
-              <defs>
-                <linearGradient id="portfolio-system-line" x1="75" y1="530" x2="830" y2="125">
-                  <stop offset="0" stopColor="#087f96" stopOpacity=".25" />
-                  <stop offset=".48" stopColor="#27b9cd" stopOpacity=".82" />
-                  <stop offset="1" stopColor="#087f96" stopOpacity=".25" />
-                </linearGradient>
-                <radialGradient id="portfolio-system-glow">
-                  <stop offset="0" stopColor="#2fc2d5" stopOpacity=".22" />
-                  <stop offset="1" stopColor="#2fc2d5" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-
-              <g className="portfolio-system-grid">
-                <path d="M26 80h848M26 180h848M26 280h848M26 380h848M26 480h848M26 580h848" />
-                <path d="M90 24v602M230 24v602M370 24v602M510 24v602M650 24v602M790 24v602" />
-              </g>
-
-              <circle className="portfolio-system-glow" cx="451" cy="326" r="285" fill="url(#portfolio-system-glow)" />
-              <path className="portfolio-system-route" d="M104 493 C 220 405 293 424 398 327 S 601 245 744 145 C 804 205 817 350 792 500" />
-              <path className="portfolio-system-flow" d="M104 493 C 220 405 293 424 398 327 S 601 245 744 145 C 804 205 817 350 792 500" />
-
-              <g className="portfolio-system-human">
-                <circle cx="118" cy="281" r="27" />
-                <path d="M118 308v94m0-64-52 48m52-48 58 31m-58 33-42 91m42-91 55 82" />
-                <path className="portfolio-system-support" d="M92 316q26 24 52 0l18 70q-43 34-88 0Z" />
-                <circle cx="66" cy="386" r="7" /><circle cx="176" cy="369" r="7" /><circle cx="76" cy="493" r="7" /><circle cx="173" cy="484" r="7" />
-              </g>
-
-              <g className="portfolio-system-sensing">
-                <circle cx="744" cy="145" r="112" />
-                <circle cx="744" cy="145" r="76" />
-                <circle cx="744" cy="145" r="35" />
-                <path d="M744 145 833 79A112 112 0 0 1 856 145Z" />
-                <path d="M632 145h224M744 33v224" />
-                <circle className="portfolio-system-signal" cx="813" cy="91" r="7" />
-              </g>
-
-              <g className="portfolio-system-power">
-                <path d="M704 438h176v126H704Z" />
-                <path d="M742 419h100v19H742Z" />
-                <path d="m802 458-39 52h30l-17 33 48-58h-29Z" />
-                <path d="M653 500h51M880 500h18" />
-                <circle cx="653" cy="500" r="7" /><circle cx="898" cy="500" r="7" />
-              </g>
-
-              <g className="portfolio-system-nodes">
-                <circle cx="104" cy="493" r="7" />
-                <circle cx="398" cy="327" r="9" />
-                <circle cx="744" cy="145" r="8" />
-                <circle cx="792" cy="500" r="8" />
-              </g>
-              <g className="portfolio-system-core">
-                <rect x="367" y="296" width="62" height="62" transform="rotate(45 398 327)" />
-                <circle cx="398" cy="327" r="10" />
-              </g>
-            </svg>
             <div className="portfolio-hero-image portfolio-hero-image--rear">
               <Image src="/media/liftsuit-hero.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 36vw" />
             </div>
             <div className="portfolio-hero-image portfolio-hero-image--front">
               <Image src="/media/omnisuit-work.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 39vw" />
             </div>
-            <span className="portfolio-hero-index portfolio-hero-index--one">01 / Human support</span>
-            <span className="portfolio-hero-index portfolio-hero-index--two">02 / Sensing</span>
-            <span className="portfolio-hero-index portfolio-hero-index--three">03 / Remote power</span>
           </div>
         </div>
         <a className="page-scroll-cue" href="#technology-portfolio"><span>Scroll to discover</span><i aria-hidden="true" /></a>

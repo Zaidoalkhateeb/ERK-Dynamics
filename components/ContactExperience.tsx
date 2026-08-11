@@ -7,18 +7,19 @@ const whatsapp =
   "https://wa.me/905372574543?text=Hello%20ERK%20Dynamics%2C%20I%20would%20like%20to%20discuss%20an%20industrial%20technology%20requirement.";
 
 const helpOptions = [
+  "Explore a partnership",
   "Request a demonstration",
   "Request a quotation",
   "Ask a technical question",
   "Service and product support",
-  "Explore a partnership",
   "General enquiry",
 ];
 const productOptions = [
-  "Auxivo LiftSuit",
-  "Auxivo OmniSuit",
+  "Exoskeletons",
+  "Power Supply",
+  "Lidars",
 ];
-const countryOptions = [
+export const countryOptions = [
   "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
   "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
   "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
@@ -233,12 +234,13 @@ export function ContactExperience() {
                 <FloatingField name="company" label="Company " error={errors.company} autoComplete="organization" required />
                 <FloatingField as="select" name="country" label="Country " options={countryOptions} error={errors.country} autoComplete="country-name" required />
                 <FloatingField as="select" name="interest" label="Reason Of Contact " options={helpOptions} error={errors.interest} required />
-                <FloatingField as="select" name="product" label="Product" options={productOptions} />
+                <FloatingField as="select" name="product" label="Category" options={productOptions} />
               </div>
-              <FloatingField as="textarea" name="message" label="Project Details" />
+              <FloatingField as="textarea" name="message" label="Description" />
               <input name="website" className="honeypot" tabIndex={-1} autoComplete="off" />
               <button className={`button primary submit-request ${status === "sending" ? "sending" : ""}`} disabled={status === "sending"}>
-                {status === "sending" ? "Sending…" : "Send Request"} <span>↗</span>
+                <span className="submit-request__label">{status === "sending" ? "Sending…" : "Send Request"}</span>
+                <span className="submit-request__arrow" aria-hidden="true">↗</span>
                 <i />
               </button>
               {status === "error" && (
@@ -277,14 +279,13 @@ export function ContactExperience() {
             <div>
               <dt>PHONE</dt>
               <dd>
-                <a href="tel:+905372574543">+90 537 257 45 43</a>
-                <small>Call our team.</small>
+                <a href="tel:+905372574543">+90 (537) 257 45 43</a>
               </dd>
             </div>
             <div>
               <dt>WHATSAPP</dt>
               <dd>
-                <a href={whatsapp} target="_blank" rel="noopener noreferrer">+90 537 257 45 43</a>
+                <a href={whatsapp} target="_blank" rel="noopener noreferrer">Message us on WhatsApp ↗</a>
               </dd>
             </div>
             <div>
@@ -298,14 +299,6 @@ export function ContactExperience() {
               <dd>Istanbul, Türkiye</dd>
             </div>
           </dl>
-          <div>
-            <a className="button contact-secondary" href="tel:+905372574543">
-              Call Our Team
-            </a>
-            <a className="button primary" href={whatsapp} target="_blank" rel="noopener noreferrer">
-              Open WhatsApp
-            </a>
-          </div>
         </div>
         <div className={`istanbul-map ${mapLoaded ? "is-loaded" : ""}`}>
           <div className="map-label">

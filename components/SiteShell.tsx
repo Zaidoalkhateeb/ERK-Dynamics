@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import { CookieControls } from "./CookieControls";
 
 const nav = [
+  ["", "Home"],
   ["products-services", "Products"],
-  ["about", "About Us"],
+  ["industries", "Industries"],
   ["partners", "Partners"],
+  ["about", "About Us"],
   ["contact", "Contact Us"],
 ] as const;
 
@@ -74,7 +76,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 {label}
               </Link>
               <div className="nav-products-dropdown">
-                <span className="nav-products-eyebrow">Product categories</span>
+                <div className="nav-products-dropdown-head">
+                  <div>
+                    <span className="nav-products-eyebrow">Product categories</span>
+                    <strong>Technology for real operational needs.</strong>
+                  </div>
+                  <Link href="/products-services">View all technologies <span>↗</span></Link>
+                </div>
                 <div className="nav-products-grid">
                   {productCategories.map((category) => category.name === "Exoskeletons" ? (
                     <div key={category.name} className="nav-product-category nav-product-category--exoskeletons">
@@ -88,6 +96,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                         <Link href="/products/auxivo-omnisuit">
                           <b>Auxivo OmniSuit</b>
                           <em>S/M · L/XL</em>
+                        </Link>
+                        <Link href="/products-services#exoskeletons">
+                          <b>Auxivo DeltaSuit</b>
+                          <em>Overhead support</em>
+                        </Link>
+                        <Link href="/products-services#exoskeletons">
+                          <b>Auxivo CarrySuit</b>
+                          <em>Load-carrying support</em>
                         </Link>
                       </div>
                     </div>
@@ -145,6 +161,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                         <span>Auxivo OmniSuit</span>
                         <small>S/M · L/XL</small>
                       </Link>
+                      <Link href="/products-services#exoskeletons">
+                        <span>Auxivo DeltaSuit</span>
+                        <small>Overhead support</small>
+                      </Link>
+                      <Link href="/products-services#exoskeletons">
+                        <span>Auxivo CarrySuit</span>
+                        <small>Load-carrying support</small>
+                      </Link>
                     </div>
                   ) : (
                     <a key={category.name} href={category.href} target="_blank" rel="noopener noreferrer">
@@ -168,6 +192,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             </Link>
             <Link href="/products/auxivo-omnisuit">
               OmniSuit <span>↗</span>
+            </Link>
+            <Link href="/products-services#exoskeletons">
+              DeltaSuit <span>↗</span>
+            </Link>
+            <Link href="/products-services#exoskeletons">
+              CarrySuit <span>↗</span>
             </Link>
             <Link href="/become-a-partner">
               Become a partner <span>↗</span>
@@ -275,6 +305,8 @@ function Footer() {
           <b>PRODUCTS</b>
           <Link href="/products/auxivo-liftsuit">Auxivo LiftSuit</Link>
           <Link href="/products/auxivo-omnisuit">Auxivo OmniSuit</Link>
+          <Link href="/products-services#exoskeletons">Auxivo DeltaSuit</Link>
+          <Link href="/products-services#exoskeletons">Auxivo CarrySuit</Link>
           <Link href="/become-a-partner">Become a Partner</Link>
         </div>
         <div>
