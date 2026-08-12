@@ -126,11 +126,13 @@ export function ContactExperience() {
     const selectedInterest = String(data.get("interest") || "");
     const intent = selectedInterest.includes("demonstration") ? "demo" : selectedInterest.includes("quotation") ? "quote" : selectedInterest.includes("technical") ? "technical" : selectedInterest.includes("support") ? "support" : selectedInterest.includes("partnership") ? "partnership" : "general";
     data.set("intent", intent);
+    const ref = `ERK-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${Math.random().toString(16).slice(2, 8).toUpperCase()}`;
+    data.set("reference", ref);
+    data.set("_subject", `Enquiry (${intent}) — ${String(data.get("company") || data.get("name") || "ERK Dynamics")}`);
     try {
-      const response = await fetch("/api/forms", { method: "POST", body: data });
-      const result = await response.json();
-      if (!response.ok) throw Error(result.error);
-      setReference(result.reference);
+      const response = await fetch("/send.php", { method: "POST", body: data });
+      if (!response.ok) throw Error();
+      setReference(ref);
       setStatus("success");
       window.dispatchEvent(new CustomEvent("erk:analytics", { detail: { event: "contact_form_success" } }));
       form.reset();

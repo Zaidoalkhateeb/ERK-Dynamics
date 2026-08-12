@@ -10,14 +10,12 @@ export function InquiryForm() {
     event.preventDefault();
     setState("sending");
     const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
+    const data = new FormData(form);
+    data.set("type", "partner");
+    data.set("_subject", `Partnership application — ${String(data.get("company") || data.get("name") || "ERK Dynamics")}`);
 
     try {
-      const response = await fetch("/api/forms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, type: "partner" }),
-      });
+      const response = await fetch("/send.php", { method: "POST", body: data });
       if (!response.ok) throw new Error();
       setState("sent");
       form.reset();

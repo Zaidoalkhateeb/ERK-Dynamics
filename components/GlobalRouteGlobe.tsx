@@ -17,12 +17,12 @@ const markets = [
 
 const points = [ISTANBUL, ...markets].map((city) => ({
   ...city,
-  color: "hub" in city ? "#68e5f2" : "#11afc4",
-  altitude: "hub" in city ? 0.075 : 0.035,
-  radius: "hub" in city ? 0.38 : 0.2,
-  labelColor: "hub" in city ? "#7ceaf4" : "rgba(255,255,255,0.92)",
-  labelSize: "hub" in city ? 1.3 : 0.92,
-  labelAltitude: "hub" in city ? 0.09 : 0.045,
+  color: "hub" in city ? "#7cf0ff" : "#2ec6dc",
+  altitude: "hub" in city ? 0.02 : 0.01,
+  radius: "hub" in city ? 0.55 : 0.32,
+  labelColor: "hub" in city ? "#8ff0fb" : "rgba(255,255,255,0.96)",
+  labelSize: "hub" in city ? 1.55 : 1.08,
+  labelAltitude: "hub" in city ? 0.1 : 0.05,
   label: `<div class="erk-globe-tooltip"><strong>${city.name}</strong><span>${"hub" in city ? "ERK DYNAMICS HUB" : "CONNECTED MARKET"}</span></div>`,
 }));
 
@@ -32,7 +32,7 @@ const routes = markets.map((market, index) => ({
   endLat: market.lat,
   endLng: market.lng,
   name: `Istanbul → ${market.name}`,
-  color: ["rgba(103,229,242,0.95)", "rgba(9,145,168,0.34)"],
+  color: ["rgba(150,242,255,0.98)", "rgba(110,225,245,0.92)"],
   delay: index * 0.11,
 }));
 
@@ -54,7 +54,7 @@ export function GlobalRouteGlobe() {
 
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const globe = new Globe(mountRef.current, {
-        animateIn: !reducedMotion,
+        animateIn: false,
         rendererConfig: { antialias: true, alpha: true },
       });
       globeRef.current = globe;
@@ -63,12 +63,12 @@ export function GlobalRouteGlobe() {
         .width(mount.clientWidth)
         .height(mount.clientHeight)
         .backgroundColor("rgba(0,0,0,0)")
-        .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-night.jpg")
+        .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
         .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
         .showGraticules(true)
         .showAtmosphere(true)
-        .atmosphereColor("#36bed1")
-        .atmosphereAltitude(0.18)
+        .atmosphereColor("#8fd4e6")
+        .atmosphereAltitude(0.2)
         .pointsData(points)
         .pointLat("lat")
         .pointLng("lng")
@@ -77,16 +77,20 @@ export function GlobalRouteGlobe() {
         .pointRadius("radius")
         .pointLabel("label")
         .pointsTransitionDuration(700)
-        .labelsData(points)
-        .labelLat("lat")
-        .labelLng("lng")
-        .labelText("name")
-        .labelColor("labelColor")
-        .labelSize("labelSize")
-        .labelAltitude("labelAltitude")
-        .labelIncludeDot(false)
-        .labelResolution(2)
-        .labelsTransitionDuration(reducedMotion ? 0 : 700)
+        .htmlElementsData(points)
+        .htmlLat("lat")
+        .htmlLng("lng")
+        .htmlAltitude(0.02)
+        .htmlElement((obj) => {
+          const d = obj as { name: string; hub?: boolean };
+          const el = document.createElement("div");
+          el.className = "erk-globe-city" + (d.hub ? " is-hub" : "");
+          el.textContent = d.name;
+          return el;
+        })
+        .htmlElementVisibilityModifier((el: HTMLElement, isVisible: boolean) => {
+          el.style.opacity = isVisible ? "1" : "0";
+        })
         .arcsData(routes)
         .arcStartLat("startLat")
         .arcStartLng("startLng")
@@ -94,33 +98,24 @@ export function GlobalRouteGlobe() {
         .arcEndLng("endLng")
         .arcColor("color")
         .arcLabel("name")
-        .arcStroke(0.42)
-        .arcAltitudeAutoScale(0.32)
-        .arcDashLength(0.32)
-        .arcDashGap(0.12)
-        .arcDashInitialGap("delay")
-        .arcDashAnimateTime(reducedMotion ? 0 : 1900)
-        .arcsTransitionDuration(reducedMotion ? 0 : 900)
-        .ringsData([ISTANBUL])
-        .ringLat("lat")
-        .ringLng("lng")
-        .ringColor(() => (t: number) => `rgba(89, 220, 236, ${1 - t})`)
-        .ringMaxRadius(4)
-        .ringPropagationSpeed(2.2)
-        .ringRepeatPeriod(reducedMotion ? 0 : 950)
-        .pointOfView({ lat: 30, lng: 38, altitude: 2.05 }, 0)
+        .arcStroke(0.75)
+        .arcAltitudeAutoScale(0.4)
+        .arcDashLength(1)
+        .arcDashGap(0)
+        .arcDashAnimateTime(0)
+        .arcsTransitionDuration(0)
+        .pointOfView({ lat: 24, lng: 26, altitude: 2.5 }, 0)
         .onGlobeReady(() => setReady(true));
 
+      // Static presentation: no auto-rotation, no drag/zoom, no animation — a fixed globe.
       const controls = globe.controls();
-      controls.autoRotate = !reducedMotion;
-      controls.autoRotateSpeed = 0.42;
+      controls.autoRotate = false;
+      controls.enableRotate = false;
+      controls.enableZoom = false;
       controls.enablePan = false;
-      controls.minDistance = 170;
-      controls.maxDistance = 420;
 
       globe.onPointHover((point) => {
-        controls.autoRotate = !reducedMotion && !point;
-        mount.style.cursor = point ? "pointer" : "grab";
+        mount.style.cursor = point ? "pointer" : "default";
       });
 
       resizeObserver = new ResizeObserver(() => {
@@ -144,11 +139,6 @@ export function GlobalRouteGlobe() {
     <div className={`erkGlobeExperience ${ready ? "is-ready" : ""}`}>
       <div ref={mountRef} className="erkGlobeMount" aria-label="Interactive globe showing routes from Istanbul to international industrial markets" />
       <div className="erkGlobeLoader" aria-hidden="true"><i /><span>Building global routes</span></div>
-      <div className="erkGlobeControls" aria-hidden="true">
-        <span>Drag to rotate</span>
-        <span>Scroll to zoom</span>
-        <span>Hover to identify</span>
-      </div>
       <div className="erkGlobeHub" aria-hidden="true"><i /><span>Istanbul hub</span></div>
     </div>
   );

@@ -84,7 +84,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         Skip to content
       </a>
       <header
-        className={`header ${pathname === "/" ? "home" : ""} ${onDark ? "on-dark" : ""} ${scrolled ? "scrolled" : ""}`}
+        className={`header ${pathname === "/" ? "home" : ""} ${onDark ? "on-dark" : ""} ${scrolled ? "scrolled" : ""} ${open ? "menu-open" : ""}`}
       >
         <Logo />
         <nav className="desktop-nav" aria-label="Primary">
