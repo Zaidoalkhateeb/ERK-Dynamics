@@ -17,19 +17,16 @@ const nav = [
 const productCategories = [
   {
     name: "Exoskeletons",
-    description: "Wearable robotics for safer industrial work.",
     href: "/products-services",
     external: false,
   },
   {
     name: "LiDAR",
-    description: "From Think Metric, an ERK group company.",
     href: "https://think-metric.co/products/lidars",
     external: true,
   },
   {
     name: "Power Supply",
-    description: "From Think Metric, an ERK group company.",
     href: "https://think-metric.co/products/remote-power-supply-systems",
     external: true,
   },
@@ -48,13 +45,38 @@ function Logo() {
 }
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isProduct = pathname.startsWith("/products/");
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [onDark, setOnDark] = useState(isProduct);
   useEffect(() => {
     const fn = () => setScrolled(scrollY > 24);
     addEventListener("scroll", fn, { passive: true });
     return () => removeEventListener("scroll", fn);
   }, []);
+  useEffect(() => {
+    if (!isProduct) {
+      setOnDark(false);
+      return;
+    }
+    const probeY = 40;
+    const fn = () => {
+      const lights = document.querySelectorAll<HTMLElement>("[data-header-light]");
+      let overLight = false;
+      lights.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= probeY && r.bottom >= probeY) overLight = true;
+      });
+      setOnDark(!overLight);
+    };
+    fn();
+    addEventListener("scroll", fn, { passive: true });
+    addEventListener("resize", fn);
+    return () => {
+      removeEventListener("scroll", fn);
+      removeEventListener("resize", fn);
+    };
+  }, [isProduct, pathname]);
   useEffect(() => setOpen(false), [pathname]);
   return (
     <>
@@ -62,7 +84,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         Skip to content
       </a>
       <header
-        className={`header ${pathname === "/" ? "home" : ""} ${pathname.startsWith("/products/") ? "on-dark" : ""} ${scrolled ? "scrolled" : ""}`}
+        className={`header ${pathname === "/" ? "home" : ""} ${onDark ? "on-dark" : ""} ${scrolled ? "scrolled" : ""}`}
       >
         <Logo />
         <nav className="desktop-nav" aria-label="Primary">
@@ -79,7 +101,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 <div className="nav-products-dropdown-head">
                   <div>
                     <span className="nav-products-eyebrow">Product categories</span>
-                    <strong>Technology for real operational needs.</strong>
+                    <strong></strong>
                   </div>
                   <Link href="/products-services">View all technologies <span>↗</span></Link>
                 </div>
@@ -87,30 +109,24 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   {productCategories.map((category) => category.name === "Exoskeletons" ? (
                     <div key={category.name} className="nav-product-category nav-product-category--exoskeletons">
                       <strong>{category.name}</strong>
-                      <span>{category.description}</span>
                       <div className="nav-exoskeleton-products">
                         <Link href="/products/auxivo-liftsuit">
                           <b>Auxivo LiftSuit</b>
-                          <em>S/M · L/XL</em>
                         </Link>
                         <Link href="/products/auxivo-omnisuit">
                           <b>Auxivo OmniSuit</b>
-                          <em>S/M · L/XL</em>
                         </Link>
-                        <Link href="/products-services#exoskeletons">
+                        <Link href="/products/auxivo-deltasuit">
                           <b>Auxivo DeltaSuit</b>
-                          <em>Overhead support</em>
                         </Link>
-                        <Link href="/products-services#exoskeletons">
+                        <Link href="/products/auxivo-carrysuit">
                           <b>Auxivo CarrySuit</b>
-                          <em>Load-carrying support</em>
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <a key={category.name} className="nav-product-category" href={category.href} target="_blank" rel="noopener noreferrer">
                       <strong>{category.name}</strong>
-                      <span>{category.description}</span>
                       <i>Visit Think Metric ↗</i>
                     </a>
                   ))}
@@ -155,25 +171,20 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                       <strong>{category.name}</strong>
                       <Link href="/products/auxivo-liftsuit">
                         <span>Auxivo LiftSuit</span>
-                        <small>S/M · L/XL</small>
                       </Link>
                       <Link href="/products/auxivo-omnisuit">
                         <span>Auxivo OmniSuit</span>
-                        <small>S/M · L/XL</small>
                       </Link>
-                      <Link href="/products-services#exoskeletons">
+                      <Link href="/products/auxivo-deltasuit">
                         <span>Auxivo DeltaSuit</span>
-                        <small>Overhead support</small>
                       </Link>
-                      <Link href="/products-services#exoskeletons">
+                      <Link href="/products/auxivo-carrysuit">
                         <span>Auxivo CarrySuit</span>
-                        <small>Load-carrying support</small>
                       </Link>
                     </div>
                   ) : (
                     <a key={category.name} href={category.href} target="_blank" rel="noopener noreferrer">
                       <strong>{category.name}</strong>
-                      <span>ERK group company · Think Metric ↗</span>
                     </a>
                   ))}
                 </div>
@@ -193,10 +204,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <Link href="/products/auxivo-omnisuit">
               OmniSuit <span>↗</span>
             </Link>
-            <Link href="/products-services#exoskeletons">
+            <Link href="/products/auxivo-deltasuit">
               DeltaSuit <span>↗</span>
             </Link>
-            <Link href="/products-services#exoskeletons">
+            <Link href="/products/auxivo-carrysuit">
               CarrySuit <span>↗</span>
             </Link>
             <Link href="/become-a-partner">
@@ -300,14 +311,14 @@ function Footer() {
           <Link href="/about">About Us</Link>
           <Link href="/partners">Partners</Link>
           <Link href="/contact">Contact Us</Link>
+          <Link href="/become-a-partner">Become a Partner</Link>
         </div>
         <div>
           <b>PRODUCTS</b>
           <Link href="/products/auxivo-liftsuit">Auxivo LiftSuit</Link>
           <Link href="/products/auxivo-omnisuit">Auxivo OmniSuit</Link>
-          <Link href="/products-services#exoskeletons">Auxivo DeltaSuit</Link>
-          <Link href="/products-services#exoskeletons">Auxivo CarrySuit</Link>
-          <Link href="/become-a-partner">Become a Partner</Link>
+          <Link href="/products/auxivo-deltasuit">Auxivo DeltaSuit</Link>
+          <Link href="/products/auxivo-carrysuit">Auxivo CarrySuit</Link>
         </div>
         <div>
           <b>CONNECT</b>
@@ -327,7 +338,6 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <small>© {year} ERK Dynamics. All rights reserved.</small>
-        <small>Istanbul, Türkiye</small>
       </div>
     </footer>
   );

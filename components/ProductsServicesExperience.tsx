@@ -12,10 +12,13 @@ const exoskeletons = [
     image: "/media/liftsuit-work.webp",
     detail: "/media/liftsuit-hero.webp",
     alt: "Worker using the Auxivo LiftSuit during industrial work",
-    focus: "Lower back + hips",
+    focus: "",
     description: "Lightweight passive support for repetitive lifting, low handling, and prolonged forward-leaning work.",
     tasks: ["Lifting", "Forward leaning", "Repetitive handling"],
     href: "/products/auxivo-liftsuit",
+    specLabel: "Sizes",
+    specValue: "S/M · L/XL",
+    cta: "Experience LiftSuit",
   },
   {
     id: "omnisuit",
@@ -28,11 +31,44 @@ const exoskeletons = [
     description: "One passive system for work that moves between overhead activity, lifting, and forward-leaning positions.",
     tasks: ["Overhead work", "Lifting", "Mixed tasks"],
     href: "/products/auxivo-omnisuit",
+    specLabel: "Sizes",
+    specValue: "S/M · L/XL",
+    cta: "Experience OmniSuit",
+  },
+  {
+    id: "deltasuit",
+    number: "03",
+    name: "DeltaSuit",
+    image: "/media/deltasuit-1.jpeg",
+    detail: "/media/deltasuit-3.jpeg",
+    alt: "Worker using the Auxivo DeltaSuit during overhead industrial work",
+    focus: "Shoulders + neck",
+    description: "Lightweight passive support for repetitive overhead work, arm elevation, and prolonged shoulder-intensive tasks.",
+    tasks: ["Overhead work", "Arm support", "Shoulder relief"],
+    href: "/products/auxivo-deltasuit",
+    specLabel: "Sizes",
+    specValue: "S/M · L/XL",
+    cta: "Experience DeltaSuit",
+  },
+  {
+    id: "carrysuit",
+    number: "04",
+    name: "CarrySuit",
+    image: "/media/carrysuit-1.jpeg",
+    detail: "/media/carrysuit-3.jpeg",
+    alt: "Worker using the Auxivo CarrySuit to carry an industrial load",
+    focus: "Upper body + hips",
+    description: "Passive load-transfer support for repetitive carrying, heavy material handling, and physically demanding transport tasks.",
+    tasks: ["Load carrying", "Material handling", "Load transfer"],
+    href: "/products/auxivo-carrysuit",
+    specLabel: "Sizes",
+    specValue: "S/M · L/XL",
+    cta: "Experience CarrySuit",
   },
 ] as const;
 
 export function ProductsServicesExperience() {
-  const [activeProduct, setActiveProduct] = useState<0 | 1>(0);
+  const [activeProduct, setActiveProduct] = useState(0);
   const heroVisualRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
   const product = exoskeletons[activeProduct];
@@ -63,6 +99,7 @@ export function ProductsServicesExperience() {
     <main className="portfolio-page">
       <section className="portfolio-hero" aria-labelledby="portfolio-title">
         <div className="portfolio-hero-grid" aria-hidden="true" />
+        <div className="portfolio-hero-glow" aria-hidden="true" />
         <div className="portfolio-hero-inner">
           <div className="portfolio-hero-copy">
             <h1 id="portfolio-title">Technology selected<br />for real operations</h1>
@@ -96,7 +133,10 @@ export function ProductsServicesExperience() {
 
       <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
         <header className="portfolio-section-heading">
-          <div><span>01 / Wearable robotics</span><h2 id="exo-title"><br /></h2></div>
+          <div>
+            <span>01 / Wearable robotics</span>
+            <h2 id="exo-title" className="portfolio-visually-hidden">Exoskeletons</h2>
+          </div>
         </header>
 
         <div className="portfolio-product-stage">
@@ -109,7 +149,6 @@ export function ProductsServicesExperience() {
             <div className="portfolio-product-detail" aria-hidden="true">
               <Image src={product.detail} alt="" fill sizes="240px" key={product.detail} />
             </div>
-            <span className="portfolio-product-motion-label">Product in operation</span>
           </div>
 
           <div className="portfolio-product-panel">
@@ -121,22 +160,21 @@ export function ProductsServicesExperience() {
                   role="tab"
                   aria-selected={activeProduct === index}
                   className={activeProduct === index ? "is-active" : ""}
-                  onClick={() => setActiveProduct(index as 0 | 1)}
+                  onClick={() => setActiveProduct(index)}
                 >
                   <span>{item.number}</span>{item.name}
                 </button>
               ))}
             </div>
             <div className="portfolio-product-copy" key={product.id}>
-              <p className="portfolio-kicker">Auxivo / {product.focus}</p>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <div className="portfolio-task-list">{product.tasks.map((task) => <span key={task}>{task}</span>)}</div>
               <dl>
                 <div><dt>System</dt><dd>Passive / battery-free</dd></div>
-                <div><dt>Sizes</dt><dd>S/M · L/XL</dd></div>
+                <div><dt>{product.specLabel}</dt><dd>{product.specValue}</dd></div>
               </dl>
-              <Link className="portfolio-button portfolio-button--primary" href={product.href}>Experience {product.name} <Arrow /></Link>
+              <Link className="portfolio-button portfolio-button--primary" href={product.href}>{product.cta} <Arrow /></Link>
             </div>
           </div>
         </div>

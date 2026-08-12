@@ -6,14 +6,58 @@ import { Product } from "@/content/products";
 import { useEffect, useRef, useState } from "react";
 
 const productMedia = {
-  "auxivo-liftsuit": ["/media/liftsuit-hero.webp", "/media/liftsuit-work.webp", "/media/liftsuit-hero.webp", "/media/liftsuit-work.webp"],
-  "auxivo-omnisuit": ["/media/omnisuit-work.webp", "/media/omnisuit-detail.webp", "/media/dual-product.webp", "/media/omnisuit-work.webp"],
+  "auxivo-liftsuit": {
+    hero: "/media/liftsuit-1.jpeg",
+    story: ["/media/liftsuit-2.jpeg", "/media/liftsuit-3.jpeg", "/media/liftsuit-4.jpeg", "/media/liftsuit-5.jpeg"],
+    targets: [
+      { left: "47%", top: "48%" },
+      { left: "27%", top: "46%" },
+      { left: "57%", top: "50%" },
+      { left: "66%", top: "48%" },
+    ],
+    cta: "/media/liftsuit-6.jpeg",
+  },
+  "auxivo-omnisuit": {
+    hero: "/media/omnisuit-1.jpeg",
+    story: ["/media/omnisuit-2.jpeg", "/media/omnisuit-3.jpeg", "/media/omnisuit-4.jpeg", "/media/omnisuit-5.jpeg"],
+    targets: [
+      { left: "48%", top: "43%" },
+      { left: "59%", top: "34%" },
+      { left: "46%", top: "52%" },
+      { left: "62%", top: "50%" },
+    ],
+    cta: "/media/omnisuit-6.jpeg",
+  },
+  "auxivo-deltasuit": {
+    hero: "/media/deltasuit-1.jpeg",
+    story: ["/media/deltasuit-1.jpeg", "/media/deltasuit-2.jpeg", "/media/deltasuit-3.jpeg", "/media/deltasuit-4.jpeg"],
+    targets: [
+      { left: "48%", top: "42%" },
+      { left: "40%", top: "38%" },
+      { left: "58%", top: "44%" },
+      { left: "50%", top: "50%" },
+    ],
+    cta: "/media/deltasuit-2.jpeg",
+  },
+  "auxivo-carrysuit": {
+    hero: "/media/carrysuit-1.jpeg",
+    story: ["/media/carrysuit-2.jpeg", "/media/carrysuit-3.jpeg", "/media/carrysuit-4.jpeg", "/media/carrysuit-5.jpeg"],
+    targets: [
+      { left: "48%", top: "46%" },
+      { left: "40%", top: "42%" },
+      { left: "56%", top: "44%" },
+      { left: "50%", top: "50%" },
+    ],
+    cta: "/media/carrysuit-6.jpeg",
+  },
 } as const;
 
 export function ProductExperience({ product: p }: { product: Product }) {
   const story = useRef<HTMLElement>(null);
   const [feature, setFeature] = useState(0);
   const media = productMedia[p.slug as keyof typeof productMedia] || productMedia["auxivo-liftsuit"];
+  const storyMedia = media.story;
+  const target = media.targets[feature] ?? media.targets[0];
   useEffect(() => {
     let raf = 0;
     const update = () => {
@@ -28,22 +72,20 @@ export function ProductExperience({ product: p }: { product: Product }) {
 
   return <main className="product-experience">
     <section className="product-motion-hero">
-      <div className="product-hero-media"><Image src={media[0]} alt={`Auxivo ${p.name} shown in an industrial task`} fill priority sizes="100vw"/><div className="product-hero-wash"/></div>
-      <div className="product-motion-title"><p className="eyebrow">{p.number} / AUXIVO / {p.category.toUpperCase()}</p><h1>{p.name}</h1><p>{p.tagline}</p><div><Link href="#product-story" className="button primary">Inspect the system ↓</Link><Link href="/contact" className="button glass">Request a quote</Link></div></div>
+      <div className="product-hero-media"><Image src={media.hero} alt={`Auxivo ${p.name} shown in an industrial task`} fill priority sizes="100vw"/><div className="product-hero-wash"/></div>
+      <div className="product-motion-title"><h1>{p.name}</h1><p>{p.tagline}</p><div><Link href="#product-story" className="button primary">Inspect the system ↓</Link><Link href="/contact" className="button glass">Request a quote</Link></div></div>
       <div className="product-axis" aria-hidden="true"><span>X / MOVEMENT</span><i/><span>Y / SUPPORT</span></div>
     </section>
 
     <section id="product-story" ref={story} className="product-scroll-story" style={{"--feature-count":p.features.length} as React.CSSProperties}>
       <div className="product-story-sticky">
-        <div className="product-story-stage">{media.map((src,i)=><Image key={src+i} src={src} alt={i===feature?`${p.name}: ${p.features[i]}`:""} fill sizes="65vw" className={i===feature?"active":""}/>) }<div className="story-grid"/><div className="story-target" aria-hidden="true"><i/><i/><span>0{feature+1}</span></div><div className="stage-caption">SCROLL-LINKED INSPECTION / {feature+1} OF {p.features.length}</div></div>
-        <aside className="product-story-panel"><p className="eyebrow">HOW IT WORKS</p><h2>{p.features[feature]}</h2><p>{feature===0?p.summary:feature===1?p.support:"The active view highlights the product in a task-relevant context. Suitability remains subject to assessment and correct fitting."}</p><div className="story-tabs">{p.features.map((name,i)=><button key={name} onClick={()=>setFeature(i)} className={i===feature?"active":""} aria-label={`View feature ${i+1}: ${name}`}><span>0{i+1}</span><i/></button>)}</div><div className="story-actions"><Link href="/contact" className="button primary">Contact Us <span>↗</span></Link><span>SIZES / {p.sizes.join(" · ")}</span></div></aside>
+        <div className="product-story-stage">{storyMedia.map((src,i)=><Image key={src+i} src={src} alt={i===feature?`${p.name}: ${p.features[i]}`:""} fill sizes="65vw" className={i===feature?"active":""}/>) }<div className="story-grid"/><div className="story-target" style={target} aria-hidden="true"><i/><i/><span>0{feature+1}</span></div></div>
+        <aside className="product-story-panel"><p className="eyebrow">HOW IT WORKS</p><h2>{p.features[feature]}</h2><p>{feature===0?p.summary:feature===1?p.support:"The active view highlights the product in a task relevant context. Suitability remains subject to assessment and correct fitting."}</p><div className="story-tabs">{p.features.map((name,i)=><button key={name} onClick={()=>setFeature(i)} className={i===feature?"active":""} aria-label={`View feature ${i+1}: ${name}`}><span>0{i+1}</span><i/></button>)}</div><div className="story-actions"><Link href="/contact" className="button primary">Contact Us <span>↗</span></Link></div></aside>
       </div>
     </section>
 
-    <section className="product-editorial section"><div><p className="eyebrow">APPLICATION RANGE</p><h2>Designed for the task.<br/>Evaluated with the team.</h2></div><div className="application-lines">{p.applications.map((a,i)=><div key={a}><span>0{i+1}</span><h3>{a}</h3><p>Potential application, subject to task assessment and operating conditions.</p></div>)}</div></section>
+    <section className="product-specifications section" data-header-light><header><p className="eyebrow">TECHNICAL / STABLE VIEW</p><h2>Product information</h2><p>Detailed technical values and certifications will be published only from approved manufacturer documentation.</p></header><dl><div><dt>Support system</dt><dd>Passive / battery-free</dd></div><div><dt>Available sizes</dt><dd>{p.sizes.join(" / ")}</dd></div><div><dt>Primary focus</dt><dd>{p.name==="LiftSuit"?"Lower back and hips":p.name==="DeltaSuit"?"Shoulders and arms":p.name==="CarrySuit"?"Upper body and hips":"Shoulders, lower back, and hips"}</dd></div><div><dt>Evaluation</dt><dd>Demonstration and task assessment</dd></div><div><dt>Availability</dt><dd>Contact ERK Dynamics</dd></div></dl></section>
 
-    <section className="product-specifications section"><header><p className="eyebrow">TECHNICAL / STABLE VIEW</p><h2>Product information.</h2><p>Detailed technical values and certifications will be published only from approved manufacturer documentation.</p></header><dl><div><dt>Support system</dt><dd>Passive / battery-free</dd></div><div><dt>Available sizes</dt><dd>{p.sizes.join(" / ")}</dd></div><div><dt>Primary focus</dt><dd>{p.name==="LiftSuit"?"Lower back and hips":"Shoulders, lower back, and hips"}</dd></div><div><dt>Evaluation</dt><dd>Demonstration and task assessment</dd></div><div><dt>Availability</dt><dd>Contact ERK Dynamics</dd></div></dl></section>
-
-    <section className="product-final-cta"><Image src={media[2]} alt={`${p.name} in an industrial environment`} fill sizes="100vw"/><div/><article><p className="eyebrow">NEXT STEP</p><h2>Experience {p.name}<br/>in the work.</h2><p>Speak with the ERK Dynamics team about {p.name}.</p><Link href="/contact" className="button primary">Contact Us <span>↗</span></Link></article></section>
+    <section className="product-final-cta"><Image src={media.cta} alt={`${p.name} in an industrial environment`} fill sizes="100vw"/><div/><article><p className="eyebrow">NEXT STEP</p><h2>Experience {p.name}<br/>in the work</h2><p>Speak with the ERK Dynamics team about {p.name}.</p><Link href="/contact" className="button primary">Contact Us <span>↗</span></Link></article></section>
   </main>;
 }

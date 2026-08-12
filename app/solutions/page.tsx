@@ -1,2 +1,0 @@
-import type {Metadata} from "next";import {ContentPage} from "@/components/ContentPage";import {pageContent} from "@/content/site";
-export const metadata:Metadata={title:"Workplace Safety & Industry 4.0 Solutions",description:"Technology consultation, demonstrations, pilots, training, and deployment support for Turkish industry."};export default function Page(){return <ContentPage {...pageContent.solutions}/>}

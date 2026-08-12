@@ -10,9 +10,8 @@ const industries = [
     name: "Manufacturing",
     tagline: "Production support",
     description:
-      "Support for assembly, repetitive lifting, forward-leaning work, overhead tasks, and material handling across demanding production environments.",
-    applications: ["Assembly", "Repetitive lifting", "Forward leaning", "Overhead work", "Material handling"],
-    support: "LiftSuit · DeltaSuit · OmniSuit",
+      "Technologies supporting workforce ergonomics, automation, spatial awareness, and reliable power across modern production environments.",
+    support: "Exoskeletons · LiDAR · Power Solutions",
   },
   {
     id: "logistics",
@@ -20,9 +19,8 @@ const industries = [
     name: "Logistics & Warehousing",
     tagline: "Warehouse operations",
     description:
-      "Support for picking, packing, loading, unloading, palletizing, and carrying throughout warehouse and distribution workflows.",
-    applications: ["Picking", "Packing", "Loading & unloading", "Palletizing", "Carrying"],
-    support: "LiftSuit · OmniSuit · CarrySuit",
+      "Solutions supporting safer material handling, workforce efficiency, navigation, mapping, and automation across warehouses and distribution operations.",
+    support: "Exoskeletons · LiDAR",
   },
   {
     id: "construction",
@@ -30,9 +28,8 @@ const industries = [
     name: "Construction",
     tagline: "On-site support",
     description:
-      "Support for material handling, installation, overhead work, and carrying tools or materials across changing construction environments.",
-    applications: ["Material handling", "Installation", "Overhead work", "Carrying tools & materials"],
-    support: "LiftSuit · OmniSuit · CarrySuit",
+      "Technologies supporting demanding physical work, site surveying and mapping, equipment operation, and dependable power across changing jobsite conditions.",
+    support: "Exoskeletons · LiDAR · Power Solutions",
   },
   {
     id: "automotive",
@@ -40,9 +37,8 @@ const industries = [
     name: "Automotive",
     tagline: "Assembly-line support",
     description:
-      "Support for assembly, repetitive handling, overhead work, and forward-leaning tasks across automotive production environments.",
-    applications: ["Assembly", "Repetitive handling", "Overhead work", "Forward-leaning tasks"],
-    support: "DeltaSuit · OmniSuit · LiftSuit",
+      "Advanced solutions supporting worker ergonomics, production processes, automation, measurement, and intelligent sensing across automotive operations.",
+    support: "Exoskeletons · LiDAR",
   },
   {
     id: "shipbuilding",
@@ -50,9 +46,8 @@ const industries = [
     name: "Shipbuilding & Heavy Industry",
     tagline: "Heavy industrial work",
     description:
-      "Support for welding and assembly, overhead tasks, carrying equipment, and material handling in shipbuilding and heavy-industry environments.",
-    applications: ["Welding & assembly", "Overhead tasks", "Carrying equipment", "Material handling"],
-    support: "LiftSuit · OmniSuit · CarrySuit · DeltaSuit",
+      "Robust technologies supporting physically demanding work, inspection and measurement, complex industrial environments, and reliable power for heavy-duty operations.",
+    support: "Exoskeletons · LiDAR · Power Solutions",
   },
 ] as const;
 
@@ -126,7 +121,9 @@ export function IndustriesExperience() {
               </g>
 
               <g className="ind-hero-ring">
+                <circle className="ind-hero-orbit ind-hero-orbit--inner" cx="320" cy="320" r="202" />
                 <circle className="ind-hero-orbit" cx="320" cy="320" r="248" />
+                <circle className="ind-hero-orbit ind-hero-orbit--outer" cx="320" cy="320" r="286" />
                 <g className="ind-hero-nodes">
                   <circle cx="320" cy="96" r="12" /><circle cx="514" cy="208" r="12" />
                   <circle cx="514" cy="432" r="12" /><circle cx="320" cy="544" r="12" />
@@ -188,12 +185,8 @@ export function IndustriesExperience() {
               <p className="ind-kicker">{current.tagline}</p>
               <h3>{current.name}</h3>
               <p className="ind-panel-desc">{current.description}</p>
-              <ul className="ind-applications">
-                {current.applications.map((application) => <li key={application}>{application}</li>)}
-              </ul>
               <dl className="ind-panel-meta">
-                <div><dt>Recommended</dt><dd>{current.support}</dd></div>
-                <div><dt>Process</dt><dd>Evaluation-led</dd></div>
+                <div><dt>Recommended technologies</dt><dd>{current.support}</dd></div>
               </dl>
               <Link className="ind-button ind-button--primary" href="/contact">Discuss this application <Arrow /></Link>
             </div>
