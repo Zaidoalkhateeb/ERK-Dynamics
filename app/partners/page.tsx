@@ -65,6 +65,7 @@ export default function PartnersPage() {
                 </p>
                 <h3>{partner.name}</h3>
                 <p>{partner.description}</p>
+                <PartnerMotion name={partner.name} />
                 <div className="partner-actions">
                   <a
                     className="button primary"
@@ -78,7 +79,6 @@ export default function PartnersPage() {
                     Products &amp; Services <span>→</span>
                   </Link>
                 </div>
-                <PartnerMotion name={partner.name} />
               </div>
             </article>
           ))}
@@ -86,33 +86,22 @@ export default function PartnersPage() {
           <article className="partner-feature partner-feature--join">
             <div className="partner-logo-stage partner-join-stage">
               <svg viewBox="0 0 320 240" aria-hidden="true">
-                {/* connecting wires from each side into the shared core */}
                 <path className="partner-join-wire" d="M42 120h48" />
                 <path className="partner-join-wire" d="M230 120h48" />
-
-                {/* two worlds — global technology + local industry — meeting */}
                 <circle className="partner-join-ring partner-join-ring--left" cx="128" cy="120" r="58" />
                 <circle className="partner-join-ring partner-join-ring--right" cx="192" cy="120" r="58" />
-
-                {/* shared-value core at the intersection */}
                 <g className="partner-join-core">
                   <rect x="144" y="104" width="32" height="32" rx="4" transform="rotate(45 160 120)" />
                   <circle cx="160" cy="120" r="6" />
                 </g>
-
-                {/* endpoint nodes */}
                 <circle className="partner-join-end" cx="36" cy="120" r="6" />
                 <circle className="partner-join-end" cx="284" cy="120" r="6" />
-
-                {/* signal flowing inward from both partners */}
                 <circle className="partner-join-flow" r="4">
                   <animateMotion dur="3.6s" begin="0s" repeatCount="indefinite" path="M36 120H160" />
                 </circle>
                 <circle className="partner-join-flow" r="4">
                   <animateMotion dur="3.6s" begin="-1.8s" repeatCount="indefinite" path="M284 120H160" />
                 </circle>
-
-                {/* descriptive labels */}
                 <text className="partner-join-tag" x="36" y="156" textAnchor="middle">GLOBAL</text>
                 <text className="partner-join-tag" x="284" y="156" textAnchor="middle">LOCAL</text>
                 <text className="partner-join-tag partner-join-tag--core" x="160" y="200" textAnchor="middle">SHARED VALUE</text>
@@ -120,11 +109,11 @@ export default function PartnersPage() {
             </div>
 
             <div className="partner-feature-copy">
-              <p className="eyebrow">03 / Open call</p>
+              <p className="eyebrow">Open call</p>
               <h3>Become a partner</h3>
               <p>
                 We work with manufacturers and specialists whose technologies solve clear industrial challenges across
-                Türkiye If that sounds like you, let&rsquo;s talk.
+                Türkiye. If that sounds like you, let&rsquo;s talk.
               </p>
               <div className="partner-actions">
                 <Link className="button primary" href="/become-a-partner">

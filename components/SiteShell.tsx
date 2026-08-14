@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CookieControls } from "./CookieControls";
 
 const nav = [
   ["", "Home"],
@@ -257,7 +256,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <div id="main">{children}</div>
       <ContactRail />
       <Footer />
-      <CookieControls />
     </>
   );
 }
@@ -327,7 +325,6 @@ const whatsappLink =
   "https://wa.me/905372574543?text=Hello%20ERK%20Dynamics%2C%20I%20would%20like%20to%20discuss%20an%20industrial%20technology%20requirement.";
 
 function Footer() {
-  const year = new Date().getFullYear();
   return (
     <footer>
       <div className="footer-grid expanded">
@@ -336,7 +333,7 @@ function Footer() {
           <p>
             Connecting global innovation
             <br />
-            with Turkish industry.
+            {" "}with Turkish industry.
           </p>
         </div>
         <div>
@@ -369,9 +366,6 @@ function Footer() {
             LinkedIn
           </a>
         </div>
-      </div>
-      <div className="footer-bottom">
-        <small>© {year} ERK Dynamics. All rights reserved.</small>
       </div>
     </footer>
   );

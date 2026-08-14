@@ -53,13 +53,38 @@ const industries = [
 
 export function IndustriesExperience() {
   const [active, setActive] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
   const heroVisualRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const frameRef = useRef<number | null>(null);
   const current = industries[active];
 
   useEffect(() => () => {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
   }, []);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setModalOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [modalOpen]);
+
+  const selectIndustry = (index: number) => {
+    setActive(index);
+    if (window.matchMedia("(max-width: 900px)").matches) setModalOpen(true);
+  };
 
   const moveHero = (event: PointerEvent<HTMLDivElement>) => {
     const visual = heroVisualRef.current;
@@ -165,7 +190,7 @@ export function IndustriesExperience() {
                     role="tab"
                     aria-selected={active === index}
                     className={active === index ? "is-active" : ""}
-                    onClick={() => setActive(index)}
+                    onClick={() => selectIndustry(index)}
                   >
                     <span className="ind-tab-num">{item.number}</span>
                     <span className="ind-tab-name">{item.name}</span>
@@ -178,7 +203,7 @@ export function IndustriesExperience() {
 
           <div className="ind-panel" key={current.id} role="tabpanel">
             <div className="ind-panel-visual" aria-hidden="true">
-              <svg viewBox="0 0 120 120" role="presentation"><IndustryGlyph id={current.id} /></svg>
+              <svg className={`ind-industry-glyph ind-industry-glyph--${current.id}`} viewBox="0 0 120 120" role="presentation"><IndustryGlyph id={current.id} /></svg>
               <span className="ind-panel-tag">{current.number} / {current.name}</span>
             </div>
             <div className="ind-panel-copy">
@@ -194,6 +219,51 @@ export function IndustriesExperience() {
         </div>
       </section>
 
+      {modalOpen && (
+        <div
+          className="ind-modal-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setModalOpen(false);
+          }}
+        >
+          <section
+            className="ind-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ind-modal-title"
+          >
+            <button
+              ref={closeButtonRef}
+              className="ind-modal-close"
+              type="button"
+              aria-label="Close industry details"
+              onClick={() => setModalOpen(false)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div className="ind-modal-copy">
+              <p className="ind-modal-kicker">{current.number} / {current.tagline}</p>
+              <h3 id="ind-modal-title">{current.name}</h3>
+              <p>{current.description}</p>
+            </div>
+
+            <div className="ind-modal-visual" aria-hidden="true">
+              <svg className={`ind-industry-glyph ind-industry-glyph--${current.id}`} viewBox="0 0 120 120" role="presentation"><IndustryGlyph id={current.id} /></svg>
+            </div>
+
+            <div className="ind-modal-support">
+              <span>Recommended technologies</span>
+              <strong>{current.support}</strong>
+            </div>
+
+            <Link className="ind-button ind-button--primary" href="/contact">
+              Discuss this application <Arrow />
+            </Link>
+          </section>
+        </div>
+      )}
+
     </main>
   );
 }
@@ -203,9 +273,11 @@ function IndustryGlyph({ id }: { id: string }) {
     case "manufacturing":
       return (
         <g>
-          <circle cx="60" cy="52" r="20" />
-          <circle cx="60" cy="52" r="7" />
-          <path d="M60 24v8M60 72v8M32 52h8M80 52h8M74 66l6 6M46 66l-6 6M46 38l-6-6M74 38l6-6" />
+          <g className="ind-glyph-primary">
+            <circle cx="60" cy="52" r="20" />
+            <circle cx="60" cy="52" r="7" />
+            <path d="M60 24v8M60 72v8M32 52h8M80 52h8M74 66l6 6M46 66l-6 6M46 38l-6-6M74 38l6-6" />
+          </g>
           <path d="M30 98h60" />
           <path d="M42 98v0M60 98v0M78 98v0" />
           <circle cx="42" cy="98" r="3.5" /><circle cx="60" cy="98" r="3.5" /><circle cx="78" cy="98" r="3.5" />
@@ -214,17 +286,19 @@ function IndustryGlyph({ id }: { id: string }) {
     case "logistics":
       return (
         <g>
-          <path d="M50 28h24v20H50z" />
-          <path d="M34 50h26v24H34z" />
-          <path d="M62 50h24v24H62z" />
-          <path d="M60 28v20M46 50v24M74 50v24" />
+          <g className="ind-glyph-primary">
+            <path d="M50 28h24v20H50z" />
+            <path d="M34 50h26v24H34z" />
+            <path d="M62 50h24v24H62z" />
+            <path d="M60 28v20M46 50v24M74 50v24" />
+          </g>
           <path d="M30 78h60" />
           <path d="M38 78v8M82 78v8" />
         </g>
       );
     case "automotive":
       return (
-        <g>
+        <g className="ind-glyph-primary">
           <path d="M28 70V60c0-3 2-5 5-5h6l8-10h22l8 10h6c3 0 5 2 5 5v10" />
           <path d="M24 70h72" />
           <path d="M46 55l-4 0M74 55h4" />
@@ -237,8 +311,10 @@ function IndustryGlyph({ id }: { id: string }) {
           <path d="M40 92V34" />
           <path d="M40 34h46" />
           <path d="M40 48 84 34" />
-          <path d="M78 34v12" />
-          <path d="M72 46h12v9H72z" />
+          <g className="ind-glyph-primary">
+            <path d="M78 34v12" />
+            <path d="M72 46h12v9H72z" />
+          </g>
           <path d="M28 92h40" />
           <path d="M34 92l6-8 6 8" />
         </g>
@@ -246,9 +322,11 @@ function IndustryGlyph({ id }: { id: string }) {
     case "shipbuilding":
       return (
         <g>
-          <path d="M24 68h72L84 84H38L24 68Z" />
-          <path d="M42 68V42h34v26M48 42V30h18v12" />
-          <path d="M30 91c8-5 16-5 24 0 8-5 16-5 24 0 6-4 12-5 18-2" />
+          <g className="ind-glyph-primary">
+            <path d="M24 68h72L84 84H38L24 68Z" />
+            <path d="M42 68V42h34v26M48 42V30h18v12" />
+          </g>
+          <path className="ind-glyph-secondary" d="M30 91c8-5 16-5 24 0 8-5 16-5 24 0 6-4 12-5 18-2" />
         </g>
       );
     default:

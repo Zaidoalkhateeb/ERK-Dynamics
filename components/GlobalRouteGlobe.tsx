@@ -6,14 +6,24 @@ import { useEffect, useRef, useState } from "react";
 const ISTANBUL = { name: "Istanbul", lat: 41.0082, lng: 28.9784, hub: true };
 
 const markets = [
-  { name: "Dubai", lat: 25.2048, lng: 55.2708 },
-  { name: "London", lat: 51.5074, lng: -0.1278 },
-  { name: "Frankfurt", lat: 50.1109, lng: 8.6821 },
-  { name: "South Africa", lat: -26.2041, lng: 28.0473 },
-  { name: "Barcelona", lat: 41.3874, lng: 2.1686 },
-  { name: "Beijing", lat: 39.9042, lng: 116.4074 },
-  { name: "Baku", lat: 40.4093, lng: 49.8671 },
+  { name: "Dubai, UAE", label: "Dubai", lat: 25.2048, lng: 55.2708, labelLat: 29, labelLng: 45 },
+  { name: "London, United Kingdom", label: "London", lat: 51.5074, lng: -0.1278, labelLat: 51, labelLng: -7 },
+  { name: "Frankfurt, Germany", label: "Frankfurt", lat: 50.1109, lng: 8.6821, labelLat: 50, labelLng: 5 },
+  { name: "Johannesburg, South Africa", label: "Johannesburg", lat: -26.2041, lng: 28.0473, labelLat: -5, labelLng: 29 },
+  { name: "Toronto, Canada", label: "Toronto", lat: 43.6532, lng: -79.3832, labelLat: 49, labelLng: -45 },
+  { name: "Zurich, Switzerland", label: "Zurich", lat: 47.3769, lng: 8.5417, labelLat: 46, labelLng: 12 },
+  { name: "Sarajevo, Bosnia and Herzegovina", label: "Sarajevo", lat: 43.8563, lng: 18.4131, labelLat: 44, labelLng: 20 },
+  { name: "Amman, Jordan", label: "Amman", lat: 31.9539, lng: 35.9106, labelLat: 35, labelLng: 33 },
+  { name: "Beijing, China", label: "Beijing", lat: 39.9042, lng: 116.4074, labelLat: 44, labelLng: 82 },
+  { name: "Baku, Azerbaijan", label: "Baku", lat: 40.4093, lng: 49.8671, labelLat: 42, labelLng: 43 },
 ] as const;
+
+const routeLabels = markets.map((market) => ({
+  name: market.label,
+  lat: market.labelLat,
+  lng: market.labelLng,
+  routeLabel: true,
+}));
 
 const points = [ISTANBUL, ...markets].map((city) => ({
   ...city,
@@ -77,14 +87,14 @@ export function GlobalRouteGlobe() {
         .pointRadius("radius")
         .pointLabel("label")
         .pointsTransitionDuration(700)
-        .htmlElementsData(points)
+        .htmlElementsData([ISTANBUL, ...routeLabels])
         .htmlLat("lat")
         .htmlLng("lng")
         .htmlAltitude(0.02)
         .htmlElement((obj) => {
-          const d = obj as { name: string; hub?: boolean };
+          const d = obj as { name: string; hub?: boolean; routeLabel?: boolean };
           const el = document.createElement("div");
-          el.className = "erk-globe-city" + (d.hub ? " is-hub" : "");
+          el.className = `erk-globe-city${d.hub ? " is-hub" : ""}${d.routeLabel ? " is-route-label" : ""}`;
           el.textContent = d.name;
           return el;
         })
@@ -136,10 +146,18 @@ export function GlobalRouteGlobe() {
   }, []);
 
   return (
-    <div className={`erkGlobeExperience ${ready ? "is-ready" : ""}`}>
-      <div ref={mountRef} className="erkGlobeMount" aria-label="Interactive globe showing routes from Istanbul to international industrial markets" />
-      <div className="erkGlobeLoader" aria-hidden="true"><i /><span>Building global routes</span></div>
-      <div className="erkGlobeHub" aria-hidden="true"><i /><span>Istanbul hub</span></div>
+    <div className="erkGlobePanel">
+      <div className={`erkGlobeExperience ${ready ? "is-ready" : ""}`}>
+        <div ref={mountRef} className="erkGlobeMount" aria-label="Interactive globe showing routes from Istanbul to international industrial markets" />
+        <div className="erkGlobeLoader" aria-hidden="true"><i /><span>Building global routes</span></div>
+        <div className="erkGlobeHub" aria-hidden="true"><i /><span>Istanbul hub</span></div>
+      </div>
+      <div className="erkGlobeMarkets" aria-label="Markets connected to Istanbul">
+        <span>Connected markets</span>
+        <ul>
+          {markets.map((market) => <li key={market.name}>{market.name}</li>)}
+        </ul>
+      </div>
     </div>
   );
 }
