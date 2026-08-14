@@ -555,6 +555,15 @@ p {
   padding: 5px 0;
   cursor: pointer;
 }
+.site-arrow {
+  width: 21px;
+  height: 21px;
+  display: inline-block;
+  flex: 0 0 21px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M7 7h10v10'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M7 7h10v10'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 .menu-panel {
   position: fixed;
   z-index: 90;
@@ -590,6 +599,49 @@ p {
   display: flex;
   gap: 25px;
 }
+.menu-disclosure {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(34px, 5vw, 70px);
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-disclosure > span { flex: 1; }
+.menu-category-disclosure {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-chevron {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-2px, 2px);
+  transition: transform 180ms ease;
+}
+.menu-disclosure[aria-expanded="true"] .menu-chevron,
+.menu-category-disclosure[aria-expanded="true"] .menu-chevron {
+  transform: rotate(225deg) translate(-2px, 2px);
+}
+.menu-product-categories[hidden],
+.menu-exoskeleton-products[hidden] { display: none !important; }
 .menu-links small {
   font: 10px "IBM Plex Mono";
   color: var(--cyan);
@@ -4022,19 +4074,35 @@ footer .button.primary {
 }
 @media (max-width: 560px) {
   .contact-hero__inner {
-    width: calc(100% - 32px);
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
     padding-top: 150px;
+    row-gap: 28px;
   }
+  .contact-hero__copy { display: contents; }
   .contact-hero h1 {
+    order: 1;
+    margin-bottom: 0;
     font-size: clamp(29px, 9vw, 50px);
   }
+  .contact-hero__description { order: 2; }
+  .contact-hero__visual {
+    order: 3;
+    width: 100%;
+    margin-top: 4px;
+  }
   .contact-hero__copy > .contact-hero__actions {
+    order: 4;
+    width: 100%;
+    min-width: 0;
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
+    margin-top: 0;
   }
   .contact-button {
     width: 100%;
+    max-width: 100%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -6368,7 +6436,7 @@ footer .button.primary {
   }
   .menu-grid { gap: 0; }
   .menu-links > a,
-  .menu-product-group > a {
+  .menu-disclosure {
     min-height: 64px;
     padding: 12px 0;
     align-items: center;
@@ -6378,7 +6446,9 @@ footer .button.primary {
   }
   .menu-links small { margin-top: 0; color: #64d3e3; }
   .menu-links > a > small,
-  .menu-product-group > a > small { display: none; }
+  .menu-disclosure > small { display: none; }
+  .menu-disclosure { width: 100%; gap: 14px; }
+  .menu-chevron { margin-right: 5px; }
   .menu-product-categories {
     padding: 12px 0 18px;
     gap: 8px;
@@ -6391,7 +6461,13 @@ footer .button.primary {
     background: transparent;
     border: 0;
   }
-  .menu-exoskeleton-category > strong { margin-bottom: 4px; color: #fff; }
+  .menu-category-disclosure {
+    min-height: 48px;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, .11);
+  }
+  .menu-category-disclosure > strong { margin: 0; color: #fff; }
+  .menu-exoskeleton-products { padding-left: 14px; }
   .menu-links .menu-product-categories .menu-exoskeleton-category a {
     min-height: 42px;
     padding: 9px 0;
@@ -6408,6 +6484,37 @@ footer .button.primary {
     border-top: 1px solid rgba(255, 255, 255, .11);
   }
   .menu-links .menu-product-categories > a strong { color: #fff; }
+}
+
+/* Mobile contact alignment and one consistent outbound-link arrow. */
+@media (max-width: 680px) {
+  .contact-routing-diagram {
+    display: block;
+    position: relative;
+    left: 50%;
+    bottom: auto;
+    margin-top: 72px;
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateX(-50%);
+  }
+  .contact-location-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .contact-location-link .site-arrow { margin-right: 4px; }
+}
+
+/* Keep the contact illustration before its actions at every mobile width. */
+@media (max-width: 680px) {
+  .contact-hero__copy { display: contents; }
+  .contact-hero h1 { order: 1; }
+  .contact-hero__description { order: 2; }
+  .contact-hero__visual { order: 3; }
+  .contact-hero__actions { order: 4; }
 }
 
 /* Final About Us mobile alignment override. */
@@ -6464,5 +6571,70 @@ footer .button.primary {
     overflow-wrap: break-word;
     word-spacing: -0.035em;
     letter-spacing: -0.008em;
+  }
+}
+
+/* Match the compact About Us typography rhythm across other mobile pages. */
+@media (max-width: 680px) {
+  main:not(.erkAboutPage) .section {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  main:not(.erkAboutPage) :is(h1, h2, h3):has(+ p:not(.eyebrow)) {
+    margin-bottom: 0;
+  }
+  main:not(.erkAboutPage) :is(h1, h2, h3) + p:not(.eyebrow) {
+    margin-top: 16px;
+  }
+
+  .page-hero:not(.hero-about),
+  .hero-partners {
+    padding-top: 104px;
+  }
+  .animated-page-hero,
+  .partner-application-hero,
+  .hero-partners {
+    min-height: 0;
+    padding-bottom: 56px;
+  }
+  .contact-hero__inner,
+  .portfolio-hero-inner,
+  .ind-hero-inner {
+    padding-top: 104px;
+  }
+
+  .page-hero:not(.hero-about) h1,
+  .hero-partners h1,
+  .contact-hero h1,
+  .portfolio-hero-copy h1,
+  .ind-hero-copy h1,
+  .motion-hero-copy h1,
+  .product-motion-title h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: clamp(29px, 9vw, 50px);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .page-hero:not(.hero-about) > p:last-of-type,
+  .partners-hero-copy > p,
+  .contact-hero__description,
+  .portfolio-hero-intro,
+  .ind-hero-lead,
+  .motion-hero-copy > p:not(.eyebrow),
+  .product-motion-title > p:not(.eyebrow) {
+    max-width: none;
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.58;
+  }
+
+  .portfolio-hero-actions,
+  .ind-hero-actions,
+  .motion-hero-copy > div,
+  .product-motion-title > div {
+    margin-top: 26px;
   }
 }

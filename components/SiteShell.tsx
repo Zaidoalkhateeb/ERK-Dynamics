@@ -47,6 +47,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isProduct = pathname.startsWith("/products/");
   const [open, setOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [exoskeletonsOpen, setExoskeletonsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [onDark, setOnDark] = useState(isProduct);
   useEffect(() => {
@@ -77,7 +79,11 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       removeEventListener("resize", fn);
     };
   }, [isProduct, pathname]);
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setProductsOpen(false);
+    setExoskeletonsOpen(false);
+  }, [pathname]);
   return (
     <>
       <a href="#main" className="skip">
@@ -103,7 +109,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                     <span className="nav-products-eyebrow">Product categories</span>
                     <strong></strong>
                   </div>
-                  <Link href="/products-services">View all technologies <span>↗</span></Link>
+                  <Link href="/products-services">View all technologies <span className="site-arrow" aria-hidden="true" /></Link>
                 </div>
                 <div className="nav-products-grid">
                   {productCategories.map((category) => category.name === "Exoskeletons" ? (
@@ -127,7 +133,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   ) : (
                     <a key={category.name} className="nav-product-category" href={category.href} target="_blank" rel="noopener noreferrer">
                       <strong>{category.name}</strong>
-                      <i>Visit Think Metric ↗</i>
+                      <i>Visit Think Metric <span className="site-arrow" aria-hidden="true" /></i>
                     </a>
                   ))}
                 </div>
@@ -142,7 +148,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="header-actions">
           <button
             className="menu-button"
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              const nextOpen = !open;
+              setOpen(nextOpen);
+              if (nextOpen) {
+                setProductsOpen(false);
+                setExoskeletonsOpen(false);
+              }
+            }}
             aria-expanded={open}
             aria-controls="site-menu"
           >
@@ -160,27 +173,48 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="menu-grid">
           <div className="menu-links">
             {nav.map(([href, label], i) => href === "products-services" ? (
-              <div className="menu-product-group" key={href}>
-                <Link href={`/${href}`}>
+              <div className={`menu-product-group ${productsOpen ? "is-open" : ""}`} key={href}>
+                <button
+                  className="menu-disclosure"
+                  type="button"
+                  aria-expanded={productsOpen}
+                  aria-controls="mobile-product-categories"
+                  onClick={() => {
+                    setProductsOpen((current) => !current);
+                    if (productsOpen) setExoskeletonsOpen(false);
+                  }}
+                >
                   <small>0{i + 1}</small>
-                  {label}
-                </Link>
-                <div className="menu-product-categories">
+                  <span>{label}</span>
+                  <i className="menu-chevron" aria-hidden="true" />
+                </button>
+                <div id="mobile-product-categories" className="menu-product-categories" hidden={!productsOpen}>
                   {productCategories.map((category) => category.name === "Exoskeletons" ? (
-                    <div key={category.name} className="menu-exoskeleton-category">
-                      <strong>{category.name}</strong>
-                      <Link href="/products/auxivo-liftsuit">
-                        <span>Auxivo LiftSuit</span>
-                      </Link>
-                      <Link href="/products/auxivo-omnisuit">
-                        <span>Auxivo OmniSuit</span>
-                      </Link>
-                      <Link href="/products/auxivo-deltasuit">
-                        <span>Auxivo DeltaSuit</span>
-                      </Link>
-                      <Link href="/products/auxivo-carrysuit">
-                        <span>Auxivo CarrySuit</span>
-                      </Link>
+                    <div key={category.name} className={`menu-exoskeleton-category ${exoskeletonsOpen ? "is-open" : ""}`}>
+                      <button
+                        className="menu-category-disclosure"
+                        type="button"
+                        aria-expanded={exoskeletonsOpen}
+                        aria-controls="mobile-exoskeleton-products"
+                        onClick={() => setExoskeletonsOpen((current) => !current)}
+                      >
+                        <strong>{category.name}</strong>
+                        <i className="menu-chevron" aria-hidden="true" />
+                      </button>
+                      <div id="mobile-exoskeleton-products" className="menu-exoskeleton-products" hidden={!exoskeletonsOpen}>
+                        <Link href="/products/auxivo-liftsuit">
+                          <span>Auxivo LiftSuit</span>
+                        </Link>
+                        <Link href="/products/auxivo-omnisuit">
+                          <span>Auxivo OmniSuit</span>
+                        </Link>
+                        <Link href="/products/auxivo-deltasuit">
+                          <span>Auxivo DeltaSuit</span>
+                        </Link>
+                        <Link href="/products/auxivo-carrysuit">
+                          <span>Auxivo CarrySuit</span>
+                        </Link>
+                      </div>
                     </div>
                   ) : (
                     <a key={category.name} href={category.href} target="_blank" rel="noopener noreferrer">
@@ -199,19 +233,19 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <aside>
             <p className="eyebrow">DIRECT ACCESS</p>
             <Link href="/products/auxivo-liftsuit">
-              LiftSuit <span>↗</span>
+              LiftSuit <span className="site-arrow" aria-hidden="true" />
             </Link>
             <Link href="/products/auxivo-omnisuit">
-              OmniSuit <span>↗</span>
+              OmniSuit <span className="site-arrow" aria-hidden="true" />
             </Link>
             <Link href="/products/auxivo-deltasuit">
-              DeltaSuit <span>↗</span>
+              DeltaSuit <span className="site-arrow" aria-hidden="true" />
             </Link>
             <Link href="/products/auxivo-carrysuit">
-              CarrySuit <span>↗</span>
+              CarrySuit <span className="site-arrow" aria-hidden="true" />
             </Link>
             <Link href="/become-a-partner">
-              Become a partner <span>↗</span>
+              Become a partner <span className="site-arrow" aria-hidden="true" />
             </Link>
             <div className="menu-contact">
               <a href="tel:+905372574543">+90 537 257 45 43</a>

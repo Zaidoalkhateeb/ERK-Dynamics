@@ -164,15 +164,11 @@ export function ContactExperience() {
             <div className="contact-hero__actions">
               <a className="contact-button contact-button--primary" href="#contact-form">
                 <span>Send an Enquiry</span>
-                <span className="contact-button__arrow" aria-hidden="true">
-                  ↗
-                </span>
+                <span className="site-arrow contact-button__arrow" aria-hidden="true" />
               </a>
               <a className="contact-button contact-button--secondary" href="tel:+905372574543">
                 <span>Talk to a Specialist</span>
-                <span className="contact-button__arrow" aria-hidden="true">
-                  ↗
-                </span>
+                <span className="site-arrow contact-button__arrow" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -242,7 +238,7 @@ export function ContactExperience() {
               <input name="website" className="honeypot" tabIndex={-1} autoComplete="off" />
               <button className={`button primary submit-request ${status === "sending" ? "sending" : ""}`} disabled={status === "sending"}>
                 <span className="submit-request__label">{status === "sending" ? "Sending…" : "Send Request"}</span>
-                <span className="submit-request__arrow" aria-hidden="true">↗</span>
+                <span className="site-arrow submit-request__arrow" aria-hidden="true" />
                 <i />
               </button>
               {status === "error" && (
@@ -287,7 +283,10 @@ export function ContactExperience() {
             <div>
               <dt>WHATSAPP</dt>
               <dd>
-                <a href={whatsapp} target="_blank" rel="noopener noreferrer">Message us on WhatsApp ↗</a>
+                <a className="contact-location-link" href={whatsapp} target="_blank" rel="noopener noreferrer">
+                  <span>WhatsApp</span>
+                  <span className="site-arrow" aria-hidden="true" />
+                </a>
               </dd>
             </div>
             <div>
@@ -320,7 +319,7 @@ export function ContactExperience() {
           />
           <div className="map-caption">
             <a href="https://www.google.com/maps/search/?api=1&query=Istanbul%2C+Turkey" target="_blank" rel="noopener noreferrer">
-              Open in Google Maps ↗
+              Open in Google Maps <span className="site-arrow" aria-hidden="true" />
             </a>
           </div>
         </div>

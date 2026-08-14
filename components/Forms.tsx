@@ -69,7 +69,7 @@ export function InquiryForm() {
       <label>Partnership proposal<textarea name="message" rows={5} /></label>
       <input className="honeypot" name="website" tabIndex={-1} autoComplete="off" />
       <button className="button primary" disabled={state === "sending"}>
-        {state === "sending" ? "Sending…" : "Submit application"} <span>↗</span>
+        {state === "sending" ? "Sending…" : "Submit application"} <span className="site-arrow" aria-hidden="true" />
       </button>
       {state === "error" && <p className="form-error" role="alert">Something went wrong. Please email info@erkdynamics.com.</p>}
     </form>

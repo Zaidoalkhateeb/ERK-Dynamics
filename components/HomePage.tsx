@@ -52,7 +52,7 @@ export function HomePage() {
           <p className="eyebrow">LIFTSUIT / PASSIVE EXOSKELETON</p>
           <h1>Strength, engineered<br/><em>around people.</em></h1>
           <p>Industrial technology should move with the worker—not stand between people and the work.</p>
-          <div><Link className="button primary" href="/products/auxivo-liftsuit">Experience LiftSuit <span>↗</span></Link><Link className="motion-text-link" href="/products-services">Explore products ↓</Link></div>
+          <div><Link className="button primary" href="/products/auxivo-liftsuit">Experience LiftSuit <span className="site-arrow" aria-hidden="true" /></Link><Link className="motion-text-link" href="/products-services">Explore products ↓</Link></div>
         </div>
         <div className="motion-hero-readout"><span>01 / LIFTSUIT</span><span>PASSIVE SUPPORT</span><span>SCROLL / INSPECT</span></div>
       </div>
@@ -68,8 +68,8 @@ export function HomePage() {
         <div className="chapter-base"><Image src="/media/liftsuit-work.webp" alt="Worker using LiftSuit during a forward-leaning industrial task" fill sizes="100vw"/><div className="chapter-shade"/></div>
         <div className="inspection-lens"><Image src="/media/omnisuit-work.webp" alt="Worker wearing OmniSuit during an overhead warehouse task" fill sizes="100vw"/></div>
         <div className="lens-ring" aria-hidden="true"><span>02</span><i/><b>INSPECTION / SWITCH</b></div>
-        <div className="chapter-copy lift-copy"><p className="eyebrow">01 / LIFTSUIT</p><h2>Lift.<br/>Lean.<br/><em>Move freely.</em></h2><p>Lightweight textile support focused on the lower back and hips.</p><Link href="/products/auxivo-liftsuit">Explore LiftSuit ↗</Link></div>
-        <div className="chapter-copy omni-copy"><p className="eyebrow">02 / OMNISUIT</p><h2>Reach.<br/>Lift.<br/><em>Keep moving.</em></h2><p>Integrated support for work across the full vertical range.</p><Link href="/products/auxivo-omnisuit">Explore OmniSuit ↗</Link></div>
+        <div className="chapter-copy lift-copy"><p className="eyebrow">01 / LIFTSUIT</p><h2>Lift.<br/>Lean.<br/><em>Move freely.</em></h2><p>Lightweight textile support focused on the lower back and hips.</p><Link href="/products/auxivo-liftsuit">Explore LiftSuit <span className="site-arrow" aria-hidden="true" /></Link></div>
+        <div className="chapter-copy omni-copy"><p className="eyebrow">02 / OMNISUIT</p><h2>Reach.<br/>Lift.<br/><em>Keep moving.</em></h2><p>Integrated support for work across the full vertical range.</p><Link href="/products/auxivo-omnisuit">Explore OmniSuit <span className="site-arrow" aria-hidden="true" /></Link></div>
         <div className="transition-progress" aria-hidden="true"><i/></div>
       </div>
     </section>
@@ -78,7 +78,7 @@ export function HomePage() {
       <header><p className="eyebrow">CHOOSE BY TASK / 03</p><h2>Start with<br/>the movement.</h2><p>Select a task to see which system is designed for evaluation.</p></header>
       <div className="task-console">
         <div className="task-media"><Image key={tasks[task].image} src={tasks[task].image} alt={`${tasks[task].product} shown for ${tasks[task].label.toLowerCase()}`} fill sizes="(max-width: 800px) 100vw, 60vw"/><div className="task-reticle" aria-hidden="true"><i/><i/></div><span>{tasks[task].product} / TASK MATCH</span></div>
-        <div className="task-controls" role="tablist" aria-label="Choose an industrial task">{tasks.map((item, index) => <button key={item.id} role="tab" aria-selected={task===index} className={task===index?"active":""} onClick={()=>setTask(index)}><span>0{index+1}</span><b>{item.label}</b><i>→</i></button>)}<div className="task-result"><small>RECOMMENDED FOR EVALUATION</small><h3>{tasks[task].product}</h3><p>{tasks[task].text}</p><Link href={`/products/auxivo-${tasks[task].product.toLowerCase()}`}>Inspect product ↗</Link></div></div>
+        <div className="task-controls" role="tablist" aria-label="Choose an industrial task">{tasks.map((item, index) => <button key={item.id} role="tab" aria-selected={task===index} className={task===index?"active":""} onClick={()=>setTask(index)}><span>0{index+1}</span><b>{item.label}</b><i>→</i></button>)}<div className="task-result"><small>RECOMMENDED FOR EVALUATION</small><h3>{tasks[task].product}</h3><p>{tasks[task].text}</p><Link href={`/products/auxivo-${tasks[task].product.toLowerCase()}`}>Inspect product <span className="site-arrow" aria-hidden="true" /></Link></div></div>
       </div>
     </section>
 
@@ -88,12 +88,12 @@ export function HomePage() {
     </section>
 
     <section className="industry-motion section">
-      <p className="eyebrow">INDUSTRIAL CONTEXT / 05</p><h2>One technology.<br/>Many operating realities.</h2><div className="industry-marquee" aria-label="Industries"><div><span>LOGISTICS</span><i/> <span>MANUFACTURING</span><i/> <span>AUTOMOTIVE</span><i/> <span>MAINTENANCE</span><i/> <span>CONSTRUCTION</span><i/> <span>LOGISTICS</span><i/> <span>MANUFACTURING</span></div></div><Link className="button primary" href="/industries">Explore applications <span>↗</span></Link>
+      <p className="eyebrow">INDUSTRIAL CONTEXT / 05</p><h2>One technology.<br/>Many operating realities.</h2><div className="industry-marquee" aria-label="Industries"><div><span>LOGISTICS</span><i/> <span>MANUFACTURING</span><i/> <span>AUTOMOTIVE</span><i/> <span>MAINTENANCE</span><i/> <span>CONSTRUCTION</span><i/> <span>LOGISTICS</span><i/> <span>MANUFACTURING</span></div></div><Link className="button primary" href="/industries">Explore applications <span className="site-arrow" aria-hidden="true" /></Link>
     </section>
 
     <section className="dual-finale">
       <div className="dual-image"><Image src="/media/dual-product.webp" alt="Two workers using OmniSuit for lifting and overhead work" fill sizes="100vw"/></div><div className="dual-image echo" aria-hidden="true"><Image src="/media/liftsuit-work.webp" alt="" fill sizes="50vw"/></div><div className="dual-shade"/>
-      <div className="dual-copy"><p className="eyebrow">TWO SYSTEMS / ONE GOAL</p><h2>Find the support<br/>that fits the work.</h2><div><Link href="/products/auxivo-liftsuit">01 — LiftSuit ↗</Link><Link href="/products/auxivo-omnisuit">02 — OmniSuit ↗</Link></div></div>
+      <div className="dual-copy"><p className="eyebrow">TWO SYSTEMS / ONE GOAL</p><h2>Find the support<br/>that fits the work.</h2><div><Link href="/products/auxivo-liftsuit">01 — LiftSuit <span className="site-arrow" aria-hidden="true" /></Link><Link href="/products/auxivo-omnisuit">02 — OmniSuit <span className="site-arrow" aria-hidden="true" /></Link></div></div>
     </section>
   </main>;
 }

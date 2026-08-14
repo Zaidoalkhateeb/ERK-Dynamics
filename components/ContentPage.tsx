@@ -11,6 +11,6 @@ export function ContentPage({ eyebrow, title, intro, blocks, children }: { eyebr
     </section>
     <section className="content-grid section">{blocks.map((b,i)=><article key={b.title}><span>0{i+1}</span><h2>{b.title}</h2><p>{b.text}</p></article>)}</section>
     {children}
-    <section className="inline-cta section"><p className="eyebrow">START A CONVERSATION</p><h2><span>Move your operations forward</span><span>with the right technology</span></h2><Link href="/contact" className="button primary">Contact our team <span>↗</span></Link></section>
+    <section className="inline-cta section"><p className="eyebrow">START A CONVERSATION</p><h2><span>Move your operations forward</span><span>with the right technology</span></h2><Link href="/contact" className="button primary">Contact our team <span className="site-arrow" aria-hidden="true" /></Link></section>
   </main>;
 }
