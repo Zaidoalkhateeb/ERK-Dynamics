@@ -181,7 +181,7 @@ export function ContactExperience() {
               alt=""
               width={833}
               height={479}
-              priority
+              preload
               sizes="(max-width: 900px) 90vw, 36vw"
             />
             <span className="contact-particle contact-particle--1" />

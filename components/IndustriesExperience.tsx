@@ -54,7 +54,7 @@ const industries = [
 export function IndustriesExperience() {
   const [active, setActive] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  const heroVisualRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const frameRef = useRef<number | null>(null);
   const current = industries[active];
@@ -86,88 +86,129 @@ export function IndustriesExperience() {
     if (window.matchMedia("(max-width: 900px)").matches) setModalOpen(true);
   };
 
-  const moveHero = (event: PointerEvent<HTMLDivElement>) => {
-    const visual = heroVisualRef.current;
-    if (!visual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = visual.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
-      visual.style.setProperty("--ind-x", `${(x * 24).toFixed(2)}px`);
-      visual.style.setProperty("--ind-y", `${(y * 18).toFixed(2)}px`);
+  // Each art layer drifts by its own `data-depth`, matching the partners hero.
+  const shiftLayers = (clientX: number, clientY: number) => {
+    const hero = heroRef.current;
+    if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = hero.getBoundingClientRect();
+    const x = (clientX - rect.left) / rect.width - 0.5;
+    const y = (clientY - rect.top) / rect.height - 0.5;
+    hero.querySelectorAll<SVGGElement>("[data-depth]").forEach((layer) => {
+      const depth = Number(layer.dataset.depth || 0);
+      layer.style.setProperty("--move-x", `${(x * depth).toFixed(2)}px`);
+      layer.style.setProperty("--move-y", `${(y * depth * 0.68).toFixed(2)}px`);
     });
   };
 
+  const moveHero = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    const { clientX, clientY } = event;
+    frameRef.current = requestAnimationFrame(() => shiftLayers(clientX, clientY));
+  };
+
   const resetHero = () => {
-    heroVisualRef.current?.style.setProperty("--ind-x", "0px");
-    heroVisualRef.current?.style.setProperty("--ind-y", "0px");
+    heroRef.current?.querySelectorAll<SVGGElement>("[data-depth]").forEach((layer) => {
+      layer.style.setProperty("--move-x", "0px");
+      layer.style.setProperty("--move-y", "0px");
+    });
   };
 
   return (
     <main className="industries-page">
-      <section className="ind-hero" aria-labelledby="ind-title">
-        <div className="ind-hero-grid" aria-hidden="true" />
-        <div className="ind-hero-glow" aria-hidden="true" />
-        <div className="ind-hero-inner">
-          <div className="ind-hero-copy">
-            <p className="ind-kicker"></p>
-            <h1 id="ind-title">
-              <span>Technology for every</span>
-              <span>industrial challenge</span>
-            </h1>
-            <p className="ind-hero-lead">
-              From manufacturing and logistics to energy and shipbuilding, we connect industries with proven
-              technologies built for real operational needs.
-            </p>
-            <div className="ind-hero-actions">
-              <a className="ind-button ind-button--primary" href="#industry-directory">Explore industries <Arrow /></a>
-              <Link className="ind-button ind-button--secondary" href="/contact">Talk to our team <Arrow /></Link>
-            </div>
-          </div>
+      <section
+        ref={heroRef}
+        className="page-hero hero-partners technology-hero hero-industries"
+        aria-labelledby="ind-title"
+        onPointerMove={moveHero}
+        onPointerLeave={resetHero}
+      >
+        <div className="technology-hero__background" aria-hidden="true" />
 
-          <div ref={heroVisualRef} className="ind-hero-visual" onPointerMove={moveHero} onPointerLeave={resetHero} aria-hidden="true">
-            <svg viewBox="0 0 640 640" role="presentation">
-              <defs>
-                <radialGradient id="ind-hub-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0" stopColor="#27bfd4" stopOpacity=".2" />
-                  <stop offset="60%" stopColor="#27bfd4" stopOpacity=".05" />
-                  <stop offset="100%" stopColor="#27bfd4" stopOpacity="0" />
-                </radialGradient>
-                <filter id="ind-core-shadow" x="-60%" y="-60%" width="220%" height="220%">
-                  <feDropShadow dx="0" dy="16" stdDeviation="18" floodColor="#0a5365" floodOpacity=".18" />
-                </filter>
-              </defs>
+        <svg
+          className="technology-hero__objects"
+          viewBox="0 0 1600 900"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <linearGradient id="indCyanStroke" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#62d5e8" stopOpacity="0.1" />
+              <stop offset="0.5" stopColor="#0bb7d3" stopOpacity="0.45" />
+              <stop offset="1" stopColor="#0299b7" stopOpacity="0.75" />
+            </linearGradient>
+            <pattern id="indDotPattern" width="28" height="28" patternUnits="userSpaceOnUse">
+              <circle cx="4" cy="4" r="3.6" fill="#37bdd5" fillOpacity="0.42" />
+            </pattern>
+          </defs>
 
-              <circle cx="320" cy="320" r="290" fill="url(#ind-hub-glow)" />
+          {/* Outer orbit — the hub the industries directory revolves around. */}
+          <g className="parallax-layer" data-depth="9">
+            <g className="object-spin">
+              <circle cx="1210" cy="455" r="500" fill="none" stroke="url(#indCyanStroke)" strokeWidth="8" strokeDasharray="610 1150" opacity="0.5" />
+              <circle cx="1210" cy="455" r="418" fill="none" stroke="#20b6cf" strokeWidth="2" strokeDasharray="180 48 42 82" opacity="0.25" />
+            </g>
+          </g>
 
-              <g className="ind-hero-spokes">
-                <path d="M320 320 320 96M320 320 514 208M320 320 514 432M320 320 320 544M320 320 126 432M320 320 126 208" />
+          {/* Spokes and node ring — carried over from the old hub diagram. */}
+          <g className="parallax-layer" data-depth="16">
+            <g className="object-spin-reverse">
+              <g fill="none" stroke="#0a9db9" strokeWidth="2" opacity="0.3">
+                <path d="M1210 455 1210 175M1210 455 1452 315M1210 455 1452 595M1210 455 1210 735M1210 455 968 595M1210 455 968 315" />
               </g>
-
-              <g className="ind-hero-ring">
-                <circle className="ind-hero-orbit ind-hero-orbit--inner" cx="320" cy="320" r="202" />
-                <circle className="ind-hero-orbit" cx="320" cy="320" r="248" />
-                <circle className="ind-hero-orbit ind-hero-orbit--outer" cx="320" cy="320" r="286" />
-                <g className="ind-hero-nodes">
-                  <circle cx="320" cy="96" r="12" /><circle cx="514" cy="208" r="12" />
-                  <circle cx="514" cy="432" r="12" /><circle cx="320" cy="544" r="12" />
-                  <circle cx="126" cy="432" r="12" /><circle cx="126" cy="208" r="12" />
-                </g>
+              <circle cx="1210" cy="455" r="280" fill="none" stroke="#079dbb" strokeWidth="11" strokeDasharray="14 13" opacity="0.22" />
+              <g fill="#0a9db9" opacity="0.55">
+                <circle cx="1210" cy="175" r="11" /><circle cx="1452" cy="315" r="11" />
+                <circle cx="1452" cy="595" r="11" /><circle cx="1210" cy="735" r="11" />
+                <circle cx="968" cy="595" r="11" /><circle cx="968" cy="315" r="11" />
               </g>
+            </g>
+          </g>
 
-              <g className="ind-hero-core" filter="url(#ind-core-shadow)">
-                <rect x="264" y="264" width="112" height="112" rx="6" transform="rotate(45 320 320)" />
-                <rect x="292" y="292" width="56" height="56" rx="4" transform="rotate(45 320 320)" />
-                <circle className="ind-hero-core-pulse" cx="320" cy="320" r="14" />
-              </g>
+          <g className="parallax-layer" data-depth="14">
+            <g className="object-float-reverse">
+              <path d="M1090 0H1600V640L1475 610L1404 483L1180 426L1092 245Z" fill="url(#indDotPattern)" opacity="0.55" />
+            </g>
+          </g>
 
-              <g className="ind-hero-ticks">
-                <path d="M320 40v22M320 578v22M40 320h22M578 320h22" />
-              </g>
-            </svg>
+          {/* Diamond core — the industries signature mark. */}
+          <g className="parallax-layer" data-depth="23">
+            <g className="object-float" fill="none" stroke="#08a8c5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="1130" y="375" width="160" height="160" rx="8" transform="rotate(45 1210 455)" strokeWidth="11" opacity="0.4" />
+              <rect x="1170" y="415" width="80" height="80" rx="5" transform="rotate(45 1210 455)" strokeWidth="8" opacity="0.3" />
+              <path d="M1362 300L1544 300L1635 457L1544 614L1362 614L1271 457Z" strokeWidth="6" opacity="0.2" />
+            </g>
+          </g>
+
+          {/* Production line running under the hub. */}
+          <g className="parallax-layer" data-depth="19" fill="none" stroke="#17afc9" strokeLinecap="round">
+            <path className="object-line-flow" d="M736 645H1020L1128 536H1406" strokeWidth="5" strokeDasharray="16 30" opacity="0.3" />
+          </g>
+
+          <g className="parallax-layer" data-depth="27" fill="none" stroke="#49cadd" strokeWidth="1.5" opacity="0.35">
+            <path className="object-wave" d="M817 925C1005 755 1174 801 1333 693C1458 608 1535 497 1670 448" strokeDasharray="15 10 2 12" />
+            <path className="object-wave object-wave--delayed" d="M857 930C1042 824 1210 855 1375 771C1504 706 1580 626 1694 590" strokeDasharray="22 12 3 16" />
+          </g>
+        </svg>
+
+        <div className="technology-hero__wash" aria-hidden="true" />
+
+        <div className="partners-hero-copy technology-hero__content">
+          <h1 id="ind-title">
+            <span>Technology for every</span>
+            <span>industrial challenge</span>
+          </h1>
+          <p>
+            From manufacturing and logistics to energy and shipbuilding, we connect industries with proven
+            technologies built for real operational needs.
+          </p>
+          <div className="ind-hero-actions">
+            <a className="ind-button ind-button--primary" href="#industry-directory">Explore industries <Arrow /></a>
+            <Link className="ind-button ind-button--secondary" href="/contact">Talk to our team <Arrow /></Link>
           </div>
         </div>
+
         <a className="page-scroll-cue" href="#industry-directory"><span>Scroll to discover</span><i aria-hidden="true" /></a>
       </section>
 

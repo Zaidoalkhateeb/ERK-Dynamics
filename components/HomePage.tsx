@@ -2,24 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-function useProgress<T extends HTMLElement>() {
+// Writes scroll progress straight onto the element as a custom property. Going through
+// React state instead would put a style attribute in the prerendered HTML and re-render
+// the whole page on every scroll frame; the resting value is declared in globals.css.
+function useProgress<T extends HTMLElement>(property: string) {
   const ref = useRef<T>(null);
-  const [progress, setProgress] = useState(0);
   useEffect(() => {
     let raf = 0;
     const update = () => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
+      const element = ref.current;
+      if (!element) return;
+      const rect = element.getBoundingClientRect();
       const travel = Math.max(1, rect.height - innerHeight);
-      setProgress(Math.max(0, Math.min(1, -rect.top / travel)));
+      element.style.setProperty(property, String(Math.max(0, Math.min(1, -rect.top / travel))));
     };
     const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); };
     update(); addEventListener("scroll", onScroll, { passive: true }); addEventListener("resize", onScroll);
     return () => { cancelAnimationFrame(raf); removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); };
-  }, []);
-  return [ref, progress] as const;
+  }, [property]);
+  return ref;
 }
 
 const tasks = [
@@ -30,12 +33,10 @@ const tasks = [
 ];
 
 export function HomePage() {
-  const [heroRef, heroProgress] = useProgress<HTMLElement>();
-  const [transitionRef, transitionProgress] = useProgress<HTMLElement>();
+  const heroRef = useProgress<HTMLElement>("--hero-progress");
+  const transitionRef = useProgress<HTMLElement>("--lens-progress");
   const [task, setTask] = useState(0);
   const [engineering, setEngineering] = useState(0);
-  const heroStyle = { "--hero-progress": heroProgress } as CSSProperties;
-  const lensStyle = { "--lens-progress": transitionProgress } as CSSProperties;
   const engineeringSteps = [
     ["Textile architecture", "Flexible construction follows the body instead of enclosing it."],
     ["Passive assistance", "Support is delivered without batteries, charging, or powered actuation."],
@@ -43,10 +44,10 @@ export function HomePage() {
   ];
 
   return <main className="cinematic-home">
-    <section ref={heroRef} className="motion-hero" style={heroStyle}>
+    <section ref={heroRef} className="motion-hero">
       <div className="motion-hero-sticky">
-        <div className="hero-media-layer hero-media-back"><Image src="/media/liftsuit-hero.webp" alt="Worker wearing an Auxivo LiftSuit in a warehouse" fill priority sizes="100vw"/></div>
-        <div className="hero-media-layer hero-media-front"><Image src="/media/liftsuit-hero.webp" alt="" fill priority sizes="100vw" aria-hidden="true"/></div>
+        <div className="hero-media-layer hero-media-back"><Image src="/media/liftsuit-hero.webp" alt="Worker wearing an Auxivo LiftSuit in a warehouse" fill preload sizes="100vw"/></div>
+        <div className="hero-media-layer hero-media-front"><Image src="/media/liftsuit-hero.webp" alt="" fill preload sizes="100vw" aria-hidden="true"/></div>
         <div className="hero-grid" aria-hidden="true"/><div className="hero-scan" aria-hidden="true"/>
         <div className="motion-hero-copy">
           <p className="eyebrow">LIFTSUIT / PASSIVE EXOSKELETON</p>
@@ -63,7 +64,7 @@ export function HomePage() {
       <div><p className="eyebrow">THE PRINCIPLE / 01</p><h2>Technology that follows<br/>human movement.</h2><p>ERK Dynamics helps industrial teams evaluate wearable systems in the environment where they will actually be used.</p></div>
     </section>
 
-    <section ref={transitionRef} className="product-transition" style={lensStyle}>
+    <section ref={transitionRef} className="product-transition">
       <div className="transition-sticky">
         <div className="chapter-base"><Image src="/media/liftsuit-work.webp" alt="Worker using LiftSuit during a forward-leaning industrial task" fill sizes="100vw"/><div className="chapter-shade"/></div>
         <div className="inspection-lens"><Image src="/media/omnisuit-work.webp" alt="Worker wearing OmniSuit during an overhead warehouse task" fill sizes="100vw"/></div>

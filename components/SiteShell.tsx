@@ -43,7 +43,8 @@ function Logo() {
 }
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isProduct = pathname.startsWith("/products/");
+  const currentPath = pathname.replace(/\/+$/, "") || "/";
+  const isProduct = currentPath.startsWith("/products/");
   const [open, setOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [exoskeletonsOpen, setExoskeletonsOpen] = useState(false);
@@ -88,7 +89,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         Skip to content
       </a>
       <header
-        className={`header ${pathname === "/" ? "home" : ""} ${onDark ? "on-dark" : ""} ${scrolled ? "scrolled" : ""} ${open ? "menu-open" : ""}`}
+        className={`header ${currentPath === "/" ? "home" : ""} ${onDark ? "on-dark" : ""} ${scrolled ? "scrolled" : ""} ${open ? "menu-open" : ""}`}
       >
         <Logo />
         <nav className="desktop-nav" aria-label="Primary">
@@ -96,7 +97,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <div className="nav-products" key={href}>
               <Link
                 href={`/${href}`}
-                className={pathname === `/${href}` || pathname.startsWith("/products/") ? "active" : ""}
+                className={currentPath === `/${href}` || currentPath.startsWith("/products/") ? "active" : ""}
                 aria-haspopup="true"
               >
                 {label}
@@ -114,17 +115,17 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                     <div key={category.name} className={`nav-product-category nav-product-category--exoskeletons ${isProduct ? "is-current" : ""}`}>
                       <strong>{category.name}</strong>
                       <div className="nav-exoskeleton-products">
-                        <a href="/products/auxivo-liftsuit" className={pathname === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-liftsuit" ? "page" : undefined}>
-                          <b>Auxivo LiftSuit</b>
+                        <a href="/products/auxivo-omnisuit" className={currentPath === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-omnisuit" ? "page" : undefined}>
+                          <b>OmniSuit</b>
                         </a>
-                        <a href="/products/auxivo-omnisuit" className={pathname === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-omnisuit" ? "page" : undefined}>
-                          <b>Auxivo OmniSuit</b>
+                        <a href="/products/auxivo-liftsuit" className={currentPath === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-liftsuit" ? "page" : undefined}>
+                          <b>LiftSuit</b>
                         </a>
-                        <a href="/products/auxivo-deltasuit" className={pathname === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-deltasuit" ? "page" : undefined}>
-                          <b>Auxivo DeltaSuit</b>
+                        <a href="/products/auxivo-deltasuit" className={currentPath === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-deltasuit" ? "page" : undefined}>
+                          <b>DeltaSuit</b>
                         </a>
-                        <a href="/products/auxivo-carrysuit" className={pathname === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-carrysuit" ? "page" : undefined}>
-                          <b>Auxivo CarrySuit</b>
+                        <a href="/products/auxivo-carrysuit" className={currentPath === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-carrysuit" ? "page" : undefined}>
+                          <b>CarrySuit</b>
                         </a>
                       </div>
                     </div>
@@ -138,7 +139,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           ) : (
-            <Link key={href} href={`/${href}`} className={pathname === `/${href}` ? "active" : ""}>
+            <Link key={href} href={`/${href}`} className={currentPath === `/${href}` ? "active" : ""}>
               {label}
             </Link>
           ))}
@@ -205,17 +206,17 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                         <i className="menu-chevron" aria-hidden="true" />
                       </button>
                       <div id="mobile-exoskeleton-products" className="menu-exoskeleton-products" hidden={!exoskeletonsOpen}>
-                        <a href="/products/auxivo-liftsuit" className={pathname === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-liftsuit" ? "page" : undefined}>
-                          <span>Auxivo LiftSuit</span>
+                        <a href="/products/auxivo-omnisuit" className={currentPath === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-omnisuit" ? "page" : undefined}>
+                          <span>OmniSuit</span>
                         </a>
-                        <a href="/products/auxivo-omnisuit" className={pathname === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-omnisuit" ? "page" : undefined}>
-                          <span>Auxivo OmniSuit</span>
+                        <a href="/products/auxivo-liftsuit" className={currentPath === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-liftsuit" ? "page" : undefined}>
+                          <span>LiftSuit</span>
                         </a>
-                        <a href="/products/auxivo-deltasuit" className={pathname === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-deltasuit" ? "page" : undefined}>
-                          <span>Auxivo DeltaSuit</span>
+                        <a href="/products/auxivo-deltasuit" className={currentPath === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-deltasuit" ? "page" : undefined}>
+                          <span>DeltaSuit</span>
                         </a>
-                        <a href="/products/auxivo-carrysuit" className={pathname === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-carrysuit" ? "page" : undefined}>
-                          <span>Auxivo CarrySuit</span>
+                        <a href="/products/auxivo-carrysuit" className={currentPath === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={currentPath === "/products/auxivo-carrysuit" ? "page" : undefined}>
+                          <span>CarrySuit</span>
                         </a>
                       </div>
                     </div>
@@ -235,11 +236,11 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
           <aside>
             <p className="eyebrow">DIRECT ACCESS</p>
-            <Link href="/products/auxivo-liftsuit">
-              LiftSuit <span className="site-arrow" aria-hidden="true" />
-            </Link>
             <Link href="/products/auxivo-omnisuit">
               OmniSuit <span className="site-arrow" aria-hidden="true" />
+            </Link>
+            <Link href="/products/auxivo-liftsuit">
+              LiftSuit <span className="site-arrow" aria-hidden="true" />
             </Link>
             <Link href="/products/auxivo-deltasuit">
               DeltaSuit <span className="site-arrow" aria-hidden="true" />
@@ -331,30 +332,40 @@ const whatsappLink =
 function FooterTechnologyMotifs() {
   return (
     <div className="footer-tech-motifs" aria-hidden="true">
-      <svg className="footer-tech-motif footer-tech-motif--wearable" viewBox="0 0 160 220">
+      <svg className="footer-tech-motif footer-tech-motif--wearable" viewBox="0 0 220 260">
+        <g className="footer-object-orbits">
+          <circle cx="110" cy="132" r="92" />
+          <circle cx="110" cy="132" r="70" />
+          <circle cx="110" cy="132" r="48" />
+        </g>
         <g className="footer-wearable-frame">
-          <circle cx="80" cy="28" r="18" />
-          <path d="M80 47v73M80 67 47 93M80 67l33 26M80 120l-24 75M80 120l28 75" />
-          <path d="M58 70 47 128l18 8M102 70l12 58-19 8" />
+          <circle cx="110" cy="38" r="18" />
+          <path d="M110 57v82M110 76 76 104M110 76l34 28M110 139l-31 86M110 139l33 86" />
+          <path d="M89 77 76 146l20 11M131 77l13 69-20 11" />
         </g>
         <g className="footer-wearable-energy">
-          <path d="M64 58 52 105l13 31M96 58l18 47-19 31M68 122l-12 73M92 122l16 73" />
+          <path d="M94 68 81 116l15 41M126 68l18 48-20 41M97 143l-18 82M123 143l20 82" />
         </g>
-        <g className="footer-wearable-joints"><circle cx="52" cy="105" r="5"/><circle cx="65" cy="136" r="5"/><circle cx="114" cy="105" r="5"/><circle cx="95" cy="136" r="5"/></g>
+        <g className="footer-wearable-joints"><circle cx="81" cy="116" r="5"/><circle cx="96" cy="157" r="5"/><circle cx="144" cy="116" r="5"/><circle cx="124" cy="157" r="5"/></g>
       </svg>
 
-      <svg className="footer-tech-motif footer-tech-motif--lidar" viewBox="0 0 220 220">
-        <g className="footer-lidar-rings"><circle cx="110" cy="102" r="82"/><circle cx="110" cy="102" r="58"/><circle cx="110" cy="102" r="34"/></g>
-        <g className="footer-lidar-scan"><path d="M110 162 177 65"/><circle cx="177" cy="65" r="5"/></g>
-        <g className="footer-lidar-unit"><path d="m75 164 12-28h46l12 28-8 35H83Z"/><path d="M87 136h46l-8-20H95Z"/><circle cx="110" cy="127" r="5"/></g>
+      <svg className="footer-tech-motif footer-tech-motif--lidar" viewBox="0 0 260 230">
+        <g className="footer-lidar-rings"><circle cx="126" cy="112" r="88"/><circle cx="126" cy="112" r="64"/><circle cx="126" cy="112" r="40"/></g>
+        <g className="footer-lidar-unit"><path d="m78 108 14-25h55l14 25-14 25H92Z"/><path d="M104 133h43v25h-43Z"/><path d="m110 158-9 27h49l-9-27Z"/><circle cx="126" cy="108" r="13"/><path d="M113 108h26M126 95v26"/></g>
+        <g className="footer-lidar-scan"><path d="M126 108 214 44M126 108l105-13M126 108l99 42"/><circle cx="214" cy="44" r="6"/><circle cx="225" cy="150" r="4"/></g>
       </svg>
 
-      <svg className="footer-tech-motif footer-tech-motif--power" viewBox="0 0 240 180">
-        <g className="footer-power-cells"><path d="M18 30h30l9 16-9 16H18L9 46Z"/><path d="M61 30h30l9 16-9 16H61L52 46Z"/><path d="M18 70h30l9 16-9 16H18L9 86Z"/><path d="M182 70h30l9 16-9 16h-30l-9-16Z"/><path d="M182 110h30l9 16-9 16h-30l-9-16Z"/></g>
-        <g className="footer-power-flow"><path d="M18 126h61l22-22h38l23-22h50"/><path d="M44 151h80l22-22h66"/></g>
-        <g className="footer-power-core"><rect x="82" y="28" width="78" height="98" rx="8"/><rect x="95" y="42" width="52" height="49" rx="4"/><path d="m124 49-17 25h14l-7 13 22-27h-14Z"/><path d="M104 108h34"/></g>
-        <g className="footer-power-pulses"><circle cx="18" cy="126" r="4"/><circle cx="212" cy="82" r="4"/><circle cx="212" cy="129" r="4"/></g>
+      <svg className="footer-tech-motif footer-tech-motif--shared" viewBox="0 0 320 220">
+        <path className="footer-shared-wire" d="M38 108h52M230 108h52" />
+        <circle className="footer-shared-ring footer-shared-ring--left" cx="128" cy="108" r="58" />
+        <circle className="footer-shared-ring footer-shared-ring--right" cx="192" cy="108" r="58" />
+        <g className="footer-shared-core"><rect x="144" y="92" width="32" height="32" rx="4" transform="rotate(45 160 108)"/><circle cx="160" cy="108" r="6"/></g>
+        <g className="footer-shared-points"><circle cx="32" cy="108" r="6"/><circle cx="288" cy="108" r="6"/><circle cx="80" cy="108" r="4"/><circle cx="240" cy="108" r="4"/></g>
+        <text className="footer-shared-label" x="32" y="148" textAnchor="middle">GLOBAL</text>
+        <text className="footer-shared-label" x="288" y="148" textAnchor="middle">LOCAL</text>
+        <text className="footer-shared-label footer-shared-label--core" x="160" y="194" textAnchor="middle">SHARED VALUE</text>
       </svg>
+
     </div>
   );
 }
@@ -362,35 +373,27 @@ function FooterTechnologyMotifs() {
 function Footer() {
   return (
     <footer>
-      <FooterTechnologyMotifs />
       <div className="footer-grid expanded">
-        <div>
+        <div className="footer-brand">
           <Logo />
-          <p>
-            Connecting global innovation
-            <br />
-            {" "}with Turkish industry.
-          </p>
         </div>
-        <div>
+        <FooterTechnologyMotifs />
+        <div className="footer-links footer-links--explore">
           <b>EXPLORE</b>
           <Link href="/industries">Industries</Link>
           <Link href="/partners">Partners</Link>
           <Link href="/about">About Us</Link>
           <Link href="/contact">Contact Us</Link>
         </div>
-        <div>
+        <div className="footer-links footer-links--products">
           <b>PRODUCTS</b>
           <Link href="/products-services#exoskeletons">Exoskeleton</Link>
           <Link href="/products-services#lidar">Lidar</Link>
           <Link href="/products-services#remote-power">Power Supply</Link>
         </div>
-        <div>
+        <div className="footer-links footer-links--contact">
           <b>CONTACT</b>
-          <a href="tel:+905372574543">Phone</a>
-          <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            WhatsApp
-          </a>
+          <a href="tel:+905372574543">+90 537 257 45 43</a>
           <a href="mailto:info@erkdynamics.com">Email</a>
           <a
             href="https://www.linkedin.com/company/erk-dynamics/"

@@ -36,6 +36,13 @@ export function ProductExperience({ product: p }: { product: Product }) {
   const noBatteries = featureTitle.endsWith(" No batteries");
   const featureTitleLead = noBatteries ? featureTitle.slice(0, -" No batteries".length) : featureTitle;
   const featureTitleClass = featureTitle.length > 32 ? "is-long" : featureTitle.length > 20 ? "is-compact" : "";
+  const primaryFocus = p.name === "LiftSuit"
+    ? ["Lower back", "Hips"]
+    : p.name === "DeltaSuit"
+      ? ["Shoulders", "Arms"]
+      : p.name === "CarrySuit"
+        ? ["Upper body", "Hips"]
+        : ["Shoulders", "Lower back", "Hips"];
   useEffect(() => {
     let raf = 0;
     const update = () => {
@@ -62,7 +69,7 @@ export function ProductExperience({ product: p }: { product: Product }) {
       </div>
     </section>
 
-    <section className="product-specifications section" data-header-light><header><p className="eyebrow">TECHNICAL / STABLE VIEW</p><h2>Product information</h2><p>Detailed technical values and certifications will be published only from approved manufacturer documentation.</p></header><dl><div><dt>Support system</dt><dd>Passive / battery-free</dd></div><div><dt>Available sizes</dt><dd>{p.sizes.join(" / ")}</dd></div><div><dt>Primary focus</dt><dd>{p.name==="LiftSuit"?"Lower back and hips":p.name==="DeltaSuit"?"Shoulders and arms":p.name==="CarrySuit"?"Upper body and hips":"Shoulders, lower back, and hips"}</dd></div><div><dt>Evaluation</dt><dd>Demonstration and task assessment</dd></div><div><dt>Availability</dt><dd>Contact ERK Dynamics</dd></div></dl></section>
+    <section className="product-specifications section" data-header-light><header><p className="eyebrow">TECHNICAL / STABLE VIEW</p><h2>Product information</h2><p>Detailed technical values and certifications will be published only from approved manufacturer documentation.</p></header><dl><div><dt>Support system</dt><dd><ul className="product-spec-list"><li>Passive</li><li>Battery free</li></ul></dd></div><div><dt>Available sizes</dt><dd>{p.sizes.join(" / ")}</dd></div><div><dt>Primary focus</dt><dd><ul className="product-spec-list">{primaryFocus.map((item) => <li key={item}>{item}</li>)}</ul></dd></div><div><dt>Evaluation</dt><dd>Demonstration and task assessment</dd></div><div><dt>Availability</dt><dd>Contact ERK Dynamics</dd></div></dl></section>
 
     <section className="product-final-cta"><div className="product-final-media"><img src={media.cta} alt={`${p.name} in an industrial environment`} loading="lazy" decoding="async"/></div><div className="product-final-overlay"/><article><p className="eyebrow">NEXT STEP</p><h2>Experience<br/>{p.name}</h2><p>Speak with the ERK Dynamics team about {p.name}.</p><Link href="/contact" className="button primary">Contact Us <span className="site-arrow" aria-hidden="true" /></Link></article></section>
   </main>;

@@ -143,10 +143,10 @@ export function ProductsServicesExperience() {
 
           <div ref={heroVisualRef} className="portfolio-hero-visual" onPointerMove={moveHero} onPointerLeave={resetHero} aria-hidden="true">
             <div className="portfolio-hero-image portfolio-hero-image--rear">
-              <Image src="/media/liftsuit-hero.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 36vw" />
+              <Image src="/media/liftsuit-hero.webp" alt="" fill preload sizes="(max-width: 900px) 72vw, 36vw" />
             </div>
             <div className="portfolio-hero-image portfolio-hero-image--front">
-              <Image src="/media/omnisuit-work.webp" alt="" fill priority sizes="(max-width: 900px) 72vw, 39vw" />
+              <Image src="/media/omnisuit-work.webp" alt="" fill preload sizes="(max-width: 900px) 72vw, 39vw" />
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@ export function ProductsServicesExperience() {
               <p>{product.description}</p>
               <div className="portfolio-task-list">{product.tasks.map((task) => <span key={task}>{task}</span>)}</div>
               <dl>
-                <div><dt>System</dt><dd>Passive / battery-free</dd></div>
+                <div><dt>System</dt><dd>Passive / battery free</dd></div>
                 <div><dt>{product.specLabel}</dt><dd>{product.specValue}</dd></div>
               </dl>
               <Link className="portfolio-button portfolio-button--primary" href={product.href}>{product.cta} <Arrow /></Link>
