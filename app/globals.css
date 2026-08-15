@@ -2477,6 +2477,10 @@ footer .button.primary {
   animation: productHeroIn 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 .product-hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 .product-hero-wash {
@@ -2548,7 +2552,7 @@ footer .button.primary {
   to { transform: translate3d(-28px, 24px, 0) scale(1.025); }
 }
 .product-scroll-story {
-  height: calc(var(--feature-count) * 100svh);
+  height: 400svh;
   min-height: 2800px;
   background: #0f1519;
 }
@@ -2565,6 +2569,10 @@ footer .button.primary {
   background: #080b0e;
 }
 .product-story-stage > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 68% center;
   opacity: 0;
@@ -2606,6 +2614,22 @@ footer .button.primary {
   transform: translate(-50%, -50%);
   transition: left .7s cubic-bezier(.16, 1, .3, 1), top .7s cubic-bezier(.16, 1, .3, 1);
 }
+.auxivo-liftsuit .story-target.target-1 { left: 47%; top: 48%; }
+.auxivo-liftsuit .story-target.target-2 { left: 27%; top: 46%; }
+.auxivo-liftsuit .story-target.target-3 { left: 57%; top: 50%; }
+.auxivo-liftsuit .story-target.target-4 { left: 66%; top: 48%; }
+.auxivo-omnisuit .story-target.target-1 { left: 48%; top: 43%; }
+.auxivo-omnisuit .story-target.target-2 { left: 59%; top: 34%; }
+.auxivo-omnisuit .story-target.target-3 { left: 46%; top: 52%; }
+.auxivo-omnisuit .story-target.target-4 { left: 62%; top: 50%; }
+.auxivo-deltasuit .story-target.target-1 { left: 48%; top: 42%; }
+.auxivo-deltasuit .story-target.target-2 { left: 40%; top: 38%; }
+.auxivo-deltasuit .story-target.target-3 { left: 58%; top: 44%; }
+.auxivo-deltasuit .story-target.target-4 { left: 50%; top: 50%; }
+.auxivo-carrysuit .story-target.target-1 { left: 48%; top: 46%; }
+.auxivo-carrysuit .story-target.target-2 { left: 40%; top: 42%; }
+.auxivo-carrysuit .story-target.target-3 { left: 56%; top: 44%; }
+.auxivo-carrysuit .story-target.target-4 { left: 50%; top: 50%; }
 .story-target i {
   position: absolute;
   background: #67d8e8;
@@ -2647,7 +2671,6 @@ footer .button.primary {
   font-size: 30px;
   line-height: 1.12;
   white-space: normal;
-  text-wrap: balance;
 }
 .product-story-panel h2.has-no-batteries {
   white-space: nowrap;
@@ -2782,6 +2805,10 @@ footer .button.primary {
   overflow: hidden;
 }
 .product-final-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   animation: finalDrift 9s ease-in-out infinite alternate;
@@ -3113,7 +3140,7 @@ footer .button.primary {
     object-position: 62% center;
   }
   .product-scroll-story {
-    height: calc(var(--feature-count) * 125svh);
+    height: 500svh;
   }
   .product-story-sticky {
     display: block;
@@ -5663,8 +5690,6 @@ footer .button.primary {
     gap: 8px;
     padding: 16px 16px 0;
     overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
   }
   .portfolio-product-switcher::-webkit-scrollbar { display: none; }
   .portfolio-product-switcher button {
@@ -6181,6 +6206,7 @@ footer .button.primary {
   display: grid;
   place-items: center;
   background: rgba(8, 24, 30, 0.48);
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   animation: indModalFade 180ms ease-out;
 }

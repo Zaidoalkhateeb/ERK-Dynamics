@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,7 +33,7 @@ function Logo() {
   return (
     <Link href="/" className="logo" aria-label="ERK Dynamics home">
       <span className="company-logo-mark" aria-hidden="true">
-        <Image src="/media/erk-dragonfly.png" alt="" width={833} height={479} sizes="54px" />
+        <img src="/media/erk-dragonfly.png" alt="" width="833" height="479" />
       </span>
       <span>
         ERK <b>DYNAMICS</b>

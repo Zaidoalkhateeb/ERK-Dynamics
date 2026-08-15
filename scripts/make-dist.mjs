@@ -28,8 +28,13 @@ async function rewrite(dir) {
     }
     if (!REWRITABLE.has(path.extname(entry.name))) continue;
     const source = await readFile(full, "utf8");
-    if (!source.includes("/_next/")) continue;
-    await writeFile(full, source.replaceAll("/_next/", "/assets/"));
+    let output = source.replaceAll("/_next/", "/assets/");
+    if (path.extname(entry.name) === ".html") {
+      // React adds this optional hint to script preloads, but Firefox flags it as unsupported.
+      output = output.replace(/\sfetchpriority=(["'])(?:high|low|auto)\1/gi, "");
+    }
+    if (output === source) continue;
+    await writeFile(full, output);
     rewritten += 1;
   }
   return rewritten;
