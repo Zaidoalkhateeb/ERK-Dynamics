@@ -2,7 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { PointerEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, PointerEvent, useEffect, useRef, useState } from "react";
+
+const categories = [
+  { id: "exoskeletons", label: "Exoskeleton" },
+  { id: "lidar", label: "LiDAR" },
+  { id: "remote-power", label: "Power Supply" },
+] as const;
+
+type CategoryId = (typeof categories)[number]["id"];
+
+/* Below this width the category nav behaves as a tab bar: one category is shown at a time. */
+const MOBILE_QUERY = "(max-width: 680px)";
 
 const exoskeletons = [
   {
@@ -65,6 +76,7 @@ const exoskeletons = [
 
 export function ProductsServicesExperience() {
   const [activeProduct, setActiveProduct] = useState(0);
+  const [category, setCategory] = useState<CategoryId>("exoskeletons");
   const heroVisualRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
   const product = exoskeletons[activeProduct];
@@ -73,9 +85,22 @@ export function ProductsServicesExperience() {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
   }, []);
 
+  // Deep links such as /products-services#lidar must open that category on mobile,
+  // where every other one is hidden.
+  useEffect(() => {
+    const syncFromHash = () => {
+      const id = window.location.hash.slice(1);
+      if (categories.some((item) => item.id === id)) setCategory(id as CategoryId);
+    };
+    syncFromHash();
+    addEventListener("hashchange", syncFromHash);
+    return () => removeEventListener("hashchange", syncFromHash);
+  }, []);
+
   const moveHero = (event: PointerEvent<HTMLDivElement>) => {
     const visual = heroVisualRef.current;
-    if (!visual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!visual || event.pointerType !== "mouse") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const rect = visual.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -91,8 +116,19 @@ export function ProductsServicesExperience() {
     heroVisualRef.current?.style.setProperty("--portfolio-y", "0px");
   };
 
+  const selectCategory = (event: MouseEvent<HTMLAnchorElement>, id: CategoryId) => {
+    setCategory(id);
+    if (!window.matchMedia(MOBILE_QUERY).matches) return;
+    // On mobile the other categories are hidden, so the anchor target has moved:
+    // scroll back to the tab bar instead of letting the browser jump.
+    event.preventDefault();
+    requestAnimationFrame(() => {
+      document.getElementById("technology-portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
-    <main className="portfolio-page">
+    <main className="portfolio-page" data-mobile-category={category}>
       <section className="portfolio-hero" aria-labelledby="portfolio-title">
         <div className="portfolio-hero-grid" aria-hidden="true" />
         <div className="portfolio-hero-glow" aria-hidden="true" />
@@ -122,12 +158,20 @@ export function ProductsServicesExperience() {
       </section>
 
       <nav id="technology-portfolio" className="portfolio-category-nav" aria-label="Technology categories">
-        <a href="#exoskeletons"><strong>Exoskeleton</strong><i></i></a>
-        <a href="#lidar"><strong>LiDAR</strong><i></i></a>
-        <a href="#remote-power"><strong>Power Supply</strong><i></i></a>
+        {categories.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            className={category === item.id ? "is-active" : ""}
+            aria-current={category === item.id ? "true" : undefined}
+            onClick={(event) => selectCategory(event, item.id)}
+          >
+            <strong>{item.label}</strong><i></i>
+          </a>
+        ))}
       </nav>
 
-      <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
+      <section id="exoskeletons" data-category="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
         <header className="portfolio-section-heading">
           <div>
             <span>Wearable robotics</span>
@@ -175,7 +219,7 @@ export function ProductsServicesExperience() {
         </div>
       </section>
 
-      <section id="lidar" className="portfolio-tech portfolio-tech--lidar" aria-labelledby="lidar-title">
+      <section id="lidar" data-category="lidar" className="portfolio-tech portfolio-tech--lidar" aria-labelledby="lidar-title">
         <div className="portfolio-tech-visual portfolio-lidar-visual" aria-hidden="true">
           <svg viewBox="0 0 760 650" role="presentation">
             <defs>
@@ -206,7 +250,7 @@ export function ProductsServicesExperience() {
         </div>
       </section>
 
-      <section id="remote-power" className="portfolio-tech portfolio-tech--power" aria-labelledby="power-title">
+      <section id="remote-power" data-category="remote-power" className="portfolio-tech portfolio-tech--power" aria-labelledby="power-title">
         <div className="portfolio-tech-copy">
           <p className="portfolio-kicker">Remote power supply</p>
           <h2 id="power-title">Power beyond<br />the conventional grid</h2>

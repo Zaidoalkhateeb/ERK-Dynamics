@@ -302,10 +302,6 @@ export function ContactExperience() {
           </dl>
         </div>
         <div className={`istanbul-map ${mapLoaded ? "is-loaded" : ""}`}>
-          <div className="map-label">
-            <i />
-            <span>ISTANBUL / TÜRKİYE</span>
-          </div>
           <div className="map-skeleton" aria-hidden="true">
             <span className="map-skeleton__pin" />
             <span className="map-skeleton__text">Loading map…</span>
@@ -317,11 +313,6 @@ export function ContactExperience() {
             referrerPolicy="no-referrer-when-downgrade"
             onLoad={() => setMapLoaded(true)}
           />
-          <div className="map-caption">
-            <a href="https://www.google.com/maps/search/?api=1&query=Istanbul%2C+Turkey" target="_blank" rel="noopener noreferrer">
-              Open in Google Maps <span className="site-arrow" aria-hidden="true" />
-            </a>
-          </div>
         </div>
       </section>
 

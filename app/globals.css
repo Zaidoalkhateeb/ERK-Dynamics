@@ -623,9 +623,25 @@ button:hover > i.site-arrow {
   font-size: clamp(34px, 5vw, 70px);
   line-height: 1.2;
   text-align: left;
-  cursor: pointer;
 }
 .menu-disclosure > span { flex: 1; }
+/* The label navigates to the products page; the chevron only expands the categories. */
+.menu-links a.menu-disclosure-link {
+  flex: 1;
+  padding: 0;
+  border-bottom: 0;
+  font: inherit;
+}
+.menu-disclosure-toggle {
+  flex: none;
+  padding: 10px 0 10px 18px;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
 .menu-category-disclosure {
   width: 100%;
   padding: 0;
@@ -647,7 +663,7 @@ button:hover > i.site-arrow {
   transform: rotate(45deg) translate(-2px, 2px);
   transition: transform 180ms ease;
 }
-.menu-disclosure[aria-expanded="true"] .menu-chevron,
+.menu-disclosure-toggle[aria-expanded="true"] .menu-chevron,
 .menu-category-disclosure[aria-expanded="true"] .menu-chevron {
   transform: rotate(225deg) translate(-2px, 2px);
 }
@@ -4696,50 +4712,6 @@ footer .button.primary {
     animation: none;
   }
 }
-.map-label {
-  position: absolute;
-  z-index: 2;
-  top: 18px;
-  left: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(16, 24, 29, 0.15);
-  font: 10px "IBM Plex Mono";
-  letter-spacing: 0.08em;
-  color: #11191e;
-}
-.map-label i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #087d91;
-}
-.map-caption {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  background: rgba(243, 246, 246, 0.92);
-  border-top: 1px solid rgba(16, 24, 29, 0.1);
-}
-.map-caption small {
-  font: 9px "IBM Plex Mono";
-  color: #68767c;
-}
-.map-caption a {
-  font: 10px "IBM Plex Mono";
-  color: #087d91;
-  white-space: nowrap;
-}
 .specialist-cta {
   position: relative;
   min-height: 480px;
@@ -5632,38 +5604,102 @@ footer .button.primary {
   .portfolio-contact { min-height: 380px; grid-template-columns: 1fr; grid-template-areas: "eyebrow" "title" "button"; }
   .portfolio-contact .portfolio-button { justify-self: start; margin-top: 38px; }
 }
+/* ── Mobile: one category at a time, driven by the nav acting as a tab bar ── */
 @media (max-width: 680px) {
+  .portfolio-page[data-mobile-category="exoskeletons"] [data-category]:not([data-category="exoskeletons"]),
+  .portfolio-page[data-mobile-category="lidar"] [data-category]:not([data-category="lidar"]),
+  .portfolio-page[data-mobile-category="remote-power"] [data-category]:not([data-category="remote-power"]) {
+    display: none;
+  }
+
+  /* Hero — shorter, stacked, no dead space above the tab bar. */
   .portfolio-hero,
-  .portfolio-hero-inner { min-height: 820px; }
-  .portfolio-hero-inner { width: calc(100% - 32px); padding: 118px 0 55px; gap: 28px; }
-  .portfolio-hero-copy h1 { font-size: clamp(43px, 13vw, 60px); }
-  .portfolio-hero-intro { margin-top: 27px; font-size: 17px; text-align: justify; text-align-last: left; }
-  .portfolio-hero-actions { display: grid; gap: 9px; }
-  .portfolio-button { width: 100%; }
-  .portfolio-hero-visual { min-height: 350px; }
+  .portfolio-hero-inner { min-height: 0; }
+  .portfolio-hero-inner { width: calc(100% - 32px); padding: 112px 0 46px; gap: 26px; }
+  .portfolio-hero-copy h1 { font-size: clamp(38px, 10.5vw, 52px); letter-spacing: -.035em; }
+  .portfolio-hero-copy h1 br { display: none; }
+  .portfolio-hero-intro { margin-top: 22px; font-size: 16px; line-height: 1.6; text-align: left; }
+  .portfolio-hero-actions { margin-top: 28px; display: grid; gap: 9px; }
+  .portfolio-button { width: 100%; min-height: 54px; }
+  .portfolio-hero-visual { min-height: 330px; transform: none; }
   .portfolio-exoskeleton-system { width: 132%; }
-  .portfolio-hero-image--rear { width: 54%; height: 54%; }
-  .portfolio-hero-image--front { width: 70%; height: 73%; }
+  .portfolio-hero-image--rear { width: 52%; height: 56%; }
+  .portfolio-hero-image--front { width: 70%; height: 74%; }
   .portfolio-hero-orbit--one { width: 300px; height: 300px; }
   .portfolio-hero-orbit--two { width: 190px; height: 190px; }
-  .portfolio-category-nav { position: relative; top: auto; grid-template-columns: 1fr; }
-  .portfolio-category-nav a { min-height: 64px; border-right: 0; border-bottom: 1px solid var(--portfolio-line); }
-  .portfolio-section-heading h2 { font-size: clamp(48px, 15vw, 67px); }
-  .portfolio-product-media { min-height: 390px; }
-  .portfolio-product-panel { min-height: 570px; padding: 30px 22px 38px; }
-  .portfolio-product-detail { right: 15px; bottom: 15px; width: 130px; height: 165px; }
-  .portfolio-product-motion-label { left: 15px; bottom: 15px; }
-  .portfolio-product-copy h3 { font-size: 58px; }
+
+  /* Tab bar. */
+  .portfolio-category-nav {
+    position: sticky;
+    top: 78px;
+    grid-template-columns: repeat(3, 1fr);
+    background: rgba(255, 255, 255, .96);
+    scroll-margin-top: 78px;
+  }
+  .portfolio-category-nav a {
+    min-height: 56px;
+    padding: 0 6px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0;
+    border-right: 1px solid var(--portfolio-line);
+    border-bottom: 0;
+  }
+  .portfolio-category-nav a:last-child { border-right: 0; }
+  .portfolio-category-nav strong { font-size: 13px; letter-spacing: -.01em; text-align: center; }
+  .portfolio-category-nav a.is-active { color: #fff; background: var(--portfolio-accent); }
+
+  /* Exoskeletons — switcher on top, then the image, then the copy. */
+  .portfolio-exo { padding: 26px 20px 64px; }
+  .portfolio-section-heading { margin-bottom: 18px; }
+  .portfolio-section-heading h2 { font-size: clamp(44px, 13vw, 60px); }
+  .portfolio-product-stage { min-height: 0; display: flex; flex-direction: column; background: #f4f6f7; }
+  .portfolio-product-panel { display: contents; }
+  .portfolio-product-switcher {
+    order: 1;
+    display: flex;
+    gap: 8px;
+    padding: 16px 16px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .portfolio-product-switcher::-webkit-scrollbar { display: none; }
+  .portfolio-product-switcher button {
+    flex: 1 0 auto;
+    min-height: 0;
+    padding: 12px 14px;
+    justify-content: center;
+    font-size: 13px;
+  }
+  .portfolio-product-media { order: 2; min-height: 0; aspect-ratio: 4 / 5; margin: 16px 16px 0; }
+  .portfolio-product-detail { right: 12px; bottom: 12px; width: 104px; height: 130px; }
+  .portfolio-product-motion-label { left: 12px; bottom: 12px; }
+  .portfolio-product-copy { order: 3; margin-top: 0; padding: 24px 20px 30px; }
+  .portfolio-product-copy > p:not(.portfolio-kicker) { font-size: 16px; }
+  .portfolio-task-list { margin-top: 20px; gap: 8px; }
+  .portfolio-task-list span { min-height: 40px; padding: 10px 12px; }
+  .portfolio-product-copy dl { margin: 24px 0; }
   .portfolio-product-copy .portfolio-button { width: 100%; }
-  .portfolio-tech-copy { min-height: 0; padding: 80px 24px 90px; }
-  .portfolio-tech-copy h2 { font-size: clamp(51px, 15vw, 70px); }
-  .portfolio-tech-copy h2 > span { font-size: clamp(34px, 10.2vw, 56px); }
-  .portfolio-tech-copy > p:not(.portfolio-kicker) { font-size: 17px; }
-  .portfolio-tech-copy ul { grid-template-columns: 1fr; }
+
+  /* LiDAR / power — headline first, diagram second. */
+  .portfolio-tech-copy,
+  .portfolio-tech--power .portfolio-tech-copy { order: 1; min-height: 0; padding: 34px 20px 46px; }
+  .portfolio-tech-copy h2 { font-size: clamp(40px, 11.5vw, 56px); letter-spacing: -.04em; }
+  .portfolio-tech-copy h2 br { display: none; }
+  .portfolio-tech-copy > p:not(.portfolio-kicker) { margin-top: 24px; font-size: 16px; }
+  .portfolio-tech-copy ul { margin-top: 28px; grid-template-columns: 1fr; }
   .portfolio-tech-copy .portfolio-button { width: 100%; }
-  .portfolio-tech-visual { min-height: 470px; }
-  .portfolio-tech-visual svg { width: 106%; }
-  .portfolio-data-tag { font-size: 11px; }
+  .portfolio-group-note { margin: 28px 0; }
+  .portfolio-tech-visual { order: 2; min-height: 0; aspect-ratio: 1 / 1; }
+  .portfolio-tech-visual svg { width: 104%; }
+  .portfolio-data-tag,
+  .portfolio-power-status { padding: 9px 11px; font-size: 10px; letter-spacing: .06em; }
+  .portfolio-data-tag--one { left: 5%; top: 16%; }
+  .portfolio-data-tag--two { right: 5%; top: 40%; }
+  .portfolio-data-tag--three { left: 8%; bottom: 12%; }
+  .portfolio-power-status { top: 6%; right: 5%; }
+
   .portfolio-services { padding: 85px 24px; }
   .portfolio-services header h2 { font-size: clamp(49px, 15vw, 68px); }
   .portfolio-services li { min-height: 0; grid-template-columns: 44px 1fr; gap: 14px; padding: 38px 0; }
@@ -6806,9 +6842,10 @@ footer .button.primary {
   }
   .menu-links small { margin-top: 0; color: #64d3e3; }
   .menu-links > a > small,
-  .menu-disclosure > small { display: none; }
+  .menu-disclosure-link > small { display: none; }
   .menu-disclosure { width: 100%; gap: 14px; }
-  .menu-chevron { margin-right: 5px; }
+  .menu-disclosure-toggle { padding: 12px 5px 12px 18px; }
+  .menu-chevron { margin-right: 0; }
   .menu-product-categories {
     padding: 12px 0 18px;
     gap: 8px;

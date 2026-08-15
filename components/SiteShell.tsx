@@ -173,20 +173,25 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <div className="menu-links">
             {nav.map(([href, label], i) => href === "products-services" ? (
               <div className={`menu-product-group ${productsOpen ? "is-open" : ""}`} key={href}>
-                <button
-                  className="menu-disclosure"
-                  type="button"
-                  aria-expanded={productsOpen}
-                  aria-controls="mobile-product-categories"
-                  onClick={() => {
-                    setProductsOpen((current) => !current);
-                    if (productsOpen) setExoskeletonsOpen(false);
-                  }}
-                >
-                  <small>0{i + 1}</small>
-                  <span>{label}</span>
-                  <i className="menu-chevron" aria-hidden="true" />
-                </button>
+                <div className="menu-disclosure">
+                  <Link className="menu-disclosure-link" href={`/${href}`} onClick={() => setOpen(false)}>
+                    <small>0{i + 1}</small>
+                    <span>{label}</span>
+                  </Link>
+                  <button
+                    className="menu-disclosure-toggle"
+                    type="button"
+                    aria-expanded={productsOpen}
+                    aria-controls="mobile-product-categories"
+                    aria-label={`${productsOpen ? "Hide" : "Show"} product categories`}
+                    onClick={() => {
+                      setProductsOpen((current) => !current);
+                      if (productsOpen) setExoskeletonsOpen(false);
+                    }}
+                  >
+                    <i className="menu-chevron" aria-hidden="true" />
+                  </button>
+                </div>
                 <div id="mobile-product-categories" className="menu-product-categories" hidden={!productsOpen}>
                   {productCategories.map((category) => category.name === "Exoskeleton" ? (
                     <div key={category.name} className={`menu-exoskeleton-category ${exoskeletonsOpen ? "is-open" : ""}`}>
