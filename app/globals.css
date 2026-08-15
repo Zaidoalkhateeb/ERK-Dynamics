@@ -5457,6 +5457,17 @@ footer .button.primary {
 .portfolio-category-nav a:hover span,
 .portfolio-category-nav a:hover i { color: rgba(255, 255, 255, .78); }
 
+/* The nav is a tab bar: only the selected category is shown, at every width. */
+.portfolio-page[data-active-category="exoskeletons"] [data-category]:not([data-category="exoskeletons"]),
+.portfolio-page[data-active-category="lidar"] [data-category]:not([data-category="lidar"]),
+.portfolio-page[data-active-category="remote-power"] [data-category]:not([data-category="remote-power"]) {
+  display: none;
+}
+.portfolio-category-nav { scroll-margin-top: 78px; }
+.portfolio-category-nav a.is-active { color: #fff; background: var(--portfolio-accent); }
+.portfolio-category-nav a.is-active span,
+.portfolio-category-nav a.is-active i { color: rgba(255, 255, 255, .78); }
+
 .portfolio-exo { padding: 120px 4vw 130px; background: #fff; }
 .portfolio-section-heading { width: min(1580px, 100%); margin: 0 auto 30px; display: grid; grid-template-columns: 1fr minmax(360px, .58fr); align-items: end; gap: 7vw; }
 .portfolio-section-heading span { color: var(--portfolio-accent); font: 700 clamp(15px, 1vw, 17px)/1.2 "IBM Plex Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
@@ -5604,14 +5615,7 @@ footer .button.primary {
   .portfolio-contact { min-height: 380px; grid-template-columns: 1fr; grid-template-areas: "eyebrow" "title" "button"; }
   .portfolio-contact .portfolio-button { justify-self: start; margin-top: 38px; }
 }
-/* ── Mobile: one category at a time, driven by the nav acting as a tab bar ── */
 @media (max-width: 680px) {
-  .portfolio-page[data-mobile-category="exoskeletons"] [data-category]:not([data-category="exoskeletons"]),
-  .portfolio-page[data-mobile-category="lidar"] [data-category]:not([data-category="lidar"]),
-  .portfolio-page[data-mobile-category="remote-power"] [data-category]:not([data-category="remote-power"]) {
-    display: none;
-  }
-
   /* Hero — shorter, stacked, no dead space above the tab bar. */
   .portfolio-hero,
   .portfolio-hero-inner { min-height: 0; }
@@ -5628,13 +5632,12 @@ footer .button.primary {
   .portfolio-hero-orbit--one { width: 300px; height: 300px; }
   .portfolio-hero-orbit--two { width: 190px; height: 190px; }
 
-  /* Tab bar. */
+  /* Tab bar — compact, three across, stays pinned under the header. */
   .portfolio-category-nav {
     position: sticky;
     top: 78px;
     grid-template-columns: repeat(3, 1fr);
     background: rgba(255, 255, 255, .96);
-    scroll-margin-top: 78px;
   }
   .portfolio-category-nav a {
     min-height: 56px;
@@ -5647,7 +5650,6 @@ footer .button.primary {
   }
   .portfolio-category-nav a:last-child { border-right: 0; }
   .portfolio-category-nav strong { font-size: 13px; letter-spacing: -.01em; text-align: center; }
-  .portfolio-category-nav a.is-active { color: #fff; background: var(--portfolio-accent); }
 
   /* Exoskeletons — switcher on top, then the image, then the copy. */
   .portfolio-exo { padding: 26px 20px 64px; }

@@ -12,9 +12,6 @@ const categories = [
 
 type CategoryId = (typeof categories)[number]["id"];
 
-/* Below this width the category nav behaves as a tab bar: one category is shown at a time. */
-const MOBILE_QUERY = "(max-width: 680px)";
-
 const exoskeletons = [
   {
     id: "omnisuit",
@@ -85,8 +82,8 @@ export function ProductsServicesExperience() {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
   }, []);
 
-  // Deep links such as /products-services#lidar must open that category on mobile,
-  // where every other one is hidden.
+  // Deep links such as /products-services#lidar must open that category, since
+  // every other one is unmounted.
   useEffect(() => {
     const syncFromHash = () => {
       const id = window.location.hash.slice(1);
@@ -118,8 +115,7 @@ export function ProductsServicesExperience() {
 
   const selectCategory = (event: MouseEvent<HTMLAnchorElement>, id: CategoryId) => {
     setCategory(id);
-    if (!window.matchMedia(MOBILE_QUERY).matches) return;
-    // On mobile the other categories are hidden, so the anchor target has moved:
+    // Only the chosen category stays mounted, so the anchor target has moved:
     // scroll back to the tab bar instead of letting the browser jump.
     event.preventDefault();
     requestAnimationFrame(() => {
@@ -128,7 +124,7 @@ export function ProductsServicesExperience() {
   };
 
   return (
-    <main className="portfolio-page" data-mobile-category={category}>
+    <main className="portfolio-page" data-active-category={category}>
       <section className="portfolio-hero" aria-labelledby="portfolio-title">
         <div className="portfolio-hero-grid" aria-hidden="true" />
         <div className="portfolio-hero-glow" aria-hidden="true" />

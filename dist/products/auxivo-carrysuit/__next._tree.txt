@@ -1,2 +1,2 @@
-:HL["/assets/static/chunks/36yekta5f-h-c.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"products","param":null,"prefetchHints":4192,"slots":{"children":{"name":"product-slug","param":{"type":"d","key":"auxivo-carrysuit","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"egWr88X0xyV7zzSTH9kec"}
+:HL["/assets/static/chunks/2re21ptw1mixl.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"products","param":null,"prefetchHints":4192,"slots":{"children":{"name":"product-slug","param":{"type":"d","key":"auxivo-carrysuit","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"HHCI3ZIK4gnabk-2uA81G"}

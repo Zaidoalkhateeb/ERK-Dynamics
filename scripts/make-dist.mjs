@@ -51,8 +51,10 @@ console.log(`dist/ built — rewrote /_next/ in ${rewritten} files`);
 await promisify(execFile)("powershell", [
   "-NoProfile",
   "-Command",
-  `Compress-Archive -Path '${dist}\\*' -DestinationPath '${zip}' -CompressionLevel Optimal`,
+  `Compress-Archive -Path '${dist}${path.sep}*' -DestinationPath '${zip}' -CompressionLevel Optimal -Force`,
 ]);
 
-const { size } = await stat(zip);
+const zipStat = await stat(zip).catch(() => null);
+if (!zipStat) throw new Error("Compress-Archive produced no dist.zip — run the command manually.");
+const { size } = zipStat;
 console.log(`dist.zip written — ${(size / 1024 / 1024).toFixed(1)} MB`);
