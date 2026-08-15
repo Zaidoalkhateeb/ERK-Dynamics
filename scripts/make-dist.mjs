@@ -17,6 +17,17 @@ const zip = path.join(root, "dist.zip");
 
 // Only these carry URLs into the shipped bundle; binaries must never be touched.
 const REWRITABLE = new Set([".html", ".js", ".txt", ".css", ".json", ".xml", ".map"]);
+const CHUNK_CSS = /\/assets\/static\/chunks\/[^"'\s]+\.css/g;
+
+async function findFiles(dir, extension) {
+  const matches = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) matches.push(...await findFiles(full, extension));
+    else if (path.extname(entry.name) === extension) matches.push(full);
+  }
+  return matches;
+}
 
 async function rewrite(dir) {
   let rewritten = 0;
@@ -28,7 +39,7 @@ async function rewrite(dir) {
     }
     if (!REWRITABLE.has(path.extname(entry.name))) continue;
     const source = await readFile(full, "utf8");
-    let output = source.replaceAll("/_next/", "/assets/");
+    let output = source.replaceAll("/_next/", "/assets/").replace(CHUNK_CSS, "/style.css");
     if (path.extname(entry.name) === ".html") {
       // React adds this optional hint to script preloads, but Firefox flags it as unsupported.
       output = output.replace(/\sfetchpriority=(["'])(?:high|low|auto)\1/gi, "");
@@ -48,6 +59,12 @@ await rm(dist, { recursive: true, force: true });
 await rm(zip, { force: true });
 await cp(out, dist, { recursive: true });
 await rename(path.join(dist, "_next"), path.join(dist, "assets"));
+
+const cssFiles = await findFiles(path.join(dist, "assets"), ".css");
+if (cssFiles.length !== 1) {
+  throw new Error(`Expected one generated stylesheet, found ${cssFiles.length}.`);
+}
+await cp(cssFiles[0], path.join(dist, "style.css"));
 
 const rewritten = await rewrite(dist);
 console.log(`dist/ built — rewrote /_next/ in ${rewritten} files`);

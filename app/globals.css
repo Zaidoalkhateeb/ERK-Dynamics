@@ -5464,9 +5464,9 @@ footer .button.primary {
 .portfolio-hero-orbit--two { width: 310px; height: 310px; left: 5%; bottom: 0; animation-direction: reverse; animation-duration: 19s; }
 
 .portfolio-category-nav {
-  position: sticky;
+  position: relative;
   z-index: 55;
-  top: 78px;
+  top: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   color: var(--portfolio-ink);
