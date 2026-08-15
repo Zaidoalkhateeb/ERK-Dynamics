@@ -6,23 +6,7 @@ import { PointerEvent, useEffect, useRef, useState } from "react";
 
 const exoskeletons = [
   {
-    id: "liftsuit",
-    number: "01",
-    name: "LiftSuit",
-    image: "/media/liftsuit-work.webp",
-    detail: "/media/liftsuit-hero.webp",
-    alt: "Worker using the Auxivo LiftSuit during industrial work",
-    focus: "",
-    description: "Lightweight passive support for repetitive lifting, low handling, and prolonged forward-leaning work.",
-    tasks: ["Lifting", "Forward leaning", "Repetitive handling"],
-    href: "/products/auxivo-liftsuit",
-    specLabel: "Sizes",
-    specValue: "S/M · L/XL",
-    cta: "Experience LiftSuit",
-  },
-  {
     id: "omnisuit",
-    number: "02",
     name: "OmniSuit",
     image: "/media/omnisuit-work.webp",
     detail: "/media/omnisuit-detail.webp",
@@ -36,8 +20,21 @@ const exoskeletons = [
     cta: "Experience OmniSuit",
   },
   {
+    id: "liftsuit",
+    name: "LiftSuit",
+    image: "/media/liftsuit-work.webp",
+    detail: "/media/liftsuit-hero.webp",
+    alt: "Worker using the Auxivo LiftSuit during industrial work",
+    focus: "",
+    description: "Lightweight passive support for repetitive lifting, low handling, and prolonged forward-leaning work.",
+    tasks: ["Lifting", "Forward leaning", "Repetitive handling"],
+    href: "/products/auxivo-liftsuit",
+    specLabel: "Sizes",
+    specValue: "S/M · L/XL",
+    cta: "Experience LiftSuit",
+  },
+  {
     id: "deltasuit",
-    number: "03",
     name: "DeltaSuit",
     image: "/media/deltasuit-1.jpeg",
     detail: "/media/deltasuit-3.jpeg",
@@ -52,7 +49,6 @@ const exoskeletons = [
   },
   {
     id: "carrysuit",
-    number: "04",
     name: "CarrySuit",
     image: "/media/carrysuit-1.jpeg",
     detail: "/media/carrysuit-3.jpeg",
@@ -126,16 +122,16 @@ export function ProductsServicesExperience() {
       </section>
 
       <nav id="technology-portfolio" className="portfolio-category-nav" aria-label="Technology categories">
-        <a href="#exoskeletons"><span>01</span><strong>Exoskeletons</strong><i></i></a>
-        <a href="#lidar"><span>02</span><strong>LiDAR</strong><i></i></a>
-        <a href="#remote-power"><span>03</span><strong>Power Supply</strong><i></i></a>
+        <a href="#exoskeletons"><strong>Exoskeleton</strong><i></i></a>
+        <a href="#lidar"><strong>LiDAR</strong><i></i></a>
+        <a href="#remote-power"><strong>Power Supply</strong><i></i></a>
       </nav>
 
       <section id="exoskeletons" className="portfolio-exo" aria-labelledby="exo-title">
         <header className="portfolio-section-heading">
           <div>
-            <span>01 / Wearable robotics</span>
-            <h2 id="exo-title" className="portfolio-visually-hidden">Exoskeletons</h2>
+            <span>Wearable robotics</span>
+            <h2 id="exo-title" className="portfolio-visually-hidden">Exoskeleton</h2>
           </div>
         </header>
 
@@ -162,12 +158,11 @@ export function ProductsServicesExperience() {
                   className={activeProduct === index ? "is-active" : ""}
                   onClick={() => setActiveProduct(index)}
                 >
-                  <span>{item.number}</span>{item.name}
+                  {item.name}
                 </button>
               ))}
             </div>
             <div className="portfolio-product-copy" key={product.id}>
-              <h3>{product.name}</h3>
               <p>{product.description}</p>
               <div className="portfolio-task-list">{product.tasks.map((task) => <span key={task}>{task}</span>)}</div>
               <dl>
@@ -202,7 +197,7 @@ export function ProductsServicesExperience() {
           <span className="portfolio-data-tag portfolio-data-tag--three">360° scan</span>
         </div>
         <div className="portfolio-tech-copy">
-          <p className="portfolio-kicker">02 / LiDAR systems</p>
+          <p className="portfolio-kicker">LiDAR systems</p>
           <h2 id="lidar-title">See the atmosphere<br />in motion</h2>
           <p>Advanced LiDAR systems for measurement led applications across wind power, meteorology, environmental monitoring, and aviation.</p>
           <ul><li>Wind measurement</li><li>Meteorology</li><li>Environmental monitoring</li><li>Aviation applications</li></ul>
@@ -213,7 +208,7 @@ export function ProductsServicesExperience() {
 
       <section id="remote-power" className="portfolio-tech portfolio-tech--power" aria-labelledby="power-title">
         <div className="portfolio-tech-copy">
-          <p className="portfolio-kicker">03 / Remote power supply</p>
+          <p className="portfolio-kicker">Remote power supply</p>
           <h2 id="power-title">Power beyond<br />the conventional grid</h2>
           <p>Remote power supply systems for equipment and monitoring infrastructure deployed where conventional power access is limited or unavailable.</p>
           <ul><li>Remote monitoring sites</li><li>Field infrastructure</li><li>System-level evaluation</li><li>Application-led configuration</li></ul>
@@ -243,5 +238,5 @@ export function ProductsServicesExperience() {
 }
 
 function Arrow() {
-  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>;
+  return <span className="site-arrow" aria-hidden="true" />;
 }

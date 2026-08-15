@@ -285,5 +285,5 @@ export function AboutExperience() {
 }
 
 function ArrowIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>;
+  return <span className="site-arrow" aria-hidden="true" />;
 }

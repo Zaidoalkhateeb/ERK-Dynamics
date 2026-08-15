@@ -194,7 +194,7 @@ export function IndustriesExperience() {
                   >
                     <span className="ind-tab-num">{item.number}</span>
                     <span className="ind-tab-name">{item.name}</span>
-                    <span className="ind-tab-arrow" aria-hidden="true">→</span>
+                    <span className="site-arrow ind-tab-arrow" aria-hidden="true" />
                   </button>
                 </li>
               ))}
@@ -335,5 +335,5 @@ function IndustryGlyph({ id }: { id: string }) {
 }
 
 function Arrow() {
-  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>;
+  return <span className="site-arrow" aria-hidden="true" />;
 }

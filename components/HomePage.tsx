@@ -52,7 +52,7 @@ export function HomePage() {
           <p className="eyebrow">LIFTSUIT / PASSIVE EXOSKELETON</p>
           <h1>Strength, engineered<br/><em>around people.</em></h1>
           <p>Industrial technology should move with the worker—not stand between people and the work.</p>
-          <div><Link className="button primary" href="/products/auxivo-liftsuit">Experience LiftSuit <span className="site-arrow" aria-hidden="true" /></Link><Link className="motion-text-link" href="/products-services">Explore products ↓</Link></div>
+          <div><Link className="button primary" href="/products/auxivo-liftsuit">Experience LiftSuit <span className="site-arrow" aria-hidden="true" /></Link><Link className="motion-text-link" href="/products-services">Explore products <span className="site-arrow" aria-hidden="true" /></Link></div>
         </div>
         <div className="motion-hero-readout"><span>01 / LIFTSUIT</span><span>PASSIVE SUPPORT</span><span>SCROLL / INSPECT</span></div>
       </div>
@@ -78,7 +78,7 @@ export function HomePage() {
       <header><p className="eyebrow">CHOOSE BY TASK / 03</p><h2>Start with<br/>the movement.</h2><p>Select a task to see which system is designed for evaluation.</p></header>
       <div className="task-console">
         <div className="task-media"><Image key={tasks[task].image} src={tasks[task].image} alt={`${tasks[task].product} shown for ${tasks[task].label.toLowerCase()}`} fill sizes="(max-width: 800px) 100vw, 60vw"/><div className="task-reticle" aria-hidden="true"><i/><i/></div><span>{tasks[task].product} / TASK MATCH</span></div>
-        <div className="task-controls" role="tablist" aria-label="Choose an industrial task">{tasks.map((item, index) => <button key={item.id} role="tab" aria-selected={task===index} className={task===index?"active":""} onClick={()=>setTask(index)}><span>0{index+1}</span><b>{item.label}</b><i>→</i></button>)}<div className="task-result"><small>RECOMMENDED FOR EVALUATION</small><h3>{tasks[task].product}</h3><p>{tasks[task].text}</p><Link href={`/products/auxivo-${tasks[task].product.toLowerCase()}`}>Inspect product <span className="site-arrow" aria-hidden="true" /></Link></div></div>
+        <div className="task-controls" role="tablist" aria-label="Choose an industrial task">{tasks.map((item, index) => <button key={item.id} role="tab" aria-selected={task===index} className={task===index?"active":""} onClick={()=>setTask(index)}><span>0{index+1}</span><b>{item.label}</b><i className="site-arrow" aria-hidden="true" /></button>)}<div className="task-result"><small>RECOMMENDED FOR EVALUATION</small><h3>{tasks[task].product}</h3><p>{tasks[task].text}</p><Link href={`/products/auxivo-${tasks[task].product.toLowerCase()}`}>Inspect product <span className="site-arrow" aria-hidden="true" /></Link></div></div>
       </div>
     </section>
 

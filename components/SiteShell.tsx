@@ -15,7 +15,7 @@ const nav = [
 
 const productCategories = [
   {
-    name: "Exoskeletons",
+    name: "Exoskeleton",
     href: "/products-services",
     external: false,
   },
@@ -111,22 +111,22 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   <Link href="/products-services">View all technologies <span className="site-arrow" aria-hidden="true" /></Link>
                 </div>
                 <div className="nav-products-grid">
-                  {productCategories.map((category) => category.name === "Exoskeletons" ? (
-                    <div key={category.name} className="nav-product-category nav-product-category--exoskeletons">
+                  {productCategories.map((category) => category.name === "Exoskeleton" ? (
+                    <div key={category.name} className={`nav-product-category nav-product-category--exoskeletons ${isProduct ? "is-current" : ""}`}>
                       <strong>{category.name}</strong>
                       <div className="nav-exoskeleton-products">
-                        <Link href="/products/auxivo-liftsuit">
+                        <a href="/products/auxivo-liftsuit" className={pathname === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-liftsuit" ? "page" : undefined}>
                           <b>Auxivo LiftSuit</b>
-                        </Link>
-                        <Link href="/products/auxivo-omnisuit">
+                        </a>
+                        <a href="/products/auxivo-omnisuit" className={pathname === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-omnisuit" ? "page" : undefined}>
                           <b>Auxivo OmniSuit</b>
-                        </Link>
-                        <Link href="/products/auxivo-deltasuit">
+                        </a>
+                        <a href="/products/auxivo-deltasuit" className={pathname === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-deltasuit" ? "page" : undefined}>
                           <b>Auxivo DeltaSuit</b>
-                        </Link>
-                        <Link href="/products/auxivo-carrysuit">
+                        </a>
+                        <a href="/products/auxivo-carrysuit" className={pathname === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-carrysuit" ? "page" : undefined}>
                           <b>Auxivo CarrySuit</b>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   ) : (
@@ -151,8 +151,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               const nextOpen = !open;
               setOpen(nextOpen);
               if (nextOpen) {
-                setProductsOpen(false);
-                setExoskeletonsOpen(false);
+                setProductsOpen(isProduct);
+                setExoskeletonsOpen(isProduct);
               }
             }}
             aria-expanded={open}
@@ -188,7 +188,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                   <i className="menu-chevron" aria-hidden="true" />
                 </button>
                 <div id="mobile-product-categories" className="menu-product-categories" hidden={!productsOpen}>
-                  {productCategories.map((category) => category.name === "Exoskeletons" ? (
+                  {productCategories.map((category) => category.name === "Exoskeleton" ? (
                     <div key={category.name} className={`menu-exoskeleton-category ${exoskeletonsOpen ? "is-open" : ""}`}>
                       <button
                         className="menu-category-disclosure"
@@ -201,18 +201,18 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                         <i className="menu-chevron" aria-hidden="true" />
                       </button>
                       <div id="mobile-exoskeleton-products" className="menu-exoskeleton-products" hidden={!exoskeletonsOpen}>
-                        <Link href="/products/auxivo-liftsuit">
+                        <a href="/products/auxivo-liftsuit" className={pathname === "/products/auxivo-liftsuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-liftsuit" ? "page" : undefined}>
                           <span>Auxivo LiftSuit</span>
-                        </Link>
-                        <Link href="/products/auxivo-omnisuit">
+                        </a>
+                        <a href="/products/auxivo-omnisuit" className={pathname === "/products/auxivo-omnisuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-omnisuit" ? "page" : undefined}>
                           <span>Auxivo OmniSuit</span>
-                        </Link>
-                        <Link href="/products/auxivo-deltasuit">
+                        </a>
+                        <a href="/products/auxivo-deltasuit" className={pathname === "/products/auxivo-deltasuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-deltasuit" ? "page" : undefined}>
                           <span>Auxivo DeltaSuit</span>
-                        </Link>
-                        <Link href="/products/auxivo-carrysuit">
+                        </a>
+                        <a href="/products/auxivo-carrysuit" className={pathname === "/products/auxivo-carrysuit" ? "is-active" : ""} aria-current={pathname === "/products/auxivo-carrysuit" ? "page" : undefined}>
                           <span>Auxivo CarrySuit</span>
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   ) : (
@@ -324,9 +324,41 @@ function LinkedInIcon() {
 const whatsappLink =
   "https://wa.me/905372574543?text=Hello%20ERK%20Dynamics%2C%20I%20would%20like%20to%20discuss%20an%20industrial%20technology%20requirement.";
 
+function FooterTechnologyMotifs() {
+  return (
+    <div className="footer-tech-motifs" aria-hidden="true">
+      <svg className="footer-tech-motif footer-tech-motif--wearable" viewBox="0 0 160 220">
+        <g className="footer-wearable-frame">
+          <circle cx="80" cy="28" r="18" />
+          <path d="M80 47v73M80 67 47 93M80 67l33 26M80 120l-24 75M80 120l28 75" />
+          <path d="M58 70 47 128l18 8M102 70l12 58-19 8" />
+        </g>
+        <g className="footer-wearable-energy">
+          <path d="M64 58 52 105l13 31M96 58l18 47-19 31M68 122l-12 73M92 122l16 73" />
+        </g>
+        <g className="footer-wearable-joints"><circle cx="52" cy="105" r="5"/><circle cx="65" cy="136" r="5"/><circle cx="114" cy="105" r="5"/><circle cx="95" cy="136" r="5"/></g>
+      </svg>
+
+      <svg className="footer-tech-motif footer-tech-motif--lidar" viewBox="0 0 220 220">
+        <g className="footer-lidar-rings"><circle cx="110" cy="102" r="82"/><circle cx="110" cy="102" r="58"/><circle cx="110" cy="102" r="34"/></g>
+        <g className="footer-lidar-scan"><path d="M110 162 177 65"/><circle cx="177" cy="65" r="5"/></g>
+        <g className="footer-lidar-unit"><path d="m75 164 12-28h46l12 28-8 35H83Z"/><path d="M87 136h46l-8-20H95Z"/><circle cx="110" cy="127" r="5"/></g>
+      </svg>
+
+      <svg className="footer-tech-motif footer-tech-motif--power" viewBox="0 0 240 180">
+        <g className="footer-power-cells"><path d="M18 30h30l9 16-9 16H18L9 46Z"/><path d="M61 30h30l9 16-9 16H61L52 46Z"/><path d="M18 70h30l9 16-9 16H18L9 86Z"/><path d="M182 70h30l9 16-9 16h-30l-9-16Z"/><path d="M182 110h30l9 16-9 16h-30l-9-16Z"/></g>
+        <g className="footer-power-flow"><path d="M18 126h61l22-22h38l23-22h50"/><path d="M44 151h80l22-22h66"/></g>
+        <g className="footer-power-core"><rect x="82" y="28" width="78" height="98" rx="8"/><rect x="95" y="42" width="52" height="49" rx="4"/><path d="m124 49-17 25h14l-7 13 22-27h-14Z"/><path d="M104 108h34"/></g>
+        <g className="footer-power-pulses"><circle cx="18" cy="126" r="4"/><circle cx="212" cy="82" r="4"/><circle cx="212" cy="129" r="4"/></g>
+      </svg>
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer>
+      <FooterTechnologyMotifs />
       <div className="footer-grid expanded">
         <div>
           <Logo />
@@ -338,21 +370,19 @@ function Footer() {
         </div>
         <div>
           <b>EXPLORE</b>
-          <Link href="/products-services">Products</Link>
-          <Link href="/about">About Us</Link>
+          <Link href="/industries">Industries</Link>
           <Link href="/partners">Partners</Link>
+          <Link href="/about">About Us</Link>
           <Link href="/contact">Contact Us</Link>
-          <Link href="/become-a-partner">Become a Partner</Link>
         </div>
         <div>
           <b>PRODUCTS</b>
-          <Link href="/products/auxivo-liftsuit">Auxivo LiftSuit</Link>
-          <Link href="/products/auxivo-omnisuit">Auxivo OmniSuit</Link>
-          <Link href="/products/auxivo-deltasuit">Auxivo DeltaSuit</Link>
-          <Link href="/products/auxivo-carrysuit">Auxivo CarrySuit</Link>
+          <Link href="/products-services#exoskeletons">Exoskeleton</Link>
+          <Link href="/products-services#lidar">Lidar</Link>
+          <Link href="/products-services#remote-power">Power Supply</Link>
         </div>
         <div>
-          <b>CONNECT</b>
+          <b>CONTACT</b>
           <a href="tel:+905372574543">Phone</a>
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
             WhatsApp

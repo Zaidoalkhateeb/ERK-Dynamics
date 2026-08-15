@@ -73,10 +73,10 @@ export default function PartnersPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Partner Website <span>↗</span>
+                    Partner Website <span className="site-arrow" aria-hidden="true" />
                   </a>
                   <Link className="button partner-products-button" href="/products-services">
-                    Products &amp; Services <span>→</span>
+                    Products &amp; Services <span className="site-arrow" aria-hidden="true" />
                   </Link>
                 </div>
               </div>
@@ -117,10 +117,10 @@ export default function PartnersPage() {
               </p>
               <div className="partner-actions">
                 <Link className="button primary" href="/become-a-partner">
-                  Start the conversation <span>↗</span>
+                  Start the conversation <span className="site-arrow" aria-hidden="true" />
                 </Link>
                 <Link className="button partner-products-button" href="/contact">
-                  Contact us <span>→</span>
+                  Contact us <span className="site-arrow" aria-hidden="true" />
                 </Link>
               </div>
             </div>

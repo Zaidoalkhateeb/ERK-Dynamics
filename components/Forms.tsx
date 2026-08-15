@@ -31,7 +31,7 @@ export function InquiryForm() {
         <span>✓</span>
         <h2>Thank you.</h2>
         <p>Your request has been received. Our team will respond using the details you provided.</p>
-        <button className="text-link" onClick={() => setState("idle")}>Send another request →</button>
+        <button className="text-link" onClick={() => setState("idle")}>Send another request <span className="site-arrow" aria-hidden="true" /></button>
       </div>
     );
   }

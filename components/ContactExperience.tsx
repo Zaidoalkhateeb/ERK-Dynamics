@@ -208,7 +208,7 @@ export function ContactExperience() {
             <p>Your request has been received and will be directed to the appropriate member of our team.</p>
             <small>REFERENCE / {reference}</small>
             <button className="text-link" onClick={() => setStatus("idle")}>
-              Send another request →
+              Send another request <span className="site-arrow" aria-hidden="true" />
             </button>
           </div>
         ) : (
