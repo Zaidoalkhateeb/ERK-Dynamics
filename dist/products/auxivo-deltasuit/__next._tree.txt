@@ -1,2 +1,2 @@
-:HL["/style.d081ca19.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"products","param":null,"prefetchHints":4192,"slots":{"children":{"name":"product-slug","param":{"type":"d","key":"auxivo-deltasuit","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"B6LhAQxLP4ZUQ16I-ey5p"}
+:HL["/style.87957509.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"products","param":null,"prefetchHints":4192,"slots":{"children":{"name":"product-slug","param":{"type":"d","key":"auxivo-deltasuit","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"G_B5A7f8nUApp3ffogEnP"}

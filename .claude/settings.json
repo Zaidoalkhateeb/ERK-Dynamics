@@ -23,7 +23,30 @@
       "Bash(mkdir -p \"/c/Users/zaido/AppData/Local/Temp/claude/c--Users-zaido-ERK-Dynamics-1/9ebe2ffc-b133-4c3f-ac70-2880d3163af9/scratchpad/shots\")",
       "Bash(node -e \"require.resolve\\('playwright'\\)\")",
       "Bash(npm init *)",
-      "Bash(node shot.js)"
+      "Bash(node shot.js)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --disable-gpu --no-sandbox --window-size=1920,3200 --virtual-time-budget=20000 --user-data-dir=\"./cdp-profile\" --dump-dom \"http://localhost:3000/about/\")",
+      "Bash(sed -i 's|http://localhost:3000/about/|http://localhost:4321/about/|' probe2.mjs)",
+      "Bash(node probe2.mjs 1920 687)",
+      "Bash(sed -i '/^require\\(\"fs\"\\);$/d' probe6.mjs)",
+      "Bash(node probe6.mjs)",
+      "Bash(sed -i 's|\\\\*unpkg.com\\\\*|*/globe/*|' probe5.mjs)",
+      "Bash(node probe5.mjs)",
+      "Bash(sed -i 's|localhost:4321|localhost:3000|' probe6.mjs)",
+      "Bash(sed -i 's|nojs-principles.png|nojs-fixed.png|g' probe6.mjs)",
+      "Bash(sed -i 's|localhost:3000|localhost:4322|' probe2.mjs probe5.mjs)",
+      "Bash(sed -i 's|urls: \\\\[\"\\\\*/globe/\\\\*\"\\\\]|urls: [\"*unpkg.com*\"]|' probe5.mjs)",
+      "Bash(sed 's|localhost:3000|localhost:4322|' tabs2.mjs)",
+      "Bash(node tabs3.mjs 1920 940)",
+      "Bash(sed 's|http://localhost:3000|https://www.erkdynamics.com|' tabs2.mjs)",
+      "Bash(node tabslive.mjs 1920 940)",
+      "Bash(python -)",
+      "Bash(rm -rf baseline)",
+      "Bash(node shots.mjs http://localhost:4324 ./baseline)",
+      "Bash(sed 's|const strip=new OffscreenCanvas\\(cw\\\\*2+20, ch\\); const g=strip.getContext\\(.2d.\\);|const Z=6; const strip=new OffscreenCanvas\\(\\(cw*2+20\\)*Z, ch*Z\\); const g=strip.getContext\\(\"2d\"\\); g.imageSmoothingEnabled=false; g.scale\\(Z,Z\\);|' crop.mjs)",
+      "Bash(sed -i 's|partners-diff.png|partners-diff-zoom.png|' crop2.mjs)",
+      "Bash(node crop2.mjs)",
+      "Bash(rm -rf out dist dist.zip)",
+      "Bash(npm run *)"
     ]
   }
 }

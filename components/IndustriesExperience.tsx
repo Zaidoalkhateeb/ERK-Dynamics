@@ -215,7 +215,6 @@ export function IndustriesExperience() {
       <section id="industry-directory" className="ind-directory" aria-labelledby="ind-dir-title">
         <div className="ind-directory-inner">
           <div className="ind-directory-head">
-            <p className="ind-kicker"></p>
             <h2 id="ind-dir-title">
               <span>Technology matched</span>
               <span>to your industry.</span>

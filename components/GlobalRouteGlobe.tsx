@@ -46,6 +46,13 @@ const routes = markets.map((market, index) => ({
   delay: index * 0.11,
 }));
 
+// Served from our own origin: three-globe only calls onGlobeReady from the texture
+// loader's success path, so a blocked or slow CDN would leave the loader spinning forever.
+const GLOBE_TEXTURE = "/globe/earth-blue-marble.jpg";
+const GLOBE_BUMP_MAP = "/globe/earth-topology.png";
+// Backstop for the same reason: reveal the globe even if the texture never resolves.
+const READY_TIMEOUT_MS = 8000;
+
 export function GlobalRouteGlobe() {
   const mountRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<GlobeInstance | null>(null);
@@ -57,6 +64,13 @@ export function GlobalRouteGlobe() {
 
     let disposed = false;
     let resizeObserver: ResizeObserver | undefined;
+    let readyTimer: number | undefined;
+
+    const reveal = () => {
+      if (disposed) return;
+      window.clearTimeout(readyTimer);
+      setReady(true);
+    };
 
     const initialise = async () => {
       const { default: Globe } = await import("globe.gl");
@@ -69,12 +83,16 @@ export function GlobalRouteGlobe() {
       });
       globeRef.current = globe;
 
+      // The sphere, arcs and labels render without the texture, so a failed image
+      // should degrade the globe rather than hide the whole section behind the loader.
+      readyTimer = window.setTimeout(reveal, READY_TIMEOUT_MS);
+
       globe
         .width(mount.clientWidth)
         .height(mount.clientHeight)
         .backgroundColor("rgba(0,0,0,0)")
-        .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
-        .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
+        .globeImageUrl(GLOBE_TEXTURE)
+        .bumpImageUrl(GLOBE_BUMP_MAP)
         .showGraticules(true)
         .showAtmosphere(true)
         .atmosphereColor("#8fd4e6")
@@ -115,7 +133,7 @@ export function GlobalRouteGlobe() {
         .arcDashAnimateTime(0)
         .arcsTransitionDuration(0)
         .pointOfView({ lat: 24, lng: 26, altitude: 2.5 }, 0)
-        .onGlobeReady(() => setReady(true));
+        .onGlobeReady(reveal);
 
       // Static presentation: no auto-rotation, no drag/zoom, no animation — a fixed globe.
       const controls = globe.controls();
@@ -135,10 +153,12 @@ export function GlobalRouteGlobe() {
       resizeObserver.observe(mount);
     };
 
-    void initialise();
+    // WebGL can be unavailable or blocked; clearing the loader beats an endless spinner.
+    void initialise().catch(reveal);
 
     return () => {
       disposed = true;
+      window.clearTimeout(readyTimer);
       resizeObserver?.disconnect();
       globeRef.current?._destructor();
       globeRef.current = null;

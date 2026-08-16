@@ -25,26 +25,44 @@ export function AboutExperience() {
 
   useEffect(() => {
     const items = Array.from(document.querySelectorAll<HTMLElement>(".erkAboutPrinciple"));
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const revealAll = () => items.forEach((item) => item.classList.add("is-visible"));
 
+    const cleanUpParallax = () => {
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+
+    if (!items.length) return cleanUpParallax;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion || !("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
+      revealAll();
+      return cleanUpParallax;
     }
 
-    const observer = reducedMotion ? null : new IntersectionObserver((entries) => {
+    let reported = false;
+    const observer = new IntersectionObserver((entries) => {
+      reported = true;
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
-        observer?.unobserve(entry.target);
+        observer.unobserve(entry.target);
       });
     }, { threshold: 0.28 });
 
-    observer?.observe(items[0]);
-    items.slice(1).forEach((item) => observer?.observe(item));
+    items.forEach((item) => observer.observe(item));
+
+    // The principles are the whole right-hand panel, so they must never stay blank.
+    // An observer always reports on setup; silence means it is not working — show everything.
+    const failsafe = window.setTimeout(() => {
+      if (reported) return;
+      observer.disconnect();
+      revealAll();
+    }, 2000);
 
     return () => {
-      observer?.disconnect();
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      window.clearTimeout(failsafe);
+      observer.disconnect();
+      cleanUpParallax();
     };
   }, []);
 
@@ -182,99 +200,6 @@ export function AboutExperience() {
           <div className="erkAboutJourney" aria-label="İstanbul connected with global industrial markets">
             <div className="erkAboutGlobe erkAboutGlobe--interactive">
               <GlobalRouteGlobe />
-              {false && (
-              <svg viewBox="0 0 720 520" role="presentation">
-                <defs>
-                  <radialGradient id="erk-globe-fill" cx="38%" cy="30%" r="70%">
-                    <stop offset="0%" stopColor="#ffffff" stopOpacity=".98" />
-                    <stop offset="72%" stopColor="#e8f5f7" stopOpacity=".92" />
-                    <stop offset="100%" stopColor="#cce9ee" stopOpacity=".72" />
-                  </radialGradient>
-                  <linearGradient id="erk-route-stroke" x1="262" y1="204" x2="472" y2="250">
-                    <stop offset="0%" stopColor="#0a7e96" />
-                    <stop offset="48%" stopColor="#22bfd1" />
-                    <stop offset="100%" stopColor="#0a7e96" />
-                  </linearGradient>
-                  <filter id="erk-globe-shadow" x="-30%" y="-30%" width="160%" height="170%">
-                    <feDropShadow dx="0" dy="24" stdDeviation="22" floodColor="#0a6274" floodOpacity=".16" />
-                  </filter>
-                  <filter id="erk-route-glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="4" result="blur" />
-                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                  </filter>
-                  <clipPath id="erk-globe-clip"><circle cx="360" cy="252" r="214" /></clipPath>
-                </defs>
-
-                <circle className="erkAboutGlobeShadow" cx="360" cy="252" r="214" filter="url(#erk-globe-shadow)" />
-                <circle className="erkAboutGlobeSphere" cx="360" cy="252" r="214" fill="url(#erk-globe-fill)" />
-
-                <g className="erkAboutGlobeGrid" clipPath="url(#erk-globe-clip)">
-                  <ellipse cx="360" cy="252" rx="92" ry="214" />
-                  <ellipse cx="360" cy="252" rx="164" ry="214" />
-                  <ellipse cx="360" cy="252" rx="214" ry="70" />
-                  <ellipse cx="360" cy="252" rx="214" ry="142" />
-                  <path d="M146 252h428" />
-                </g>
-
-                <g className="erkAboutGlobeLand" clipPath="url(#erk-globe-clip)">
-                  <path d="M132 171c34-38 80-71 132-91l38 13 21 25-14 30-38 13-15 32-37 8-19 27-35-6-33-51Z" />
-                  <path d="M261 193l28-11 24 13 19-7 28 13 27-9 42 7 19-15 34 10 24-9 61 31 37 54-9 47-39 8-25-32-41 2-20-25-44 8-33-13-30 14-31-20-40 6-27-27-4-35Z" />
-                  <path d="M310 277l39 5 25 29-10 48-19 52-31-26-21-51Z" />
-                  <path d="M517 345l35 7 21 28-26 24-37-17Z" />
-                </g>
-
-                <g className="erkAboutRegionalRoutes">
-                  <path d="M478 238 Q350 120 225 178" />
-                  <path d="M478 238 Q370 145 280 202" />
-                  <path d="M478 238 Q340 230 245 252" />
-                  <path d="M478 238 Q522 267 524 342" />
-                  <path d="M478 238 Q408 315 340 405" />
-                  <path d="M478 238 Q532 205 548 225" />
-                  <path d="M478 238 Q512 219 527 207" />
-                </g>
-
-                <g className="erkAboutShipment erkAboutShipment--regional">
-                  <rect x="-7" y="-5" width="14" height="10" rx="1.5" />
-                  <path d="M-7-1h14M0-5v10" />
-                  <animateMotion begin="-1.1s" dur="4.3s" repeatCount="indefinite" path="M478 238 Q522 267 524 342" rotate="auto" />
-                </g>
-                <g className="erkAboutShipment erkAboutShipment--regional">
-                  <rect x="-7" y="-5" width="14" height="10" rx="1.5" />
-                  <path d="M-7-1h14M0-5v10" />
-                  <animateMotion begin="-2.7s" dur="4.8s" repeatCount="indefinite" path="M478 238 Q350 120 225 178" rotate="auto" />
-                </g>
-                <g className="erkAboutShipment erkAboutShipment--regional">
-                  <rect x="-7" y="-5" width="14" height="10" rx="1.5" />
-                  <path d="M-7-1h14M0-5v10" />
-                  <animateMotion begin="-.8s" dur="5.2s" repeatCount="indefinite" path="M478 238 Q532 205 548 225" rotate="auto" />
-                </g>
-
-                <g className="erkAboutMapPoint erkAboutMapPoint--destination" transform="translate(478 238)">
-                  <circle className="erkAboutMapPointPulse" r="24" />
-                  <circle className="erkAboutMapPointCore" r="9" />
-                </g>
-                <g className="erkAboutMarketPoints">
-                  <circle cx="225" cy="178" r="4" />
-                  <circle cx="280" cy="202" r="4" />
-                  <circle cx="245" cy="252" r="4" />
-                  <circle cx="524" cy="342" r="4" />
-                  <circle cx="340" cy="405" r="4" />
-                  <circle cx="548" cy="225" r="4" />
-                  <circle cx="527" cy="207" r="4" />
-                </g>
-
-                <g className="erkAboutCountryLabels">
-                  <text className="erkAboutCountryLabel--hub" x="492" y="246">ISTANBUL</text>
-                  <text x="213" y="168" textAnchor="end">LONDON</text>
-                  <text x="268" y="190" textAnchor="end">FRANKFURT</text>
-                  <text x="232" y="270" textAnchor="end">BARCELONA</text>
-                  <text x="534" y="355">DUBAI</text>
-                  <text x="332" y="424" textAnchor="end">SOUTH AFRICA</text>
-                  <text x="558" y="231">BEIJING</text>
-                  <text x="538" y="198">BAKU</text>
-                </g>
-              </svg>
-              )}
             </div>
           </div>
         </div>
