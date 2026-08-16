@@ -30,7 +30,6 @@ const partners = [
 ] as const;
 
 export const metadata: Metadata = {
-  title: "Technology Partners",
   description:
     "Explore ERK Dynamics technology partners Auxivo and LEICE, and discover their industrial products and solutions.",
 };
