@@ -23,7 +23,8 @@ const technologies = [
     tagline: "Spatial sensing",
     description:
       "Measurement, mapping, and navigation systems that give machines and teams an accurate picture of the space they work in.",
-    href: "/products-services/#lidar",
+    href: "https://think-metric.co/products/lidars",
+    external: true,
   },
   {
     id: "power",
@@ -32,16 +33,9 @@ const technologies = [
     tagline: "Reliable energy",
     description:
       "Dependable power for equipment operating away from fixed infrastructure, across changing industrial conditions.",
-    href: "/products-services/#remote-power",
+    href: "https://think-metric.co/products/remote-power-supply-systems",
+    external: true,
   },
-] as const;
-
-const industries = [
-  { number: "01", name: "Manufacturing" },
-  { number: "02", name: "Logistics & Warehousing" },
-  { number: "03", name: "Construction" },
-  { number: "04", name: "Automotive" },
-  { number: "05", name: "Shipbuilding & Heavy Industry" },
 ] as const;
 
 const partners = [
@@ -52,6 +46,8 @@ const partners = [
     origin: "",
     description:
       "Swiss developer of passive industrial exoskeletons, engineered around freedom of movement and fast daily use.",
+    tags: ["Wearable robotics", "Passive support", "Switzerland"],
+    website: "https://www.auxivo.com/",
   },
   {
     id: "leice",
@@ -60,18 +56,50 @@ const partners = [
     origin: "",
     description:
       "Sensing and measurement technologies supporting mapping, navigation, and spatial awareness in industrial settings.",
+    tags: ["LiDAR systems", "Remote sensing", "Measurement"],
+    website: "https://www.leice-lidar.com/en/",
   },
 ] as const;
 
 const principles = [
-  ["Evaluation first", "Task assessment, fitting, and field trials before any wider rollout."],
-  ["Local support", "An Istanbul-based team and a single point of contact through the product lifecycle."],
-  ["Responsible claims", "Technical clarity about what a technology does and what it does not."],
+  {
+    id: "evaluation",
+    title: "Evaluation first",
+    text: "Task assessment, fitting, and field trials before any wider rollout.",
+  },
+  {
+    id: "support",
+    title: "Local support",
+    text: "An Istanbul-based team and a single point of contact through the product lifecycle.",
+  },
+  {
+    id: "claims",
+    title: "Responsible claims",
+    text: "Technical clarity about what a technology does and what it does not.",
+  },
+] as const;
+
+// Pre-sized copies of the product photography — see scripts/make-home-thumbs.mjs.
+const productImages: Record<string, string> = {
+  "auxivo-omnisuit": "/media/home/omnisuit-card.webp",
+  "auxivo-liftsuit": "/media/home/liftsuit-card.webp",
+  "auxivo-deltasuit": "/media/home/deltasuit-card.webp",
+  "auxivo-carrysuit": "/media/home/carrysuit-card.webp",
+};
+
+// Every figure is countable from the site itself: two partners, four published
+// Auxivo systems, three technology categories, five industries on /industries.
+const figures = [
+  { value: 2, label: "Technology partners", note: "" },
+  { value: 4, label: "Exoskeleton systems", note: "" },
+  { value: 3, label: "Technology categories", note: "" },
+  { value: 5, label: "Industries served", note: "" },
 ] as const;
 
 export function HomePage() {
   const mainRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
+  const figuresRef = useRef<HTMLElement>(null);
   const frameRef = useRef<number | null>(null);
   const featured = products.filter((item) => item.status === "published");
 
@@ -102,6 +130,49 @@ export function HomePage() {
 
     targets.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
+  }, []);
+
+  // The figures count up the first time the band is reached. Values are written
+  // into the markup too, so they are correct before (and without) the script.
+  useEffect(() => {
+    const band = figuresRef.current;
+    if (!band) return;
+    const counters = Array.from(band.querySelectorAll<HTMLElement>("[data-count-to]"));
+    if (!counters.length) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    const run = () => {
+      const started = performance.now();
+      const step = (now: number) => {
+        // easeOutCubic, so the numbers land softly rather than stopping dead.
+        const t = Math.min(1, (now - started) / 900);
+        const eased = 1 - (1 - t) ** 3;
+        counters.forEach((node) => {
+          const target = Number(node.dataset.countTo);
+          node.textContent = String(Math.round(target * eased));
+        });
+        if (t < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.disconnect();
+          run();
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(band);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Each art layer drifts by its own `data-depth`, matching the industries and partners heroes.
@@ -256,15 +327,46 @@ export function HomePage() {
               adopt, and scale advanced systems that improve worker safety and operational performance.
             </p>
             <ul className="home-principles">
-              {principles.map(([title, text]) => (
-                <li key={title}>
-                  <strong>{title}</strong>
-                  <span>{text}</span>
+              {principles.map((principle) => (
+                <li key={principle.id}>
+                  <span className="home-principle-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" role="presentation">
+                      <PrincipleIcon id={principle.id} />
+                    </svg>
+                  </span>
+                  <strong>{principle.title}</strong>
+                  <span className="home-principle-text">{principle.text}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
+      </section>
+
+      <section ref={figuresRef} className="home-figures" aria-label="ERK Dynamics at a glance">
+        <div className="home-figures-art" aria-hidden="true">
+          <svg viewBox="0 0 1400 260" preserveAspectRatio="xMidYMid slice" role="presentation">
+            <g className="home-figures-rings">
+              <circle cx="1180" cy="130" r="210" />
+              <circle cx="1180" cy="130" r="150" />
+              <circle cx="1180" cy="130" r="92" />
+            </g>
+            <path className="home-figures-line" d="M-40 210H360l70-72h330l64 66h420" />
+            <path className="home-figures-line home-figures-line--slow" d="M-40 62h300l58 60h360l72-74h480" />
+          </svg>
+        </div>
+
+        <ul className="home-figure-list">
+          {figures.map((figure, index) => (
+            <li key={figure.label} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
+              <strong>
+                <span data-count-to={figure.value}>{figure.value}</span>
+              </strong>
+              <span className="home-figure-label">{figure.label}</span>
+              <span className="home-figure-note">{figure.note}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section id="home-technologies" className="home-tech" aria-labelledby="home-tech-title">
@@ -280,14 +382,25 @@ export function HomePage() {
         </div>
 
         <ul className="home-tech-grid">
-          {technologies.map((item, index) => (
+          {technologies.map((item, index) => {
+            // Two of the three categories are handled by the ERK Group company.
+            const CardTag = "external" in item && item.external ? "a" : Link;
+            const externalProps =
+              "external" in item && item.external
+                ? { target: "_blank" as const, rel: "noopener noreferrer" }
+                : {};
+            return (
             <li key={item.id} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
-              <Link className="home-tech-card" href={item.href}>
-                <span className="home-tech-num">{item.number}</span>
-                <span className="home-tech-glyph" aria-hidden="true">
-                  <svg viewBox="0 0 120 120" role="presentation">
-                    <TechGlyph id={item.id} />
-                  </svg>
+              <CardTag className="home-tech-card" href={item.href} {...externalProps}>
+                <span className="home-tech-shine" aria-hidden="true" />
+                <span className="home-tech-frame" aria-hidden="true" />
+                <span className="home-tech-head">
+                  <span className="home-tech-num">{item.number}</span>
+                  <span className="home-tech-glyph" aria-hidden="true">
+                    <svg viewBox="0 0 120 120" role="presentation">
+                      <TechGlyph id={item.id} />
+                    </svg>
+                  </span>
                 </span>
                 <span className="home-tech-tagline">{item.tagline}</span>
                 <span className="home-tech-name">{item.name}</span>
@@ -295,9 +408,10 @@ export function HomePage() {
                 <span className="home-tech-cue">
                   Learn more <span className="site-arrow" aria-hidden="true" />
                 </span>
-              </Link>
+              </CardTag>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </section>
 
@@ -317,6 +431,17 @@ export function HomePage() {
           {featured.map((item, index) => (
             <li key={item.slug} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
               <Link className="home-product-card" href={`/products/${item.slug}`}>
+                {productImages[item.slug] && (
+                  <span className="home-product-media">
+                    <Image
+                      src={productImages[item.slug]}
+                      alt={`Auxivo ${item.name} worn during industrial work`}
+                      width={720}
+                      height={540}
+                      sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 23vw"
+                    />
+                  </span>
+                )}
                 <span className="home-product-top">
                   <span className="home-product-num">{item.number}</span>
                   <span className="home-product-cat">{item.category}</span>
@@ -330,40 +455,6 @@ export function HomePage() {
             </li>
           ))}
         </ul>
-
-        <Link className="ind-button ind-button--secondary home-section-action" href="/products-services">
-          View the full portfolio <Arrow />
-        </Link>
-      </section>
-
-      <section className="home-industries" aria-labelledby="home-industries-title">
-        <div className="home-industries-inner">
-          <div className="home-industries-copy" data-reveal>
-            <h2 id="home-industries-title">
-              <span>One technology set</span>
-              <span>many operating realities</span>
-            </h2>
-            <p className="home-section-intro">
-              The same systems behave differently on a production line, a jobsite, and a dock. We start
-              with the environment.
-            </p>
-            <Link className="ind-button ind-button--primary" href="/industries">
-              Explore industries <Arrow />
-            </Link>
-          </div>
-
-          <ol className="home-industry-list">
-            {industries.map((item, index) => (
-              <li key={item.number} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
-                <Link href="/industries">
-                  <span className="home-industry-num">{item.number}</span>
-                  <span className="home-industry-name">{item.name}</span>
-                  <span className="site-arrow" aria-hidden="true" />
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
 
       <section className="home-partners" aria-labelledby="home-partners-title">
@@ -382,23 +473,81 @@ export function HomePage() {
           {partners.map((item, index) => (
             <li key={item.id} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
               <article className="home-partner-card">
-                <span className="home-partner-logo">
-                  <Image src={item.logo} alt={`${item.name} logo`} width={200} height={80} />
-                </span>
-                <p className="home-partner-origin">{item.origin}</p>
-                <h3>{item.name}</h3>
-                <p className="home-partner-desc">{item.description}</p>
+                <div className="home-partner-body">
+                  <span className="home-partner-logo">
+                    <Image src={item.logo} alt={`${item.name} logo`} width={200} height={80} />
+                  </span>
+                  <p className="home-partner-origin">{item.origin}</p>
+                  <p className="home-partner-desc">{item.description}</p>
+                  <ul className="home-partner-tags">
+                    {item.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                  <a
+                    className="home-partner-link"
+                    href={item.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Partner website <span className="site-arrow" aria-hidden="true" />
+                  </a>
+                </div>
+
+                {/* The artwork gets its own panel so it can never sit under the copy. */}
+                <div className={`home-partner-art home-partner-art--${item.id}`} aria-hidden="true">
+                  <svg viewBox="0 0 300 200" role="presentation">
+                    <PartnerArt id={item.id} />
+                  </svg>
+                </div>
               </article>
             </li>
           ))}
         </ul>
-
-        <Link className="ind-button ind-button--secondary home-section-action" href="/partners">
-          Meet our partners <Arrow />
-        </Link>
       </section>
 
     </main>
+  );
+}
+
+function PartnerArt({ id }: { id: string }) {
+  // Auxivo: a wearable frame with support paths running through it.
+  if (id === "auxivo") {
+    return (
+      <g>
+        <g className="home-partner-frame">
+          <circle cx="150" cy="42" r="16" />
+          <path d="M150 58v72M150 74l-34 28M150 74l34 28M150 130l-24 62M150 130l24 62" />
+        </g>
+        <path className="home-partner-flow" d="M116 102 128 66h44l12 36-14 44-22 16-22-16z" pathLength="1" />
+        <path className="home-partner-flow home-partner-flow--late" d="m126 192 4-60 20 20 20-20 4 60" pathLength="1" />
+        <g className="home-partner-node">
+          <circle cx="122" cy="112" r="5" />
+          <circle cx="178" cy="112" r="5" />
+        </g>
+      </g>
+    );
+  }
+
+  // LEICE: a sensor head sweeping the space in front of it.
+  return (
+    <g>
+      <g className="home-partner-frame">
+        <path d="M120 86h60l10 20-10 21h-60l-10-21z" />
+        <path d="M130 127v22h40v-22M138 149l-8 26h40l-8-26" />
+        <circle cx="150" cy="106" r="12" />
+      </g>
+      <g className="home-partner-scan">
+        <path d="M150 106 268 40" />
+        <path d="M150 106h124" />
+        <path d="M150 106 262 168" />
+      </g>
+      <path className="home-partner-arc" d="M268 40a104 104 0 0 1 0 132" pathLength="1" />
+      <g className="home-partner-node">
+        <circle cx="268" cy="40" r="5" />
+        <circle cx="262" cy="168" r="5" />
+      </g>
+    </g>
   );
 }
 
@@ -441,6 +590,40 @@ function TechGlyph({ id }: { id: string }) {
       );
     default:
       return null;
+  }
+}
+
+function PrincipleIcon({ id }: { id: string }) {
+  switch (id) {
+    // Clipboard with a checked line: the assessment that precedes a rollout.
+    case "evaluation":
+      return (
+        <g>
+          <path d="M14 10h20v6H14z" />
+          <path d="M14 13H9v27h30V13h-5" />
+          <path className="home-principle-mark" d="m16 26 5 5 11-11" />
+          <path d="M16 36h16" />
+        </g>
+      );
+    // Location pin over a base line: a team on the ground here.
+    case "support":
+      return (
+        <g>
+          <path className="home-principle-mark" d="M24 41c7-9 11-15 11-20a11 11 0 0 0-22 0c0 5 4 11 11 20Z" />
+          <circle cx="24" cy="21" r="4" />
+          <path d="M9 43h30" />
+        </g>
+      );
+    // Balance scale: claims weighed against what the product actually does.
+    default:
+      return (
+        <g>
+          <path d="M24 12v29" />
+          <path d="M12 18h24" />
+          <path d="M15 41h18" />
+          <path className="home-principle-mark" d="M12 18 6 31h12zM36 18l-6 13h12z" />
+        </g>
+      );
   }
 }
 

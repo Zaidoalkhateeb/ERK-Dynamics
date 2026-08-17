@@ -240,6 +240,20 @@ p {
 .contact-rail > a:focus-visible {
   background: #0a687b;
 }
+/* Over the teal footer the rail flips: white bar, brand-blue icons. */
+.contact-rail--on-footer {
+  box-shadow: 0 12px 34px rgba(6, 45, 56, 0.26);
+}
+.contact-rail--on-footer > a {
+  background: #ffffff;
+  color: var(--cyan);
+  border-color: rgba(0, 119, 141, 0.16);
+}
+.contact-rail--on-footer > a:hover,
+.contact-rail--on-footer > a:focus-visible {
+  background: #e7f2f4;
+  color: #0a687b;
+}
 .contact-rail__icon {
   width: 22px;
   height: 22px;
@@ -1392,9 +1406,12 @@ footer {
   stroke-linejoin: round;
   opacity: .55;
 }
-.footer-tech-motif--wearable { grid-column: 3; width: 92px; transform: translateX(clamp(-78px, -4vw, -52px)) rotate(-3deg); }
-.footer-tech-motif--lidar { grid-column: 5; width: 108px; transform: translateX(clamp(-78px, -4vw, -52px)); }
-.footer-tech-motif--shared { grid-column: 7; width: 142px; transform: translateX(clamp(-78px, -4vw, -52px)); }
+/* Each motif lives in a spacer column between the link columns and is capped at
+   that column's width, so it stays centred in the gap instead of spilling over
+   the text on either side when the tracks are at their minimum. */
+.footer-tech-motif--wearable { grid-column: 3; width: min(92px, 86%); transform: rotate(-3deg); }
+.footer-tech-motif--lidar { grid-column: 5; width: min(108px, 86%); }
+.footer-tech-motif--shared { grid-column: 7; width: min(142px, 86%); }
 .footer-object-orbits,
 .footer-lidar-rings {
   stroke: rgba(190, 244, 250, .45);
@@ -1495,6 +1512,11 @@ footer .button.primary {
   line-height: 1.5;
   color: #ffffff;
 }
+/* The contact column carries the full address, which is wider than its track. */
+.footer-links--contact a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
 .footer-grid a:not(.logo):hover,
 .footer-grid a:not(.logo):focus-visible {
   text-decoration: underline;
@@ -1586,6 +1608,9 @@ footer .button.primary {
   }
   .contact-rail > a:last-child {
     border-right: 0;
+  }
+  .contact-rail--on-footer > a {
+    border-color: rgba(0, 119, 141, 0.16);
   }
   .contact-rail__label {
     display: none;
@@ -2644,6 +2669,19 @@ footer .button.primary {
   opacity: 1;
   transform: scale(1);
 }
+/* The default 68% framing suits shots where the worker stands right of centre.
+   OmniSuit slides 3 and 4 place him well left of that, so the shared crop cut
+   him out of frame; these pull the focal point back to where he actually is. */
+.auxivo-omnisuit .product-story-stage > img:nth-of-type(3) {
+  object-position: 26% center;
+}
+.auxivo-omnisuit .product-story-stage > img:nth-of-type(4) {
+  object-position: 38% center;
+}
+/* CarrySuit slide 1 frames the worker far left of the shared 68% focal point. */
+.auxivo-carrysuit .product-story-stage > img:nth-of-type(1) {
+  object-position: 8% center;
+}
 .product-story-stage:after {
   content: "";
   position: absolute;
@@ -2679,13 +2717,15 @@ footer .button.primary {
 .auxivo-liftsuit .story-target.target-4 { left: 66%; top: 48%; }
 .auxivo-omnisuit .story-target.target-1 { left: 60%; top: 62%; }
 .auxivo-omnisuit .story-target.target-2 { left: 37%; top: 52%; }
-.auxivo-omnisuit .story-target.target-3 { left: 46%; top: 52%; }
-.auxivo-omnisuit .story-target.target-4 { left: 62%; top: 50%; }
+/* Slides 3 and 4 are reframed on the worker (see the object-position overrides),
+   so the reticle follows him instead of sitting out on the machinery. */
+.auxivo-omnisuit .story-target.target-3 { left: 27%; top: 44%; }
+.auxivo-omnisuit .story-target.target-4 { left: 46%; top: 40%; }
 .auxivo-deltasuit .story-target.target-1 { left: 48%; top: 42%; }
 .auxivo-deltasuit .story-target.target-2 { left: 40%; top: 38%; }
 .auxivo-deltasuit .story-target.target-3 { left: 58%; top: 44%; }
 .auxivo-deltasuit .story-target.target-4 { left: 50%; top: 50%; }
-.auxivo-carrysuit .story-target.target-1 { left: 48%; top: 46%; }
+.auxivo-carrysuit .story-target.target-1 { left: 26%; top: 34%; }
 .auxivo-carrysuit .story-target.target-2 { left: 40%; top: 42%; }
 .auxivo-carrysuit .story-target.target-3 { left: 56%; top: 44%; }
 .auxivo-carrysuit .story-target.target-4 { left: 50%; top: 50%; }
@@ -2838,16 +2878,17 @@ footer .button.primary {
 }
 .product-specifications dl > div {
   display: grid;
-  /* Label and value sit next to each other rather than at opposite edges, and
-     each row centres the two against one another. */
-  grid-template-columns: minmax(0, .9fr) minmax(0, 1.65fr);
+  /* Label and value share the row evenly: two columns of equal width. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: 24px;
   align-items: center;
   border-top: 1px solid rgba(16, 24, 29, 0.18);
   padding: 16px 0;
 }
 .product-specifications dt {
-  font: 700 clamp(11px, .8vw, 13px)/1.3 "IBM Plex Mono";
+  /* Same size as the value beside it; the mono face and colour keep it reading
+     as the label. */
+  font: 700 clamp(17px, 1.2vw, 20px)/1.3 "IBM Plex Mono";
   color: #65747c;
 }
 .product-specifications dd {
@@ -2868,6 +2909,7 @@ footer .button.primary {
   .product-specifications dl > div {
     padding: 13px 0;
   }
+  .product-specifications dt,
   .product-specifications dd {
     font-size: 16px;
     line-height: 1.4;
@@ -2896,6 +2938,11 @@ footer .button.primary {
   object-fit: cover;
   object-position: center;
   animation: finalDrift 9s ease-in-out infinite alternate;
+}
+/* The CarrySuit closing shot puts the worker hard against the right edge under a
+   centred crop; biasing right pulls him back into the frame. */
+.auxivo-carrysuit .product-final-media img {
+  object-position: 78% center;
 }
 .product-final-overlay {
   position: absolute;
@@ -3215,7 +3262,13 @@ footer .button.primary {
   }
   .product-motion-title > div {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+  /* Stacked, the two calls to action match each other rather than sizing to
+     their own label. */
+  .product-motion-title .button {
+    width: 100%;
+    justify-content: space-between;
   }
   .product-axis {
     display: none;
@@ -4038,7 +4091,7 @@ footer .button.primary {
 }
 
 /* ================================================================
-   CONTACT — SIMPLE
+   CONTACT â€” SIMPLE
    ================================================================ */
 .contact-hero {
   position: relative;
@@ -4982,7 +5035,7 @@ footer .button.primary {
 }
 
 /* ================================================================
-   ABOUT — MOTION EXPERIENCE
+   ABOUT â€” MOTION EXPERIENCE
    ================================================================ */
 .erkAboutPage {
   overflow-x: clip;
@@ -5062,8 +5115,12 @@ footer .button.primary {
   z-index: 3;
   align-self: start;
   margin-top: 80px;
-  animation: erkAboutTextEnter 850ms var(--erk-about-ease) both;
 }
+/* Same staggered entrance as every other hero — and it survives the mobile
+   layout, where this block becomes `display: contents`. */
+.erkAboutHeroTitle { animation: contactTextEnter 620ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.erkAboutHeroLead { animation: contactTextEnter 620ms 55ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.erkAboutHeroActions { animation: contactTextEnter 620ms 110ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 .erkAboutKicker,
 .erkAboutSectionEyebrow {
   display: inline-flex;
@@ -5350,7 +5407,7 @@ footer .button.primary {
   .erkAboutJourney { display: block; }
 }
 
-/* Products & Services — motion-led portfolio */
+/* Products & Services â€” motion-led portfolio */
 .portfolio-page {
   --portfolio-ink: #101a20;
   --portfolio-muted: #5c6c74;
@@ -5435,14 +5492,19 @@ footer .button.primary {
   padding: 190px 0 100px;
   display: grid;
   grid-template-columns: minmax(480px, .88fr) minmax(560px, 1.12fr);
-  align-items: center;
+  /* Top-aligned like every other hero, so the headline starts at the same
+     height on all pages instead of floating with the content. */
+  align-items: start;
   gap: clamp(48px, 5vw, 100px);
 }
 .portfolio-hero-copy { position: relative; z-index: 3; margin-top: 80px; }
+/* The photo pair keeps its centred composition within the taller row. */
+.portfolio-hero-visual { align-self: center; }
 .portfolio-hero-copy h1 {
   max-width: 900px;
   margin: 0;
   color: var(--portfolio-ink);
+  animation: contactTextEnter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
   font-size: clamp(44px, 5vw, 72px);
   font-weight: 500;
   line-height: 1.02;
@@ -5456,8 +5518,14 @@ footer .button.primary {
   line-height: 1.63;
   text-align: justify;
   text-align-last: left;
+  animation: contactTextEnter 620ms 55ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.portfolio-hero-actions { margin-top: 38px; display: flex; flex-wrap: wrap; }
+.portfolio-hero-actions {
+  margin-top: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  animation: contactTextEnter 620ms 110ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 .portfolio-hero-visual {
   --portfolio-x: 0px;
   --portfolio-y: 0px;
@@ -5510,9 +5578,13 @@ footer .button.primary {
 .portfolio-hero-orbit::before { content: ""; position: absolute; width: 8px; aspect-ratio: 1; top: 12%; left: 20%; border-radius: 50%; background: #26b7ca; box-shadow: 0 0 18px rgba(38, 183, 202, .65); }
 .portfolio-hero-orbit--one { width: 490px; height: 490px; right: 3%; top: 4%; }
 .portfolio-hero-orbit--two { width: 310px; height: 310px; left: 5%; bottom: 0; animation-direction: reverse; animation-duration: 19s; }
+/* Two-column hero only: the photo pair sits below the headline's optical centre. */
+@media (min-width: 961px) {
+  .portfolio-hero-visual { margin-top: 56px; }
+}
 
 .portfolio-category-nav {
-  /* Sits in normal flow at every width — sticking it under the fixed header made it
+  /* Sits in normal flow at every width â€” sticking it under the fixed header made it
      ride over the header and its Products dropdown. */
   position: static;
   display: grid;
@@ -5690,7 +5762,7 @@ footer .button.primary {
   .portfolio-contact .portfolio-button { justify-self: start; margin-top: 38px; }
 }
 @media (max-width: 680px) {
-  /* Hero — shorter, stacked, no dead space above the tab bar. */
+  /* Hero â€” shorter, stacked, no dead space above the tab bar. */
   .portfolio-hero,
   .portfolio-hero-inner { min-height: 0; }
   .portfolio-hero-inner { width: calc(100% - 32px); padding: 112px 0 46px; gap: 26px; }
@@ -5699,14 +5771,15 @@ footer .button.primary {
   .portfolio-hero-intro { margin-top: 22px; font-size: 16px; line-height: 1.6; text-align: left; }
   .portfolio-hero-actions { margin-top: 28px; display: grid; gap: 9px; }
   .portfolio-button { width: 100%; min-height: 54px; }
-  .portfolio-hero-visual { min-height: 330px; transform: none; }
+  /* The paired hero photos are dropped on phones â€” the copy carries the hero. */
+  .portfolio-hero-visual { display: none; }
   .portfolio-exoskeleton-system { width: 132%; }
   .portfolio-hero-image--rear { width: 52%; height: 56%; }
   .portfolio-hero-image--front { width: 70%; height: 74%; }
   .portfolio-hero-orbit--one { width: 300px; height: 300px; }
   .portfolio-hero-orbit--two { width: 190px; height: 190px; }
 
-  /* Tab bar — compact, three across. */
+  /* Tab bar â€” compact, three across. */
   .portfolio-category-nav {
     grid-template-columns: repeat(3, 1fr);
     background: rgba(255, 255, 255, .96);
@@ -5723,7 +5796,7 @@ footer .button.primary {
   .portfolio-category-nav a:last-child { border-right: 0; }
   .portfolio-category-nav strong { font-size: 13px; letter-spacing: -.01em; text-align: center; }
 
-  /* Exoskeletons — switcher on top, then the image, then the copy. */
+  /* Exoskeletons â€” switcher on top, then the image, then the copy. */
   .portfolio-exo { padding: 26px 20px 64px; }
   .portfolio-section-heading { margin-bottom: 18px; }
   .portfolio-section-heading h2 { font-size: clamp(44px, 13vw, 60px); }
@@ -5754,16 +5827,36 @@ footer .button.primary {
   .portfolio-product-copy dl { margin: 24px 0; }
   .portfolio-product-copy .portfolio-button { width: 100%; }
 
-  /* LiDAR / power — headline first, diagram second. */
+  /* LiDAR / power â€” headline and intro, then the diagram, then the application
+     list, group note and call to action. The copy block collapses so its
+     children can be ordered around the diagram; the section carries the padding
+     they used to get from it, and the diagram bleeds back out to full width. */
+  .portfolio-tech,
+  .portfolio-tech--power {
+    display: flex;
+    flex-direction: column;
+    padding: 34px 20px 46px;
+  }
   .portfolio-tech-copy,
-  .portfolio-tech--power .portfolio-tech-copy { order: 1; min-height: 0; padding: 34px 20px 46px; }
+  .portfolio-tech--power .portfolio-tech-copy { display: contents; }
+  .portfolio-tech-copy > .portfolio-kicker { order: 1; }
+  .portfolio-tech-copy > h2 { order: 2; }
+  .portfolio-tech-copy > p:not(.portfolio-kicker) { order: 3; }
+  .portfolio-tech-copy > ul { order: 5; }
+  .portfolio-tech-copy > .portfolio-group-note { order: 6; }
+  .portfolio-tech-copy > .portfolio-button { order: 7; }
   .portfolio-tech-copy h2 { font-size: clamp(40px, 11.5vw, 56px); letter-spacing: -.04em; }
   .portfolio-tech-copy h2 br { display: none; }
   .portfolio-tech-copy > p:not(.portfolio-kicker) { margin-top: 24px; font-size: 16px; }
   .portfolio-tech-copy ul { margin-top: 28px; grid-template-columns: 1fr; }
   .portfolio-tech-copy .portfolio-button { width: 100%; }
   .portfolio-group-note { margin: 28px 0; }
-  .portfolio-tech-visual { order: 2; min-height: 0; aspect-ratio: 1 / 1; }
+  .portfolio-tech-visual {
+    order: 4;
+    min-height: 0;
+    margin-inline: -20px;
+    aspect-ratio: 1 / 1;
+  }
   .portfolio-tech-visual svg { width: 104%; }
   .portfolio-data-tag,
   .portfolio-power-status { padding: 9px 11px; font-size: 10px; letter-spacing: .06em; }
@@ -5929,7 +6022,7 @@ footer .button.primary {
   }
 }
 
-/* Industries — environment-led applications */
+/* Industries â€” environment-led applications */
 .industries-page {
   --ind-ink: #101a20;
   --ind-muted: #5c6c74;
@@ -6036,6 +6129,8 @@ footer .button.primary {
 
 .ind-panel {
   align-self: stretch;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--ind-line);
   background: #fff;
   animation: indPanelIn 520ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -6073,10 +6168,13 @@ footer .button.primary {
 }
 .ind-panel-tag { position: absolute; z-index: 1; left: 16px; bottom: 14px; color: #5a6a70; font: 700 clamp(13px, 0.9vw, 15px)/1.2 "IBM Plex Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; }
 .ind-panel-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: clamp(28px, 3.4vw, 52px);
-  /* The card closes on the last line: the call to action sits flush with the
-     bottom edge, so no trailing whitespace is left under it. */
-  padding-bottom: 0;
+  /* The call to action is pushed to the foot of the card but keeps a margin off
+     the border rather than sitting on it. */
+  padding-bottom: clamp(24px, 2.2vw, 34px);
 }
 .ind-panel-copy > .ind-kicker { font-size: clamp(13px, 0.9vw, 15px); }
 .ind-panel-copy h3 { margin: 8px 0 0; font-size: clamp(34px, 3vw, 54px); font-weight: 400; line-height: 1; letter-spacing: -0.03em; }
@@ -6086,8 +6184,9 @@ footer .button.primary {
 .ind-panel-meta { margin: 26px 0 32px; padding: 0; display: flex; gap: 48px; }
 .ind-panel-meta dt { color: var(--ind-accent); font: 700 clamp(13px, 0.9vw, 15px)/1.2 "IBM Plex Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; }
 .ind-panel-meta dd { margin: 8px 0 0; font-size: 18px; color: var(--ind-ink); }
-/* Block-level so the inline baseline gap under the button disappears too. */
-.ind-panel-copy .ind-button { display: flex; width: max-content; max-width: 100%; }
+/* Block-level so the inline baseline gap under the button disappears too, and
+   pushed to the foot of the card so it always closes the panel. */
+.ind-panel-copy .ind-button { display: flex; width: max-content; max-width: 100%; margin-top: auto; }
 @keyframes indPanelIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes indGlyphIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 @keyframes indGlyphFloat {
@@ -6372,16 +6471,25 @@ footer .button.primary {
 /* Consistent editorial alignment across the completed information pages. */
 .ind-directory-intro,
 .ind-panel-desc,
+.contact-hero__description,
+.contact-steps p,
+.contact-success p {
+  text-align: left;
+}
+
+/* About Us and Partners run justified body copy at every width; the last line
+   stays ragged so short closing lines are not stretched across the measure. */
 .partners-hero-copy > p,
 .partner-feature-copy > p:not(.eyebrow),
 .erkAboutHeroLead,
 .erkAboutStatementCopy,
 .erkAboutPrincipleCopy p,
-.erkAboutBridgeCopy p,
-.contact-hero__description,
-.contact-steps p,
-.contact-success p {
-  text-align: left;
+.erkAboutBridgeCopy p {
+  text-align: justify;
+  text-align-last: left;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 /* Contact-page interaction and form refinements. */
@@ -6462,7 +6570,7 @@ footer .button.primary {
   opacity: 0;
 }
 .erkAboutPrinciple.is-visible { opacity: 1; transform: translateY(0); }
-/* The scroll reveal is an enhancement — without scripting the copy must still be readable. */
+/* The scroll reveal is an enhancement â€” without scripting the copy must still be readable. */
 @media (scripting: none) {
   .erkAboutPrinciple { opacity: 1; transform: none; }
   .erkGlobeLoader { display: none; }
@@ -7045,14 +7153,20 @@ footer .button.primary {
     padding: 34px 20px;
   }
   .footer-tech-motif { opacity: .42; }
-  .footer-tech-motif--wearable { grid-column: 2; grid-row: 2; width: 48px; transform: none; }
-  .footer-tech-motif--lidar { grid-column: 4; grid-row: 2; width: 54px; transform: none; }
-  .footer-tech-motif--shared { grid-column: 6; grid-row: 2; width: 68px; transform: none; }
+  /* The link columns are left-aligned inside wider tracks, so the empty space
+     that reads as "the gap" starts before the spacer column does. Nudging the
+     motifs left centres them in that visual gap rather than in their track. */
+  .footer-tech-motif { transform: translateX(clamp(-20px, -3vw, -8px)); }
+  .footer-tech-motif--wearable { grid-column: 2; grid-row: 2; width: min(48px, 86%); }
+  .footer-tech-motif--lidar { grid-column: 4; grid-row: 2; width: min(54px, 86%); }
+  .footer-tech-motif--shared { grid-column: 6; grid-row: 2; width: min(68px, 86%); }
   footer .footer-grid.expanded {
+    /* The spacer columns share the leftover width instead of staying pinned at
+       their minimum, so each motif has a gap wide enough to sit centred in. */
     grid-template-columns:
-      minmax(76px, 1fr) 28px
-      minmax(92px, 1.12fr) 32px
-      minmax(70px, .9fr) 38px;
+      minmax(76px, 1fr) minmax(28px, .42fr)
+      minmax(92px, 1.12fr) minmax(32px, .46fr)
+      minmax(70px, .9fr) minmax(38px, .5fr);
     column-gap: 4px;
     row-gap: 30px;
     padding-top: 0;
@@ -7156,7 +7270,7 @@ footer .button.primary {
 @media (max-width: 900px) {
   .hero-industries .ind-hero-actions {
     width: 100%;
-    margin-top: 28px;
+    margin-top: 62px;
   }
 
   .ind-panel { display: none; }
@@ -7165,6 +7279,26 @@ footer .button.primary {
 
 @media (min-width: 901px) {
   .ind-modal-backdrop { display: none; }
+}
+
+/* Industries hero on phones: the hero fills the screen and the copy stretches
+   inside it, so the buttons sit at the bottom of the hero band instead of
+   leaving dead space under them. */
+@media (max-width: 680px) {
+  .hero-industries {
+    min-height: min(100svh, 640px);
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-industries .technology-hero__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-industries .ind-hero-actions {
+    margin-top: auto;
+    padding-top: 40px;
+  }
 }
 
 /* ==========================================================================
@@ -7220,7 +7354,7 @@ footer .button.primary {
   animation: contactTextEnter 620ms 110ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Scroll reveal — the hiding styles apply only once the script adds .reveal-ready,
+/* Scroll reveal â€” the hiding styles apply only once the script adds .reveal-ready,
    so the page stays fully readable without JS or when motion is reduced. */
 .home-page.reveal-ready [data-reveal] {
   opacity: 0;
@@ -7241,19 +7375,21 @@ footer .button.primary {
 .home-products,
 .home-industries,
 .home-partners {
-  /* No horizontal padding — the inner container is width-limited and centred, as on About. */
-  padding: clamp(90px, 11vw, 150px) 0;
+  /* No horizontal padding â€” the inner container is width-limited and centred, as on About. */
+  position: relative;
+  padding: clamp(58px, 6.4vw, 96px) 0;
 }
 /* These three sit closer to the section above them; bottom spacing is unchanged. */
 .home-tech,
 .home-products,
 .home-industries {
-  padding-top: clamp(54px, 6.6vw, 92px);
+  padding-top: clamp(38px, 4.4vw, 62px);
 }
 .home-section-head {
   width: var(--home-page-width);
-  margin: 0 auto clamp(38px, 4vw, 62px);
+  margin: 0 auto clamp(28px, 3vw, 44px);
 }
+
 .home-section-head h2,
 .home-intro-lead h2,
 .home-industries-copy h2 {
@@ -7321,7 +7457,43 @@ footer .button.primary {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.home-principles span { color: var(--ind-muted); font-size: 16px; line-height: 1.6; }
+.home-principle-text { color: var(--ind-muted); font-size: 16px; line-height: 1.6; }
+.home-principle-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ind-line);
+  background: #fff;
+}
+.home-principle-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #7d8f97;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 260ms ease;
+}
+.home-principle-mark {
+  stroke: var(--ind-accent);
+  /* Drawn on as the row reveals, then held. */
+  stroke-dasharray: 90;
+  stroke-dashoffset: 90;
+}
+.home-page.reveal-ready [data-reveal].is-revealed .home-principle-mark {
+  animation: homePrincipleDraw 900ms 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.home-principles li:hover .home-principle-icon {
+  border-color: rgba(7, 135, 155, 0.42);
+}
+.home-principles li:hover .home-principle-icon svg { stroke: #4e6a74; }
+@keyframes homePrincipleDraw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-principle-mark { stroke-dashoffset: 0; }
+}
+
 
 /* Technology pillars */
 .home-tech-grid,
@@ -7341,24 +7513,96 @@ footer .button.primary {
   padding: 30px 28px 26px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   border: 1px solid var(--ind-line);
   background: #fff;
-  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), border-color 260ms ease;
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 260ms ease,
+    box-shadow 320ms ease;
 }
 .home-tech-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   border-color: rgba(7, 135, 155, 0.42);
+  box-shadow: 0 22px 48px rgba(10, 60, 74, 0.12);
+}
+/* A light band sweeps across the card as the pointer arrives. */
+.home-tech-shine {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(7, 135, 155, 0) 0%,
+    rgba(7, 135, 155, 0.09) 45%,
+    rgba(7, 135, 155, 0) 100%
+  );
+  transform: skewX(-14deg);
+  transition: left 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-tech-card:hover .home-tech-shine { left: 115%; }
+.home-tech-card > :not(.home-tech-shine):not(.home-tech-frame) { position: relative; z-index: 1; }
+/* Inset frame that draws itself from the corners on hover. */
+.home-tech-frame {
+  position: absolute;
+  inset: 10px;
+  z-index: 1;
+  pointer-events: none;
+}
+.home-tech-frame::before,
+.home-tech-frame::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ind-accent);
+  opacity: 0;
+  transition: opacity 300ms ease, transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-tech-frame::before {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  transform: translate(6px, 6px);
+}
+.home-tech-frame::after {
+  right: 0;
+  bottom: 0;
+  border-top: 0;
+  border-left: 0;
+  transform: translate(-6px, -6px);
+}
+.home-tech-card:hover .home-tech-frame::before,
+.home-tech-card:hover .home-tech-frame::after { opacity: 0.75; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .home-tech-shine { display: none; }
+  .home-tech-card:hover { transform: none; }
+}
+/* Index number and glyph share a row, so the number can carry real display size. */
+.home-tech-head {
+  margin-bottom: clamp(22px, 2.2vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 .home-tech-num {
   color: var(--ind-accent);
-  font: 700 clamp(12px, 0.85vw, 14px)/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
+  font: 400 clamp(34px, 3vw, 52px)/0.9 "IBM Plex Mono", monospace;
+  letter-spacing: -0.03em;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease;
 }
+.home-tech-card:hover .home-tech-num { transform: translateY(-4px); }
 .home-tech-glyph {
-  margin: 22px 0 26px;
   display: block;
   width: 76px;
   height: 76px;
+  flex: none;
 }
 .home-tech-glyph svg {
   width: 100%;
@@ -7371,7 +7615,22 @@ footer .button.primary {
   transition: stroke 260ms ease;
 }
 .home-tech-card:hover .home-tech-glyph svg { stroke: #4e6a74; }
-.home-glyph-primary { stroke: var(--ind-accent); }
+.home-glyph-primary {
+  stroke: var(--ind-accent);
+  /* A slow drift keeps the three cards alive without pulling focus. */
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: homeGlyphDrift 5.2s ease-in-out infinite alternate;
+}
+.home-tech-grid > li:nth-child(2) .home-glyph-primary { animation-delay: -1.7s; }
+.home-tech-grid > li:nth-child(3) .home-glyph-primary { animation-delay: -3.4s; }
+@keyframes homeGlyphDrift {
+  from { transform: translateY(2px) scale(0.985); }
+  to { transform: translateY(-4px) scale(1.02); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-glyph-primary { animation: none; }
+}
 .home-tech-tagline {
   color: var(--ind-muted);
   font: 700 clamp(11px, 0.8vw, 13px)/1.2 "IBM Plex Mono", monospace;
@@ -7413,6 +7672,26 @@ footer .button.primary {
   transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), border-color 260ms ease;
 }
 .home-product-card:hover { transform: translateY(-4px); border-color: rgba(7, 135, 155, 0.42); }
+/* Photography sits above the label row and bleeds to the card's inner edges. */
+.home-product-media {
+  display: block;
+  margin: -26px -24px 22px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #e7edef;
+}
+.home-product-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-product-card:hover .home-product-media img { transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) {
+  .home-product-media img,
+  .home-product-card:hover .home-product-media img { transform: none; transition: none; }
+}
 .home-product-top {
   display: flex;
   align-items: baseline;
@@ -7423,8 +7702,8 @@ footer .button.primary {
 }
 .home-product-num {
   color: var(--ind-accent);
-  font: 700 clamp(12px, 0.85vw, 14px)/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
+  font: 400 clamp(20px, 1.5vw, 27px)/1 "IBM Plex Mono", monospace;
+  letter-spacing: -0.02em;
 }
 .home-product-cat {
   color: var(--ind-muted);
@@ -7486,13 +7765,144 @@ footer .button.primary {
 .home-industry-list a:hover .home-industry-num { color: var(--ind-accent); }
 .home-industry-list a:hover .site-arrow { opacity: 1; transform: translateX(0); }
 
+/* Figures band â€” the one dark stop on an otherwise white page. */
+.home-figures {
+  position: relative;
+  margin: clamp(20px, 4vw, 56px) 0;
+  padding: clamp(48px, 5vw, 76px) 0;
+  overflow: hidden;
+  color: #fff;
+  background: #0a5265;
+}
+.home-figures-art {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.home-figures-art svg { width: 100%; height: 100%; fill: none; }
+.home-figures-rings circle {
+  stroke: rgba(154, 233, 245, 0.34);
+  stroke-width: 1.4;
+  stroke-dasharray: 8 14;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: homeFiguresSpin 46s linear infinite;
+}
+.home-figures-rings circle:nth-child(2) { animation-duration: 34s; animation-direction: reverse; }
+.home-figures-rings circle:nth-child(3) { animation-duration: 22s; }
+.home-figures-line {
+  stroke: rgba(154, 233, 245, 0.45);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 18 26;
+  animation: homeFiguresFlow 5.2s linear infinite;
+}
+.home-figures-line--slow { stroke-opacity: 0.6; animation-duration: 8.4s; animation-direction: reverse; }
+.home-figure-list {
+  position: relative;
+  z-index: 1;
+  width: var(--home-page-width);
+  margin-inline: auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 40px);
+}
+.home-figure-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: clamp(16px, 1.6vw, 26px);
+  border-left: 1px solid rgba(255, 255, 255, 0.24);
+}
+.home-figure-list strong {
+  font-size: clamp(48px, 5vw, 84px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.home-figure-label {
+  color: #bdeaf3;
+  font: 700 clamp(11px, 0.8vw, 13px)/1.3 "IBM Plex Mono", monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.home-figure-note { color: rgba(255, 255, 255, 0.7); font-size: 15px; line-height: 1.5; }
+@keyframes homeFiguresSpin { to { transform: rotate(360deg); } }
+@keyframes homeFiguresFlow { to { stroke-dashoffset: -88; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-figures-rings circle,
+  .home-figures-line { animation: none; }
+}
+
 /* Partners */
 .home-partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .home-partner-card {
   height: 100%;
-  padding: 34px 32px 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(190px, 17vw, 280px);
+  overflow: hidden;
   border: 1px solid var(--ind-line);
   background: #fff;
+  transition: border-color 260ms ease;
+}
+.home-partner-card:hover { border-color: rgba(7, 135, 155, 0.42); }
+.home-partner-body {
+  padding: 34px 32px 32px;
+  display: flex;
+  flex-direction: column;
+}
+/* Line art in the corner, keyed to what each partner actually makes. */
+/* Artwork lives in its own tinted panel beside the copy, never behind it. */
+.home-partner-art {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  overflow: hidden;
+  background: linear-gradient(150deg, #eaf3f4 0%, #f7fbfb 100%);
+  border-left: 1px solid var(--ind-line);
+  transition: background 320ms ease;
+}
+.home-partner-card:hover .home-partner-art { background: linear-gradient(150deg, #e2eff1 0%, #f4fafa 100%); }
+.home-partner-art svg {
+  width: 100%;
+  height: auto;
+  max-height: 210px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.home-partner-card:hover .home-partner-art svg { transform: scale(1.05); }
+.home-partner-frame { stroke: #b6ccd3; stroke-width: 3; }
+.home-partner-node circle { fill: var(--ind-accent); stroke: none; opacity: 0.5; }
+.home-partner-flow,
+.home-partner-arc {
+  stroke: var(--ind-accent);
+  stroke-width: 3;
+  stroke-dasharray: 0.34 0.66;
+  animation: homePartnerTrace 5.6s linear infinite;
+}
+.home-partner-flow--late { animation-delay: -2.8s; }
+.home-partner-arc { animation-duration: 7.2s; }
+.home-partner-scan path {
+  stroke: var(--ind-accent);
+  stroke-width: 2;
+  stroke-dasharray: 5 9;
+  opacity: 0.5;
+  animation: homePartnerScan 3.8s linear infinite;
+}
+.home-partner-scan path:nth-child(2) { animation-delay: -1.3s; }
+.home-partner-scan path:nth-child(3) { animation-delay: -2.6s; }
+@keyframes homePartnerTrace { to { stroke-dashoffset: -1; } }
+@keyframes homePartnerScan { to { stroke-dashoffset: -28; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-partner-flow,
+  .home-partner-arc,
+  .home-partner-scan path { animation: none; }
 }
 .home-partner-logo {
   display: flex;
@@ -7527,6 +7937,34 @@ footer .button.primary {
   font-size: 16px;
   line-height: 1.62;
 }
+.home-partner-tags {
+  margin: 22px 0 26px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.home-partner-tags li {
+  padding: 7px 12px;
+  color: #46626b;
+  background: #eef4f5;
+  border: 1px solid var(--ind-line);
+  font: 600 11px/1.2 "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.home-partner-link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ind-accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+.home-partner-link .site-arrow { transition: transform 240ms ease; }
+.home-partner-link:hover .site-arrow { transform: translate(3px, -3px); }
 
 /* HUD-style card and row motion */
 .home-product-card,
@@ -7544,20 +7982,6 @@ footer .button.primary {
 }
 .home-tech-card:hover::after,
 .home-product-card:hover::after { width: 100%; }
-.home-tech-card::before {
-  content: "";
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  width: 14px;
-  height: 14px;
-  border-top: 1px solid var(--ind-accent);
-  border-right: 1px solid var(--ind-accent);
-  opacity: 0;
-  transform: translate(-5px, 5px);
-  transition: opacity 320ms ease, transform 440ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.home-tech-card:hover::before { opacity: 0.7; transform: none; }
 .home-tech-card:hover .home-glyph-primary { animation: homeGlyphPulse 1.9s ease-in-out infinite; }
 .home-industry-list a::before {
   content: "";
@@ -7593,6 +8017,8 @@ footer .button.primary {
   .home-partner-grid { grid-template-columns: 1fr; }
   .home-principles { grid-template-columns: 1fr; }
   .home-principles li { padding: 18px 0; border-bottom: 1px solid var(--ind-line); }
+  .home-figure-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 34px; }
+  .home-partner-card { grid-template-columns: minmax(0, 1fr) clamp(160px, 26vw, 240px); }
 }
 @media (max-width: 680px) {
   .home-page { --home-page-width: calc(100% - 40px); }
@@ -7602,4 +8028,15 @@ footer .button.primary {
   .home-industries-copy h2 { font-size: clamp(26px, 7.2vw, 34px); }
   .home-product-grid { grid-template-columns: 1fr; }
   .home-industry-list a { grid-template-columns: 44px minmax(0, 1fr) 24px; padding: 20px 2px; }
+  .home-figure-list strong { font-size: clamp(40px, 12vw, 56px); }
+  /* Art panel moves above the copy once the card is too narrow to split. */
+  .home-partner-card { grid-template-columns: 1fr; }
+  .home-partner-art {
+    order: -1;
+    padding: 22px;
+    border-left: 0;
+    border-bottom: 1px solid var(--ind-line);
+  }
+  .home-partner-art svg { max-height: 160px; }
+  .home-partner-body { padding: 26px 22px 24px; }
 }

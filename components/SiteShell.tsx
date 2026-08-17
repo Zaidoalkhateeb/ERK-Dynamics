@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const nav = [
   ["", "Home"],
@@ -83,6 +83,43 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     setProductsOpen(false);
     setExoskeletonsOpen(false);
   }, [pathname]);
+
+  // Clicking a link to the page you are already on reloads it instead of doing
+  // nothing. One document-level handler covers the header, the mobile menu, the
+  // footer and the logo without wiring every link individually.
+  useEffect(() => {
+    const stripSlash = (value: string) => value.replace(/\/+$/, "");
+
+    const reloadOnSamePage = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const anchor = (event.target as Element | null)?.closest?.("a");
+      if (!anchor || anchor.hasAttribute("download")) return;
+      if (anchor.target && anchor.target !== "_self") return;
+
+      const href = anchor.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+
+      const url = new URL(href, window.location.href);
+      // Leave other origins, in-page anchors and mailto/tel links alone.
+      if (url.origin !== window.location.origin || url.hash) return;
+      if (stripSlash(url.pathname) !== stripSlash(window.location.pathname)) return;
+
+      event.preventDefault();
+      // Stop next/link's own handler, which would swallow the click as a no-op.
+      event.stopPropagation();
+      // Land at the top rather than wherever the reader had scrolled to.
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      window.location.reload();
+    };
+
+    // Capture phase: React attaches its listeners to the root container, so a
+    // bubbling listener would arrive after next/link had already cancelled the
+    // event and marked it handled.
+    document.addEventListener("click", reloadOnSamePage, true);
+    return () => document.removeEventListener("click", reloadOnSamePage, true);
+  }, []);
   return (
     <>
       <a href="#main" className="skip">
@@ -266,6 +303,30 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 }
 
 function ContactRail() {
+  const railRef = useRef<HTMLElement>(null);
+  const [onFooter, setOnFooter] = useState(false);
+
+  // The rail sits on the teal footer once the page bottoms out; it inverts there
+  // so it stays readable instead of blending into the footer.
+  useEffect(() => {
+    const sync = () => {
+      const rail = railRef.current;
+      const footer = document.querySelector("footer");
+      if (!rail || !footer) return;
+      const railBox = rail.getBoundingClientRect();
+      const footerBox = footer.getBoundingClientRect();
+      setOnFooter(footerBox.top < railBox.bottom && footerBox.bottom > railBox.top);
+    };
+
+    sync();
+    addEventListener("scroll", sync, { passive: true });
+    addEventListener("resize", sync);
+    return () => {
+      removeEventListener("scroll", sync);
+      removeEventListener("resize", sync);
+    };
+  }, []);
+
   const items = [
     {
       label: "+90 537 257 45 43",
@@ -292,7 +353,11 @@ function ContactRail() {
   ];
 
   return (
-    <aside className="contact-rail" aria-label="Direct contact">
+    <aside
+      ref={railRef}
+      className={`contact-rail ${onFooter ? "contact-rail--on-footer" : ""}`}
+      aria-label="Direct contact"
+    >
       {items.map((item) => (
         <a
           key={item.label}
@@ -394,13 +459,14 @@ function Footer() {
         <div className="footer-links footer-links--contact">
           <b>CONTACT</b>
           <a href="tel:+905372574543">+90 537 257 45 43</a>
-          <a href="mailto:info@erkdynamics.com">Email</a>
+          <a href="mailto:info@erkdynamics.com">info@erkdynamics.com</a>
           <a
             href="https://www.linkedin.com/company/erk-dynamics/"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="ERK Dynamics on LinkedIn"
           >
-            LinkedIn
+            ERK Dynamics
           </a>
         </div>
       </div>

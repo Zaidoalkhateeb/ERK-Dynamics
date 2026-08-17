@@ -51,24 +51,43 @@ const industries = [
   },
 ] as const;
 
+const MOBILE_QUERY = "(max-width: 900px)";
+
 export function IndustriesExperience() {
-  const [active, setActive] = useState(0);
+  // Null means nothing is selected. The desktop panel is always on screen, so it
+  // takes a default; on mobile the detail is a modal, so nothing is highlighted
+  // until one is opened and the highlight clears again when it is dismissed.
+  const [active, setActive] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const frameRef = useRef<number | null>(null);
-  const current = industries[active];
+  const current = industries[active ?? 0];
 
   useEffect(() => () => {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
   }, []);
 
   useEffect(() => {
+    const query = window.matchMedia(MOBILE_QUERY);
+    const applyDesktopDefault = () => setActive((value) => (query.matches ? value : value ?? 0));
+
+    applyDesktopDefault();
+    query.addEventListener("change", applyDesktopDefault);
+    return () => query.removeEventListener("change", applyDesktopDefault);
+  }, []);
+
+  const closeModal = () => {
+    setModalOpen(false);
+    if (window.matchMedia(MOBILE_QUERY).matches) setActive(null);
+  };
+
+  useEffect(() => {
     if (!modalOpen) return;
 
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setModalOpen(false);
+      if (event.key === "Escape") closeModal();
     };
 
     document.body.style.overflow = "hidden";
@@ -83,7 +102,7 @@ export function IndustriesExperience() {
 
   const selectIndustry = (index: number) => {
     setActive(index);
-    if (window.matchMedia("(max-width: 900px)").matches) setModalOpen(true);
+    if (window.matchMedia(MOBILE_QUERY).matches) setModalOpen(true);
   };
 
   // Each art layer drifts by its own `data-depth`, matching the partners hero.
@@ -263,7 +282,7 @@ export function IndustriesExperience() {
         <div
           className="ind-modal-backdrop"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setModalOpen(false);
+            if (event.target === event.currentTarget) closeModal();
           }}
         >
           <section
@@ -277,7 +296,7 @@ export function IndustriesExperience() {
               className="ind-modal-close"
               type="button"
               aria-label="Close industry details"
-              onClick={() => setModalOpen(false)}
+              onClick={closeModal}
             >
               <span aria-hidden="true">&times;</span>
             </button>
