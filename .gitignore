@@ -4,3 +4,7 @@ node_modules
 out
 *.log
 tsconfig.tsbuildinfo
+
+# build output
+dist
+dist.zip
