@@ -394,7 +394,8 @@ p {
 .desktop-nav .nav-products-dropdown-head > a::after { display: none; }
 .nav-products-grid {
   display: grid;
-  grid-template-columns: minmax(360px, 1.55fr) repeat(2, minmax(0, 0.9fr));
+  /* All three categories get the same cell. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .desktop-nav .nav-product-category {
   min-height: 220px;
@@ -1409,7 +1410,7 @@ footer {
 /* Each motif lives in a spacer column between the link columns and is capped at
    that column's width, so it stays centred in the gap instead of spilling over
    the text on either side when the tracks are at their minimum. */
-.footer-tech-motif--wearable { grid-column: 3; width: min(92px, 86%); transform: rotate(-3deg); }
+.footer-tech-motif--wearable { grid-column: 3; width: min(92px, 86%); }
 .footer-tech-motif--lidar { grid-column: 5; width: min(108px, 86%); }
 .footer-tech-motif--shared { grid-column: 7; width: min(142px, 86%); }
 .footer-object-orbits,
@@ -1456,9 +1457,14 @@ footer .logo b {
 footer .company-logo-mark img {
   filter: brightness(0) invert(1);
 }
+/* Footer lockup stacks: dragonfly above the wordmark, both centred on the cell. */
 footer .logo {
-  gap: 18px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   font-size: clamp(26px, 2.2vw, 36px);
+  text-align: center;
   white-space: nowrap;
 }
 footer .logo > span:last-child { white-space: nowrap; }
@@ -1478,12 +1484,20 @@ footer .button.primary {
   padding: 24px 0;
 }
 .footer-grid.expanded {
+  /* The link columns take exactly their content width, so all the slack goes to
+     the spacer columns. A motif centred in its spacer is then centred in the
+     gap the eye actually sees, instead of being pushed right by the empty
+     tail of a stretched link column. */
   grid-template-columns:
-    minmax(470px, 1.65fr) minmax(115px, 1fr)
-    minmax(76px, .45fr) minmax(115px, 1fr)
-    minmax(82px, .48fr) minmax(115px, 1fr)
+    minmax(280px, 1fr) max-content
+    minmax(76px, .45fr) max-content
+    minmax(82px, .48fr) max-content
     minmax(104px, .58fr);
   gap: clamp(8px, 1.2vw, 22px);
+  /* Without a cap the row keeps stretching on wide screens and all the extra
+     width piles up as dead space beside the logo. */
+  max-width: 1500px;
+  margin-inline: auto;
 }
 .footer-brand { grid-column: 1; grid-row: 1; }
 .footer-links--explore { grid-column: 2; grid-row: 1; }
@@ -1494,6 +1508,11 @@ footer .button.primary {
   flex-direction: column;
   align-items: flex-start;
   gap: 7px;
+}
+/* The link columns stay left-aligned; the brand lockup centres in its own cell. */
+.footer-grid > .footer-brand {
+  align-items: center;
+  justify-content: center;
 }
 .footer-grid > div > b {
   font: 600 13px/1.4 "IBM Plex Mono", monospace;
@@ -1515,8 +1534,33 @@ footer .button.primary {
 /* The contact column carries the full address, which is wider than its track. */
 .footer-links--contact a {
   max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   overflow-wrap: anywhere;
 }
+.footer-contact-icon {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  /* Nudged onto the first line's optical centre rather than its box top. */
+  margin-top: 3px;
+  display: block;
+  opacity: 0.72;
+  transition: opacity 0.2s ease;
+}
+.footer-contact-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.footer-links--contact a:hover .footer-contact-icon,
+.footer-links--contact a:focus-visible .footer-contact-icon { opacity: 1; }
 .footer-grid a:not(.logo):hover,
 .footer-grid a:not(.logo):focus-visible {
   text-decoration: underline;
@@ -4091,7 +4135,7 @@ footer .button.primary {
 }
 
 /* ================================================================
-   CONTACT â€” SIMPLE
+   CONTACT — SIMPLE
    ================================================================ */
 .contact-hero {
   position: relative;
@@ -5035,7 +5079,7 @@ footer .button.primary {
 }
 
 /* ================================================================
-   ABOUT â€” MOTION EXPERIENCE
+   ABOUT — MOTION EXPERIENCE
    ================================================================ */
 .erkAboutPage {
   overflow-x: clip;
@@ -5407,7 +5451,7 @@ footer .button.primary {
   .erkAboutJourney { display: block; }
 }
 
-/* Products & Services â€” motion-led portfolio */
+/* Products & Services — motion-led portfolio */
 .portfolio-page {
   --portfolio-ink: #101a20;
   --portfolio-muted: #5c6c74;
@@ -5584,7 +5628,7 @@ footer .button.primary {
 }
 
 .portfolio-category-nav {
-  /* Sits in normal flow at every width â€” sticking it under the fixed header made it
+  /* Sits in normal flow at every width — sticking it under the fixed header made it
      ride over the header and its Products dropdown. */
   position: static;
   display: grid;
@@ -5762,7 +5806,7 @@ footer .button.primary {
   .portfolio-contact .portfolio-button { justify-self: start; margin-top: 38px; }
 }
 @media (max-width: 680px) {
-  /* Hero â€” shorter, stacked, no dead space above the tab bar. */
+  /* Hero — shorter, stacked, no dead space above the tab bar. */
   .portfolio-hero,
   .portfolio-hero-inner { min-height: 0; }
   .portfolio-hero-inner { width: calc(100% - 32px); padding: 112px 0 46px; gap: 26px; }
@@ -5771,7 +5815,7 @@ footer .button.primary {
   .portfolio-hero-intro { margin-top: 22px; font-size: 16px; line-height: 1.6; text-align: left; }
   .portfolio-hero-actions { margin-top: 28px; display: grid; gap: 9px; }
   .portfolio-button { width: 100%; min-height: 54px; }
-  /* The paired hero photos are dropped on phones â€” the copy carries the hero. */
+  /* The paired hero photos are dropped on phones — the copy carries the hero. */
   .portfolio-hero-visual { display: none; }
   .portfolio-exoskeleton-system { width: 132%; }
   .portfolio-hero-image--rear { width: 52%; height: 56%; }
@@ -5779,7 +5823,7 @@ footer .button.primary {
   .portfolio-hero-orbit--one { width: 300px; height: 300px; }
   .portfolio-hero-orbit--two { width: 190px; height: 190px; }
 
-  /* Tab bar â€” compact, three across. */
+  /* Tab bar — compact, three across. */
   .portfolio-category-nav {
     grid-template-columns: repeat(3, 1fr);
     background: rgba(255, 255, 255, .96);
@@ -5796,7 +5840,7 @@ footer .button.primary {
   .portfolio-category-nav a:last-child { border-right: 0; }
   .portfolio-category-nav strong { font-size: 13px; letter-spacing: -.01em; text-align: center; }
 
-  /* Exoskeletons â€” switcher on top, then the image, then the copy. */
+  /* Exoskeletons — switcher on top, then the image, then the copy. */
   .portfolio-exo { padding: 26px 20px 64px; }
   .portfolio-section-heading { margin-bottom: 18px; }
   .portfolio-section-heading h2 { font-size: clamp(44px, 13vw, 60px); }
@@ -5827,7 +5871,7 @@ footer .button.primary {
   .portfolio-product-copy dl { margin: 24px 0; }
   .portfolio-product-copy .portfolio-button { width: 100%; }
 
-  /* LiDAR / power â€” headline and intro, then the diagram, then the application
+  /* LiDAR / power — headline and intro, then the diagram, then the application
      list, group note and call to action. The copy block collapses so its
      children can be ordered around the diagram; the section carries the padding
      they used to get from it, and the diagram bleeds back out to full width. */
@@ -6022,7 +6066,7 @@ footer .button.primary {
   }
 }
 
-/* Industries â€” environment-led applications */
+/* Industries — environment-led applications */
 .industries-page {
   --ind-ink: #101a20;
   --ind-muted: #5c6c74;
@@ -6570,7 +6614,7 @@ footer .button.primary {
   opacity: 0;
 }
 .erkAboutPrinciple.is-visible { opacity: 1; transform: translateY(0); }
-/* The scroll reveal is an enhancement â€” without scripting the copy must still be readable. */
+/* The scroll reveal is an enhancement — without scripting the copy must still be readable. */
 @media (scripting: none) {
   .erkAboutPrinciple { opacity: 1; transform: none; }
   .erkGlobeLoader { display: none; }
@@ -7348,13 +7392,21 @@ footer .button.primary {
   position: relative;
   z-index: 3;
   margin-top: 38px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  /* Auto-flow columns at 1fr inside a max-content track: both buttons take the
+     width of the wider label, so the pair always matches. */
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  width: max-content;
+  max-width: 100%;
+  gap: 0;
   animation: contactTextEnter 620ms 110ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+.hero-home .home-hero-actions .ind-button { width: 100%; }
+/* Butted together, with the shared edge collapsed to a single rule. */
+.hero-home .home-hero-actions .ind-button + .ind-button { margin-left: -1px; }
 
-/* Scroll reveal â€” the hiding styles apply only once the script adds .reveal-ready,
+/* Scroll reveal — the hiding styles apply only once the script adds .reveal-ready,
    so the page stays fully readable without JS or when motion is reduced. */
 .home-page.reveal-ready [data-reveal] {
   opacity: 0;
@@ -7370,12 +7422,11 @@ footer .button.primary {
 }
 
 /* Shared section furniture */
-.home-intro,
 .home-tech,
 .home-products,
 .home-industries,
 .home-partners {
-  /* No horizontal padding â€” the inner container is width-limited and centred, as on About. */
+  /* No horizontal padding — the inner container is width-limited and centred, as on About. */
   position: relative;
   padding: clamp(58px, 6.4vw, 96px) 0;
 }
@@ -7391,7 +7442,6 @@ footer .button.primary {
 }
 
 .home-section-head h2,
-.home-intro-lead h2,
 .home-industries-copy h2 {
   /* Same type scale as .ind-directory-head h2 on the other pages. */
   margin: 20px 0 0;
@@ -7401,7 +7451,6 @@ footer .button.primary {
   letter-spacing: -0.045em;
 }
 .home-section-head h2 span,
-.home-intro-lead h2 span,
 .home-industries-copy h2 span,
 .hero-home h1 span {
   display: block;
@@ -7421,79 +7470,6 @@ footer .button.primary {
   width: max-content;
   max-width: 100%;
 }
-
-/* Intro */
-.home-intro-inner {
-  width: var(--home-page-width);
-  margin-inline: auto;
-}
-.home-intro-body { margin-top: clamp(24px, 2.6vw, 40px); }
-.home-intro-body > p {
-  margin: 0;
-  max-width: var(--home-lead-measure);
-  color: var(--ind-muted);
-  font-size: clamp(18px, 1.3vw, 20px);
-  line-height: 1.66;
-}
-/* Three columns under the intro copy, so the row does not stretch the full page width. */
-.home-principles {
-  margin: clamp(34px, 3.6vw, 56px) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 clamp(24px, 3vw, 60px);
-  border-top: 1px solid var(--ind-line);
-}
-.home-principles li {
-  padding: 24px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.home-principles strong {
-  color: var(--ind-accent);
-  font: 700 clamp(12px, 0.85vw, 14px)/1.3 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.home-principle-text { color: var(--ind-muted); font-size: 16px; line-height: 1.6; }
-.home-principle-icon {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--ind-line);
-  background: #fff;
-}
-.home-principle-icon svg {
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: #7d8f97;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 260ms ease;
-}
-.home-principle-mark {
-  stroke: var(--ind-accent);
-  /* Drawn on as the row reveals, then held. */
-  stroke-dasharray: 90;
-  stroke-dashoffset: 90;
-}
-.home-page.reveal-ready [data-reveal].is-revealed .home-principle-mark {
-  animation: homePrincipleDraw 900ms 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.home-principles li:hover .home-principle-icon {
-  border-color: rgba(7, 135, 155, 0.42);
-}
-.home-principles li:hover .home-principle-icon svg { stroke: #4e6a74; }
-@keyframes homePrincipleDraw { to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .home-principle-mark { stroke-dashoffset: 0; }
-}
-
 
 /* Technology pillars */
 .home-tech-grid,
@@ -7765,7 +7741,7 @@ footer .button.primary {
 .home-industry-list a:hover .home-industry-num { color: var(--ind-accent); }
 .home-industry-list a:hover .site-arrow { opacity: 1; transform: translateX(0); }
 
-/* Figures band â€” the one dark stop on an otherwise white page. */
+/* Figures band — the one dark stop on an otherwise white page. */
 .home-figures {
   position: relative;
   margin: clamp(20px, 4vw, 56px) 0;
@@ -8015,16 +7991,23 @@ footer .button.primary {
   .home-tech-grid { grid-template-columns: 1fr; }
   .home-industries-inner { grid-template-columns: 1fr; }
   .home-partner-grid { grid-template-columns: 1fr; }
-  .home-principles { grid-template-columns: 1fr; }
-  .home-principles li { padding: 18px 0; border-bottom: 1px solid var(--ind-line); }
   .home-figure-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 34px; }
   .home-partner-card { grid-template-columns: minmax(0, 1fr) clamp(160px, 26vw, 240px); }
 }
 @media (max-width: 680px) {
   .home-page { --home-page-width: calc(100% - 40px); }
   .hero-home h1 { font-size: clamp(27px, 8vw, 40px); }
+  /* The headline and the buttons carry the hero on phones. */
+  .hero-home .technology-hero__content > p { display: none; }
+  .hero-home .home-hero-actions {
+    grid-auto-flow: row;
+    width: 100%;
+    margin-top: 30px;
+    gap: 0;
+  }
+  /* Stacked flush, with the shared edge collapsed to a single rule. */
+  .hero-home .home-hero-actions .ind-button + .ind-button { margin-top: -1px; margin-left: 0; }
   .home-section-head h2,
-  .home-intro-lead h2,
   .home-industries-copy h2 { font-size: clamp(26px, 7.2vw, 34px); }
   .home-product-grid { grid-template-columns: 1fr; }
   .home-industry-list a { grid-template-columns: 44px minmax(0, 1fr) 24px; padding: 20px 2px; }

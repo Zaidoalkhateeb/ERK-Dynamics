@@ -458,14 +458,21 @@ function Footer() {
         </div>
         <div className="footer-links footer-links--contact">
           <b>CONTACT</b>
-          <a href="tel:+905372574543">+90 537 257 45 43</a>
-          <a href="mailto:info@erkdynamics.com">info@erkdynamics.com</a>
+          <a href="tel:+905372574543">
+            <span className="footer-contact-icon" aria-hidden="true"><PhoneIcon /></span>
+            +90 537 257 45 43
+          </a>
+          <a href="mailto:info@erkdynamics.com">
+            <span className="footer-contact-icon" aria-hidden="true"><MailIcon /></span>
+            info@erkdynamics.com
+          </a>
           <a
             href="https://www.linkedin.com/company/erk-dynamics/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="ERK Dynamics on LinkedIn"
           >
+            <span className="footer-contact-icon" aria-hidden="true"><LinkedInIcon /></span>
             ERK Dynamics
           </a>
         </div>

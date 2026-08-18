@@ -61,24 +61,6 @@ const partners = [
   },
 ] as const;
 
-const principles = [
-  {
-    id: "evaluation",
-    title: "Evaluation first",
-    text: "Task assessment, fitting, and field trials before any wider rollout.",
-  },
-  {
-    id: "support",
-    title: "Local support",
-    text: "An Istanbul-based team and a single point of contact through the product lifecycle.",
-  },
-  {
-    id: "claims",
-    title: "Responsible claims",
-    text: "Technical clarity about what a technology does and what it does not.",
-  },
-] as const;
-
 // Pre-sized copies of the product photography — see scripts/make-home-thumbs.mjs.
 const productImages: Record<string, string> = {
   "auxivo-omnisuit": "/media/home/omnisuit-card.webp",
@@ -90,10 +72,10 @@ const productImages: Record<string, string> = {
 // Every figure is countable from the site itself: two partners, four published
 // Auxivo systems, three technology categories, five industries on /industries.
 const figures = [
-  { value: 2, label: "Technology partners", note: "" },
-  { value: 4, label: "Exoskeleton systems", note: "" },
-  { value: 3, label: "Technology categories", note: "" },
-  { value: 5, label: "Industries served", note: "" },
+  { value: 2, label: "Global technology partners", suffix: "" },
+  { value: 4, label: "Exoskeleton solutions", suffix: "" },
+  { value: 3, label: "Core technology areas", suffix: "" },
+  { value: 5, label: "Industrial sectors", suffix: "+" },
 ] as const;
 
 export function HomePage() {
@@ -313,36 +295,6 @@ export function HomePage() {
         </a>
       </section>
 
-      <section className="home-intro" aria-labelledby="home-intro-title">
-        <div className="home-intro-inner">
-          <div className="home-intro-lead" data-reveal>
-            <h2 id="home-intro-title">
-              <span>Technology chosen for</span>
-              <span>the work, not the catalogue</span>
-            </h2>
-          </div>
-          <div className="home-intro-body" data-reveal style={{ "--reveal-i": 1 } as CSSProperties}>
-            <p>
-              We are an Istanbul-based technology solutions company helping industrial teams evaluate,
-              adopt, and scale advanced systems that improve worker safety and operational performance.
-            </p>
-            <ul className="home-principles">
-              {principles.map((principle) => (
-                <li key={principle.id}>
-                  <span className="home-principle-icon" aria-hidden="true">
-                    <svg viewBox="0 0 48 48" role="presentation">
-                      <PrincipleIcon id={principle.id} />
-                    </svg>
-                  </span>
-                  <strong>{principle.title}</strong>
-                  <span className="home-principle-text">{principle.text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       <section ref={figuresRef} className="home-figures" aria-label="ERK Dynamics at a glance">
         <div className="home-figures-art" aria-hidden="true">
           <svg viewBox="0 0 1400 260" preserveAspectRatio="xMidYMid slice" role="presentation">
@@ -361,9 +313,9 @@ export function HomePage() {
             <li key={figure.label} data-reveal style={{ "--reveal-i": index } as CSSProperties}>
               <strong>
                 <span data-count-to={figure.value}>{figure.value}</span>
+                {figure.suffix}
               </strong>
               <span className="home-figure-label">{figure.label}</span>
-              <span className="home-figure-note">{figure.note}</span>
             </li>
           ))}
         </ul>
@@ -590,40 +542,6 @@ function TechGlyph({ id }: { id: string }) {
       );
     default:
       return null;
-  }
-}
-
-function PrincipleIcon({ id }: { id: string }) {
-  switch (id) {
-    // Clipboard with a checked line: the assessment that precedes a rollout.
-    case "evaluation":
-      return (
-        <g>
-          <path d="M14 10h20v6H14z" />
-          <path d="M14 13H9v27h30V13h-5" />
-          <path className="home-principle-mark" d="m16 26 5 5 11-11" />
-          <path d="M16 36h16" />
-        </g>
-      );
-    // Location pin over a base line: a team on the ground here.
-    case "support":
-      return (
-        <g>
-          <path className="home-principle-mark" d="M24 41c7-9 11-15 11-20a11 11 0 0 0-22 0c0 5 4 11 11 20Z" />
-          <circle cx="24" cy="21" r="4" />
-          <path d="M9 43h30" />
-        </g>
-      );
-    // Balance scale: claims weighed against what the product actually does.
-    default:
-      return (
-        <g>
-          <path d="M24 12v29" />
-          <path d="M12 18h24" />
-          <path d="M15 41h18" />
-          <path className="home-principle-mark" d="M12 18 6 31h12zM36 18l-6 13h12z" />
-        </g>
-      );
   }
 }
 

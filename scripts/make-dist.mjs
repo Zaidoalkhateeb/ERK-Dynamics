@@ -57,6 +57,10 @@ async function addFlatSegmentPayloads(dir) {
       await cp(payload, path.join(dir, flattened));
       copied += 1;
     }
+    // Nothing requests the nested path once the flat copies exist, and this host
+    // answers 403 for any directory whose name starts with an underscore — the
+    // same reason `_next` is republished as `site-assets`. Drop it.
+    await rm(full, { recursive: true, force: true });
   }
   return copied;
 }
