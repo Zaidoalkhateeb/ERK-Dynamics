@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PointerEvent, useEffect, useRef } from "react";
+import { PointerEvent, RefObject, useEffect, useRef } from "react";
 import { GlobalRouteGlobe } from "./GlobalRouteGlobe";
 
 const principles = [
@@ -66,10 +66,10 @@ export function AboutExperience() {
     };
   }, []);
 
-  const moveVisual = (event: PointerEvent<HTMLDivElement>) => {
+  const moveVisual = (event: PointerEvent<HTMLElement>) => {
     const visual = visualRef.current;
     if (!visual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = visual.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
@@ -86,9 +86,15 @@ export function AboutExperience() {
 
   return (
     <main className="erkAboutPage" id="about-top">
-      <section className="erkAboutHero" aria-labelledby="about-title">
+      <section
+        className="erkAboutHero"
+        aria-labelledby="about-title"
+        onPointerMove={moveVisual}
+        onPointerLeave={resetVisual}
+      >
         <div className="erkAboutHeroGrid" aria-hidden="true" />
         <div className="erkAboutHeroGlow" aria-hidden="true" />
+        <HeroArtwork stageRef={visualRef} />
         <div className="erkAboutHeroInner">
           <div className="erkAboutHeroCopy">
             <h1 id="about-title" className="erkAboutHeroTitle">
@@ -109,57 +115,6 @@ export function AboutExperience() {
             </div>
           </div>
 
-          <div ref={visualRef} className="erkAboutVisual" onPointerMove={moveVisual} onPointerLeave={resetVisual} aria-hidden="true">
-            <div className="erkAboutVisualHalo" />
-            <div className="erkAboutVisualStage">
-              <svg className="erkAboutVisualSvg" viewBox="0 0 760 720" role="presentation">
-                <defs>
-                  <radialGradient id="erk-about-orbit-halo" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#27bfd4" stopOpacity=".18" />
-                    <stop offset="56%" stopColor="#27bfd4" stopOpacity=".06" />
-                    <stop offset="100%" stopColor="#27bfd4" stopOpacity="0" />
-                  </radialGradient>
-                  <linearGradient id="erk-about-orbit-stroke" x1="100" y1="100" x2="650" y2="650">
-                    <stop offset="0%" stopColor="#86dce8" stopOpacity=".22" />
-                    <stop offset="52%" stopColor="#0a91a8" stopOpacity=".55" />
-                    <stop offset="100%" stopColor="#0a7288" stopOpacity=".18" />
-                  </linearGradient>
-                  <filter id="erk-about-core-shadow" x="-60%" y="-60%" width="220%" height="220%">
-                    <feDropShadow dx="0" dy="18" stdDeviation="18" floodColor="#0a5365" floodOpacity=".18" />
-                  </filter>
-                </defs>
-                <circle cx="392" cy="362" r="302" fill="url(#erk-about-orbit-halo)" />
-                <g className="erkAboutOrbitSpin erkAboutOrbitSpin--slow">
-                  <circle className="erkAboutOrbitLine erkAboutOrbitLine--outer" cx="392" cy="362" r="284" />
-                  <circle className="erkAboutOrbitNode erkAboutOrbitNode--solid" cx="392" cy="78" r="7" />
-                  <circle className="erkAboutOrbitNode" cx="648" cy="238" r="5" />
-                  <circle className="erkAboutOrbitNode" cx="146" cy="506" r="4" />
-                </g>
-                <g className="erkAboutOrbitSpin erkAboutOrbitSpin--reverse">
-                  <ellipse className="erkAboutOrbitLine erkAboutOrbitLine--middle" cx="392" cy="362" rx="236" ry="188" transform="rotate(-22 392 362)" />
-                  <circle className="erkAboutOrbitNode erkAboutOrbitNode--solid" cx="194" cy="230" r="6" />
-                  <circle className="erkAboutOrbitNode" cx="585" cy="493" r="5" />
-                </g>
-                <g className="erkAboutOrbitSpin erkAboutOrbitSpin--medium">
-                  <circle className="erkAboutOrbitLine erkAboutOrbitLine--inner" cx="392" cy="362" r="148" />
-                  <circle className="erkAboutOrbitNode erkAboutOrbitNode--solid" cx="392" cy="214" r="5" />
-                </g>
-                <g className="erkAboutNetworkTrace">
-                  <path d="M144 506 194 230 392 78 648 238 585 493 392 646 144 506Z" />
-                  <path d="M194 230 585 493M392 78 392 646M144 506 648 238" />
-                </g>
-                <g className="erkAboutCoreFloat" filter="url(#erk-about-core-shadow)">
-                  <rect className="erkAboutCoreFrame" x="300" y="270" width="184" height="184" rx="8" transform="rotate(45 392 362)" />
-                  <rect className="erkAboutCoreFill" x="337" y="307" width="110" height="110" rx="5" transform="rotate(45 392 362)" />
-                  <circle className="erkAboutCorePulse" cx="392" cy="362" r="18" />
-                </g>
-                <g className="erkAboutOrbitTicks">
-                  <path d="M392 36v24M392 664v24M66 362h24M694 362h24" />
-                  <path d="m162 132 17 17m426 426 17 17M162 592l17-17m426-426 17-17" />
-                </g>
-              </svg>
-            </div>
-          </div>
         </div>
         <a className="page-scroll-cue" href="#our-point-of-view"><span>Scroll to discover</span><i aria-hidden="true" /></a>
       </section>
@@ -194,8 +149,11 @@ export function AboutExperience() {
             <h2 id="bridge-title">One bridge Two worlds</h2>
           </div>
           <div className="erkAboutBridgeCopy">
-            <p>We connect proven global technology manufacturers with industrial businesses across Türkiye.</p>
-            <p>By combining product expertise, local market knowledge, and ongoing support, we turn advanced technologies into practical operational value.</p>
+            <p>
+              We connect proven global technology manufacturers with industrial businesses across Türkiye. By
+              combining product expertise, local market knowledge, and ongoing support, we turn advanced
+              technologies into practical operational value.
+            </p>
           </div>
           <div className="erkAboutJourney" aria-label="İstanbul connected with global industrial markets">
             <div className="erkAboutGlobe erkAboutGlobe--interactive">
@@ -206,6 +164,81 @@ export function AboutExperience() {
       </section>
 
     </main>
+  );
+}
+
+
+/* Full-bleed hero backdrop, drawn on the same wide 1600x900 canvas the Partners
+   and Home heroes use so `slice` crops it the same way at every width. The whole
+   composition sits in the right half, clear of the copy. */
+function HeroArtwork({ stageRef }: { stageRef: RefObject<HTMLDivElement | null> }) {
+  return (
+    <div className="erkAboutVisual" aria-hidden="true">
+      <div ref={stageRef} className="erkAboutVisualStage">
+        <svg
+          className="erkAboutVisualSvg"
+          viewBox="0 0 1600 900"
+          preserveAspectRatio="xMidYMid slice"
+          role="presentation"
+          focusable="false"
+        >
+          <defs>
+            <linearGradient id="erk-about-hex-stroke" x1="950" y1="100" x2="1560" y2="740">
+              <stop offset="0%" stopColor="#7fd7e5" stopOpacity=".55" />
+              <stop offset="52%" stopColor="#12a2bb" stopOpacity=".85" />
+              <stop offset="100%" stopColor="#0a7288" stopOpacity=".45" />
+            </linearGradient>
+            <linearGradient id="erk-about-ring-stroke" x1="860" y1="10" x2="1640" y2="790">
+              <stop offset="0%" stopColor="#86dce8" stopOpacity=".18" />
+              <stop offset="50%" stopColor="#0a91a8" stopOpacity=".5" />
+              <stop offset="100%" stopColor="#0a7288" stopOpacity=".14" />
+            </linearGradient>
+            <pattern id="erk-about-dots" width="30" height="30" patternUnits="userSpaceOnUse">
+              <circle cx="5" cy="5" r="2.8" fill="#37bdd5" fillOpacity=".34" />
+            </pattern>
+          </defs>
+
+          {/* Scaled and nudged about the cluster centre so the honeycomb clears both
+              the copy on the left and the contact rail on the right. */}
+          <g transform="translate(1140 410) scale(0.86) translate(-1250 -400)">
+          <g className="erkAboutOrbitSpin erkAboutOrbitSpin--slow">
+            <circle className="erkAboutRing erkAboutRing--outer" cx="1250" cy="400" r="390" />
+          </g>
+          <g className="erkAboutOrbitSpin erkAboutOrbitSpin--reverse">
+            <ellipse className="erkAboutRing erkAboutRing--middle" cx="1250" cy="400" rx="320" ry="255" transform="rotate(-20 1250 400)" />
+          </g>
+
+          <g className="erkAboutHexDrift">
+            <path className="erkAboutHex erkAboutHex--ghost" d="M1300 190 1225 320 1075 320 1000 190 1075 60 1225 60Z" />
+            <path className="erkAboutHex erkAboutHex--lead" d="M1300 450 1225 580 1075 580 1000 450 1075 320 1225 320Z" />
+            <path className="erkAboutHex erkAboutHex--mid" d="M1525 580 1450 710 1300 710 1225 580 1300 450 1450 450Z" />
+            <path className="erkAboutHex erkAboutHex--mid" d="M1525 320 1450 450 1300 450 1225 320 1300 190 1450 190Z" />
+          </g>
+
+          <g className="erkAboutHexDrift erkAboutHexDrift--slow">
+            <path className="erkAboutHexDots" d="M985 210 933 301 828 301 775 210 828 119 933 119Z" />
+          </g>
+
+          <g className="erkAboutFlow">
+            <path d="M880 301V450H1000" />
+          </g>
+          <g className="erkAboutFlow erkAboutFlow--wave">
+            <path d="M812 800C960 730 1050 776 1170 706" />
+            <path className="erkAboutFlow--delayed" d="M846 852C1000 786 1090 826 1215 754" />
+          </g>
+
+          <g className="erkAboutNodes">
+            <circle className="erkAboutOrbitNode erkAboutOrbitNode--solid" cx="1300" cy="450" r="7" />
+            <circle className="erkAboutOrbitNode" cx="1225" cy="320" r="5" />
+            <circle className="erkAboutOrbitNode" cx="1225" cy="580" r="5" />
+            <circle className="erkAboutOrbitNode" cx="1525" cy="320" r="4.5" />
+            <circle className="erkAboutOrbitNode" cx="1525" cy="580" r="4.5" />
+            <circle className="erkAboutOrbitNode erkAboutOrbitNode--solid" cx="880" cy="210" r="5.5" />
+          </g>
+          </g>
+        </svg>
+      </div>
+    </div>
   );
 }
 

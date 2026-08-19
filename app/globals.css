@@ -3833,14 +3833,15 @@ footer .button.primary {
   margin-inline: auto;
   padding: 190px 0 100px;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(520px, 1.05fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: clamp(54px, 7vw, 140px);
 }
 .erkAboutHeroCopy {
   position: relative;
   z-index: 3;
   align-self: start;
+  /* Held clear of the artwork, which now sits in the right half of the hero. */
+  max-width: min(58%, 720px);
   margin-top: 80px;
 }
 /* Same staggered entrance as every other hero — and it survives the mobile
@@ -3926,51 +3927,50 @@ footer .button.primary {
 #our-point-of-view,
 #partner-directory,
 #contact-form { scroll-margin-top: 76px; }
+/* A full-bleed backdrop rather than a column of the hero grid, the same way the
+   Partners and Home heroes carry their artwork. */
 .erkAboutVisual {
   --erk-about-parallax-x: 0px;
   --erk-about-parallax-y: 0px;
-  position: relative;
-  min-height: 470px;
-  display: grid;
-  place-items: center;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
-  touch-action: pan-y;
-  align-self: center;
-}
-.erkAboutVisualHalo {
-  position: absolute;
-  width: min(39vw, 660px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(35, 183, 205, 0.13), rgba(35, 183, 205, 0.025) 48%, transparent 71%);
-  animation: erkAboutHaloBreathe 7s ease-in-out infinite alternate;
 }
 .erkAboutVisualStage {
-  position: relative;
-  z-index: 1;
-  width: min(43vw, 710px);
+  position: absolute;
+  /* Bled past the edges so the parallax shift never exposes a bare corner. */
+  inset: -3%;
   transform: translate3d(var(--erk-about-parallax-x), var(--erk-about-parallax-y), 0);
   transition: transform 420ms var(--erk-about-ease);
   will-change: transform;
 }
-.erkAboutVisualSvg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 22px 34px rgba(16, 64, 79, 0.08)); }
-.erkAboutOrbitLine { fill: none; stroke: url(#erk-about-orbit-stroke); vector-effect: non-scaling-stroke; }
-.erkAboutOrbitLine--outer { stroke-width: 1.4; stroke-dasharray: 6 12 2 18; }
-.erkAboutOrbitLine--middle { stroke-width: 1.6; stroke-dasharray: 72 18 8 28; }
-.erkAboutOrbitLine--inner { stroke-width: 1.2; stroke-dasharray: 14 12; opacity: 0.62; }
+/* No drop shadow: it thickened every stroke into a smudge and made the whole
+   motif read as a solid object rather than line-work. */
+.erkAboutVisualSvg { display: block; width: 100%; height: 100%; }
+.erkAboutRing { fill: none; stroke: url(#erk-about-ring-stroke); vector-effect: non-scaling-stroke; }
+.erkAboutRing--outer { stroke-width: 1.4; stroke-dasharray: 6 12 2 18; }
+.erkAboutRing--middle { stroke-width: 1.5; stroke-dasharray: 72 18 8 28; }
 .erkAboutOrbitSpin { transform-box: fill-box; transform-origin: center; animation: erkAboutSpin 38s linear infinite; }
 .erkAboutOrbitSpin--slow { animation-duration: 48s; }
-.erkAboutOrbitSpin--medium { animation-duration: 24s; }
 .erkAboutOrbitSpin--reverse { animation-name: erkAboutSpinReverse; animation-duration: 34s; }
+/* The honeycomb: stroke only, weighted front-to-back so it reads as depth rather
+   than as one dense mass. Matches the Partners hero's hexagon language. */
+.erkAboutHex { fill: none; stroke: url(#erk-about-hex-stroke); stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.erkAboutHex--lead { stroke-width: 2.2; opacity: 0.72; }
+.erkAboutHex--mid { stroke-width: 1.7; opacity: 0.5; }
+.erkAboutHex--ghost { stroke-width: 1.2; opacity: 0.26; stroke-dasharray: 16 12; }
+.erkAboutHexDots { fill: url(#erk-about-dots); stroke: none; opacity: 0.72; }
+.erkAboutHexDrift { transform-box: fill-box; transform-origin: center; animation: erkAboutHexDrift 13s ease-in-out infinite alternate; }
+.erkAboutHexDrift--slow { animation-duration: 18s; animation-direction: alternate-reverse; }
+.erkAboutFlow { fill: none; stroke: rgba(17, 139, 160, 0.34); stroke-width: 1.3; stroke-linecap: round; stroke-dasharray: 14 12; vector-effect: non-scaling-stroke; animation: erkAboutDash 16s linear infinite; }
+.erkAboutFlow--wave { stroke: rgba(73, 202, 221, 0.5); stroke-dasharray: 15 10 2 12; animation-duration: 22s; }
+.erkAboutFlow--delayed { animation-delay: -6s; }
 .erkAboutOrbitNode { fill: #f4fbfc; stroke: #148ca2; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .erkAboutOrbitNode--solid { fill: #0a8aa0; stroke: #d5f5f8; stroke-width: 3; }
-.erkAboutNetworkTrace { fill: none; stroke: rgba(17, 139, 160, 0.18); stroke-width: 1; stroke-dasharray: 5 11; vector-effect: non-scaling-stroke; animation: erkAboutDash 16s linear infinite; }
-.erkAboutCoreFloat { transform-box: fill-box; transform-origin: center; animation: erkAboutCoreFloat 6.5s ease-in-out infinite alternate; }
-.erkAboutCoreFrame { fill: rgba(255, 255, 255, 0.38); stroke: rgba(5, 133, 155, 0.28); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
-.erkAboutCoreFill { fill: #07879b; }
-.erkAboutCorePulse { fill: #7ae1ee; opacity: 0.72; animation: erkAboutCorePulse 2.8s ease-in-out infinite; }
-.erkAboutOrbitTicks { fill: none; stroke: rgba(15, 117, 136, 0.25); stroke-width: 1.3; vector-effect: non-scaling-stroke; }
 
 .erkAboutPointOfView {
   position: relative;
@@ -4031,20 +4031,15 @@ footer .button.primary {
 .erkAboutGlobe svg { display: block; width: 100%; overflow: visible; transform-origin: 50% 50%; transform-style: preserve-3d; transform: translate3d(var(--erk-globe-shift-x), var(--erk-globe-shift-y), 0) rotateX(var(--erk-globe-rotate-x)) rotateY(var(--erk-globe-rotate-y)); transition: transform 180ms cubic-bezier(.2, .75, .25, 1); will-change: transform; }
 
 @keyframes erkAboutScrollLine { 0%, 18% { transform: translateX(-100%); } 55%, 100% { transform: translateX(100%); } }
-@keyframes erkAboutHaloBreathe { from { opacity: 0.64; transform: scale(0.92); } to { opacity: 1; transform: scale(1.06); } }
 @keyframes erkAboutSpin { to { transform: rotate(360deg); } }
 @keyframes erkAboutSpinReverse { to { transform: rotate(-360deg); } }
 @keyframes erkAboutDash { to { stroke-dashoffset: -420; } }
-@keyframes erkAboutCoreFloat { from { transform: translate3d(-5px, -8px, 0) rotate(-0.6deg); } to { transform: translate3d(8px, 10px, 0) rotate(0.8deg); } }
-@keyframes erkAboutCorePulse { 0%, 100% { opacity: 0.38; transform: scale(0.72); transform-origin: center; } 50% { opacity: 0.9; transform: scale(1.12); transform-origin: center; } }
+@keyframes erkAboutHexDrift { from { transform: translate3d(-6px, -9px, 0) rotate(-0.7deg); } to { transform: translate3d(9px, 11px, 0) rotate(0.9deg); } }
 @keyframes erkAboutStatementOrb { from { transform: translate3d(0, -8px, 0) scale(0.96); } to { transform: translate3d(-24px, 18px, 0) scale(1.05); } }
 @keyframes erkAboutPrincipleScan { 0% { left: -26%; opacity: 0; } 14%, 86% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
 
 @media (max-width: 1220px) {
-  .erkAboutHeroInner { grid-template-columns: minmax(0, 1fr) minmax(430px, 0.9fr); gap: 45px; }
   .erkAboutHeroTitle { font-size: clamp(44px, 5vw, 72px); }
-  .erkAboutVisual { min-height: 470px; }
-  .erkAboutVisualStage { width: min(45vw, 610px); }
   .erkAboutPointOfView { grid-template-columns: 1fr; min-height: 0; }
   .erkAboutStatementPanel { min-height: 0; padding: 92px 7vw; }
   .erkAboutStatementInner { position: relative; top: auto; }
@@ -4057,9 +4052,6 @@ footer .button.primary {
   .erkAboutHeroInner { padding: 145px 0 76px; grid-template-columns: 1fr; gap: 26px; }
   .erkAboutHeroCopy { max-width: 760px; margin-top: 0; }
   .erkAboutHeroTitle { font-size: clamp(44px, 7vw, 64px); }
-  .erkAboutVisual { min-height: 430px; }
-  .erkAboutVisualStage,
-  .erkAboutVisualHalo { width: min(86vw, 620px); }
   .page-scroll-cue { display: none; }
   .erkAboutBridge { padding: 100px 0 112px; }
   .erkAboutBridgeInner { grid-template-columns: 1fr; }
@@ -4545,9 +4537,6 @@ footer .button.primary {
   .erkAboutHeroLead { margin-top: 28px; font-size: 17px; }
   .erkAboutHeroActions { display: grid; grid-template-columns: 1fr; gap: 10px; }
   .erkAboutButton { width: 100%; }
-  .erkAboutVisual { min-height: 330px; min-width: 0; }
-  .erkAboutVisualStage,
-  .erkAboutVisualHalo { width: min(100vw - 44px, 420px); }
   .erkAboutStatementPanel { padding: 74px 20px; }
   .erkAboutStatementTitle { font-size: clamp(48px, 14vw, 64px); }
   .erkAboutStatementCopy { font-size: 17px; }
@@ -4614,6 +4603,9 @@ footer .button.primary {
     padding-top: 190px;
     padding-bottom: 100px;
   }
+  /* `width: auto` above makes this flex item shrink to its copy's max-content
+     width now that the artwork no longer occupies a second column. */
+  .erkAboutHeroInner { flex: 1 1 auto; min-width: 0; }
   .partners-hero-copy,
   .contact-hero-copy,
   .erkAboutHeroCopy {
@@ -4662,6 +4654,12 @@ footer .button.primary {
     font-weight: 500;
     line-height: 1.02;
     letter-spacing: -0.045em;
+  }
+  /* The About hero opens the page with nothing above it, so its title carries the
+     whole entrance — 6vw leaves it smaller than the section headings further down. */
+  .erkAboutHeroTitle {
+    font-size: clamp(34px, 11vw, 52px);
+    line-height: 1.03;
   }
   .partners-hero-copy > p,
   .contact-hero__copy > .contact-hero__description,
@@ -5631,10 +5629,14 @@ footer .button.primary {
 /* Final About Us mobile alignment override. */
 @media (max-width: 680px) {
   .erkAboutPage { --erk-about-page-width: calc(100% - 40px); }
+  /* The About hero holds no in-flow artwork any more, so the shared 620px floor
+     was pure dead space — and because the hero centres its content, that slack
+     also pushed the title 45px below where every other page starts it. Tablets
+     keep the 620px floor; only phones hug the copy. */
+  .erkAboutHero { min-height: 0; }
   .erkAboutHeroInner { padding-top: 104px; padding-bottom: 38px; }
   .erkAboutHeroLead { margin-top: 20px; }
   .erkAboutHeroActions { margin-top: 26px; }
-  .erkAboutVisual { min-height: 270px; }
   .erkAboutStatementPanel { padding-top: 56px; padding-bottom: 56px; }
   .erkAboutStatementCopy { margin-top: 24px; }
   .erkAboutOutcomes { margin-top: 34px; padding-top: 20px; }
@@ -5754,43 +5756,33 @@ footer .button.primary {
   }
 }
 
-/* About responsive sequence: copy, visual, then actions. */
 @media (max-width: 900px) {
   .erkAboutHeroInner { row-gap: 0; }
-  .erkAboutHeroCopy { display: contents; }
-  .erkAboutHeroTitle { order: 1; }
-  .erkAboutHeroLead { order: 2; }
+  .erkAboutHeroActions { margin-top: 26px; }
+  .erkAboutHeroCopy { max-width: none; }
   .erkAboutVisual {
-    order: 3;
-    margin-top: 26px;
-  }
-  .erkAboutHeroActions {
-    order: 4;
-    margin-top: 26px;
+    opacity: 0.72;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 26%, #000 58%, #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, transparent 26%, #000 58%, #000 100%);
   }
 }
 
 /* Mobile footer brand and navigation alignment. */
 @media (max-width: 700px) {
   footer {
-    padding: 34px 20px;
+    /* Trimmed from 20px: the three-column row needs every pixel it can get. */
+    padding: 34px 16px;
   }
-  .footer-tech-motif { opacity: .42; }
-  /* The link columns are left-aligned inside wider tracks, so the empty space
-     that reads as "the gap" starts before the spacer column does. Nudging the
-     motifs left centres them in that visual gap rather than in their track. */
-  .footer-tech-motif { transform: translateX(clamp(-20px, -3vw, -8px)); }
-  .footer-tech-motif--wearable { grid-column: 2; grid-row: 2; width: min(48px, 86%); }
-  .footer-tech-motif--lidar { grid-column: 4; grid-row: 2; width: min(54px, 86%); }
-  .footer-tech-motif--shared { grid-column: 6; grid-row: 2; width: min(68px, 86%); }
+  /* All three link columns share one row on phones, so every pixel of the width
+     goes to the text. The spacer motifs are what made that impossible — the
+     phone number and address had nowhere near enough room beside them. */
+  .footer-tech-motifs { display: none; }
   footer .footer-grid.expanded {
-    /* The spacer columns share the leftover width instead of staying pinned at
-       their minimum, so each motif has a gap wide enough to sit centred in. */
-    grid-template-columns:
-      minmax(76px, 1fr) minmax(28px, .42fr)
-      minmax(92px, 1.12fr) minmax(32px, .46fr)
-      minmax(70px, .9fr) minmax(38px, .5fr);
-    column-gap: 4px;
+    /* All three tracks at max-content — a minmax(0, …) here let the contact
+       column shrink under its own nowrap text and clip the address. */
+    grid-template-columns: max-content max-content max-content;
+    justify-content: space-between;
+    column-gap: clamp(6px, 2vw, 16px);
     row-gap: 30px;
     padding-top: 0;
   }
@@ -5803,12 +5795,18 @@ footer .button.primary {
     justify-content: center;
   }
   footer .footer-links--explore { grid-column: 1; grid-row: 2; }
-  footer .footer-links--products { grid-column: 3; grid-row: 2; }
-  footer .footer-links--contact {
-    grid-column: 5;
-    grid-row: 2;
-    justify-self: end;
+  footer .footer-links--products { grid-column: 2; grid-row: 2; }
+  footer .footer-links--contact { grid-column: 3; grid-row: 2; }
+  /* Never let the number or the address break — a wrapped phone number is
+     unreadable, and one unbroken line is the whole point of this row. */
+  footer .footer-links--contact a {
+    width: auto;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    gap: 6px;
+    font-size: 12px;
   }
+  footer .footer-contact-icon { width: 13px; height: 13px; margin-top: 2px; }
   footer .logo {
     width: 100%;
     gap: clamp(14px, 4vw, 20px);
@@ -5830,8 +5828,8 @@ footer .button.primary {
     font-size: 11px;
   }
   footer .footer-grid a:not(.logo) {
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: 12.5px;
+    line-height: 1.5;
   }
   footer .footer-bottom { margin-top: 24px; }
 }
@@ -5839,8 +5837,16 @@ footer .button.primary {
 @media (prefers-reduced-motion: reduce) {
   .footer-tech-motif * { animation: none !important; }
 }
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   footer .footer-grid > div:first-child p { font-size: 13px; }
+  /* Below this the three columns cannot hold the address on one line, so
+     contact drops to its own full-width row rather than being clipped. */
+  footer .footer-grid.expanded { grid-template-columns: max-content minmax(0, 1fr); }
+  footer .footer-links--products { grid-column: 2; }
+  footer .footer-links--contact { grid-column: 1 / -1; grid-row: 3; }
+  footer .footer-grid a:not(.logo) { font-size: 13px; }
+  footer .footer-links--contact a { font-size: 13px; }
+  footer .footer-contact-icon { width: 15px; height: 15px; }
 }
 
 /* Reveal more of the Partners hero artwork on mobile. */
@@ -5904,23 +5910,16 @@ footer .button.primary {
   .ind-modal-backdrop { display: none; }
 }
 
-/* Industries hero on phones: the hero fills the screen and the copy stretches
-   inside it, so the buttons sit at the bottom of the hero band instead of
-   leaving dead space under them. */
+/* Industries hero on phones: hugs its copy like every other hero. Filling a
+   640px band and pushing the buttons to its floor with `margin-top: auto` just
+   moved the dead space above them, where it read as a hole in the hero. */
 @media (max-width: 680px) {
   .hero-industries {
-    min-height: min(100svh, 640px);
-    display: flex;
-    flex-direction: column;
-  }
-  .hero-industries .technology-hero__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    min-height: 0;
   }
   .hero-industries .ind-hero-actions {
-    margin-top: auto;
-    padding-top: 40px;
+    margin-top: 26px;
+    padding-top: 0;
   }
 }
 
@@ -6578,10 +6577,12 @@ footer .button.primary {
   .hero-home h1 { font-size: clamp(27px, 8vw, 40px); }
   /* The headline and the buttons carry the hero on phones. */
   .hero-home .technology-hero__content > p { display: none; }
+  /* The lead paragraph is hidden here, so 30px left the buttons crowding the
+     headline. This drops them to roughly where the products hero sits them. */
   .hero-home .home-hero-actions {
     grid-auto-flow: row;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 72px;
     gap: 0;
   }
   /* Stacked flush, with the shared edge collapsed to a single rule. */

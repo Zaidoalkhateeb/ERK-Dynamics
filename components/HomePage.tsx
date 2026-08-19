@@ -271,7 +271,7 @@ export function HomePage() {
 
         <div className="partners-hero-copy technology-hero__content">
           <h1 id="home-title">
-            <span>Advanced technology</span>
+            <span>Advanced technology</span>{" "}
             <span>for industrial work</span>
           </h1>
           <p>

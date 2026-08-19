@@ -130,7 +130,7 @@ export function ProductsServicesExperience() {
         <div className="portfolio-hero-glow" aria-hidden="true" />
         <div className="portfolio-hero-inner">
           <div className="portfolio-hero-copy">
-            <h1 id="portfolio-title">Technology selected<br />for real operations</h1>
+            <h1 id="portfolio-title">Technology selected{" "}<br />for real operations</h1>
             <p className="portfolio-hero-intro">
               ERK Dynamics connects industrial teams with wearable robotics, sensing systems, and remote power
               technologies then supports the evaluation, adoption, and deployment around them.
