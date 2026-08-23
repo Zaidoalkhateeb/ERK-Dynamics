@@ -5984,6 +5984,68 @@ footer .button.primary {
 /* Butted together, with the shared edge collapsed to a single rule. */
 .hero-home .home-hero-actions .ind-button + .ind-button { margin-left: -1px; }
 
+/* Flat global route map behind the home hero. The artwork itself is styled by the
+   shared .erkRouteMap* rules; these only place it inside the hero canvas. */
+.home-route-map { shape-rendering: geometricPrecision; }
+
+/* The phone version: same artwork, its own box, in flow between the headline and the
+   buttons. Hidden until the hero stacks; the backdrop above is hidden from then on. */
+.home-route-map-block {
+  display: none;
+  shape-rendering: geometricPrecision;
+  width: 100%;
+  height: auto;
+}
+/* The block draws the whole world across a phone screen, so map units are worth well
+   under half a pixel. The type has to grow to compensate or the names vanish — and it
+   opts back out of the shared narrow-screen rule that hides labels for the backdrop. */
+.home-route-map-block .erkRouteMapLabel {
+  display: inline;
+  font-size: 25px;
+  stroke-width: 7px;
+}
+.home-route-map-block .erkRouteMapHubName { font-size: 32px; stroke-width: 8px; }
+.home-route-map-block .erkRouteMapDot { stroke-width: 3.4; }
+
+@media (max-width: 1200px) {
+  .hero-home .home-route-map {
+    transform: translateX(-17vw) scale(0.72);
+    transform-origin: right center;
+  }
+}
+@media (max-width: 800px) {
+  .hero-home .home-route-map {
+    opacity: 0.58;
+    transform: translateX(-18vw) scale(0.68);
+  }
+}
+@media (max-width: 680px) {
+  /* Phones read the hero as a stack: headline, then map, then buttons. `display:
+     contents` promotes the copy's children to flex items of the hero so the map —
+     which sits between them in the DOM — can take its turn in the order. The
+     wrapper's width is handed to each child in its place. */
+  .hero-home { display: flex; flex-direction: column; }
+  .hero-home .technology-hero__content { display: contents; }
+  .hero-home h1,
+  .hero-home .home-hero-actions {
+    width: var(--home-page-width);
+    margin-inline: auto;
+  }
+  .hero-home h1 { order: 1; }
+  .hero-home .home-route-map-block { order: 2; }
+  .hero-home .home-hero-actions { order: 3; }
+
+  .hero-home .home-route-map { display: none; }
+  .hero-home .home-route-map-block {
+    display: block;
+    /* Relative rather than static: the hero's backdrop layer is absolutely
+       positioned, and would paint over an in-flow element whatever the DOM order. */
+    position: relative;
+    z-index: 1;
+    margin: 22px 0 26px;
+  }
+}
+
 /* Scroll reveal — the hiding styles apply only once the script adds .reveal-ready,
    so the page stays fully readable without JS or when motion is reduced. */
 .home-page.reveal-ready [data-reveal] {
@@ -6577,12 +6639,12 @@ footer .button.primary {
   .hero-home h1 { font-size: clamp(27px, 8vw, 40px); }
   /* The headline and the buttons carry the hero on phones. */
   .hero-home .technology-hero__content > p { display: none; }
-  /* The lead paragraph is hidden here, so 30px left the buttons crowding the
-     headline. This drops them to roughly where the products hero sits them. */
+  /* The map now fills the space between the headline and the buttons, so this no
+     longer needs the 72px that stood in for the hidden lead paragraph. */
   .hero-home .home-hero-actions {
     grid-auto-flow: row;
     width: 100%;
-    margin-top: 72px;
+    margin-top: 4px;
     gap: 0;
   }
   /* Stacked flush, with the shared edge collapsed to a single rule. */
@@ -6602,4 +6664,137 @@ footer .button.primary {
   }
   .home-partner-art svg { max-height: 160px; }
   .home-partner-body { padding: 26px 22px 24px; }
+}
+
+/* ============================================================================
+   Flat route map (About > One bridge, two worlds)
+   Static SVG baked by scripts/make-world-map.mjs — the arcs, the travelling
+   beads and the hub pulse are all CSS/SMIL, so the section ships no JS.
+   ========================================================================== */
+.erkRouteMap { margin: 0; width: 100%; }
+.erkRouteMapSvg { display: block; width: 100%; height: auto; }
+
+/* fill and stroke are set inline: the gradient ids are namespaced per instance. */
+/* Only the home hero tints these; the About card stays a plain silhouette so its
+   labels and arcs carry the story on their own. */
+.erkRouteMapMarketCountry { fill: #8ab6c4; }
+.erkRouteMapHubCountry { fill: #0c7d95; }
+
+.erkRouteMapArcGlow,
+.erkRouteMapArcLine { fill: none; stroke-linecap: round; }
+.erkRouteMapArcGlow { stroke: #12a2bb; stroke-opacity: 0.13; stroke-width: 7; }
+.erkRouteMapArcLine { stroke-width: 2.5; }
+/* pathLength="1" on every arc lets one dash rule draw routes of any length.
+   The resting state is drawn, and the animation runs *from* hidden with a backwards
+   fill covering its delay. That way a route is never invisible because its animation
+   did not run — only because it has not been drawn in yet. */
+.erkRouteMapArcs path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: erkRouteDraw 1.5s cubic-bezier(0.32, 0.72, 0.2, 1) backwards;
+  animation-delay: calc(var(--erk-route-index) * 0.12s + 0.2s);
+}
+.erkRouteMapPulse {
+  fill: #ffffff;
+  stroke: #0e94ab;
+  stroke-width: 1.2;
+  opacity: 0;
+  animation: erkRouteFade 0.6s ease forwards;
+  animation-delay: calc(var(--erk-route-index) * 0.12s + 1.4s);
+}
+
+.erkRouteMapDotHalo { fill: #ffffff; fill-opacity: 0.72; }
+.erkRouteMapDot { fill: #ffffff; stroke: #00778d; stroke-width: 2.2; }
+
+.erkRouteMapHubCore { fill: #00778d; }
+.erkRouteMapHubBadge {
+  fill: #ffffff;
+  stroke: #00778d;
+  stroke-opacity: 0.55;
+  stroke-width: 1.3;
+  filter: drop-shadow(0 1px 2px rgba(6, 60, 74, 0.28));
+}
+.erkRouteMapHubRing { fill: #ffffff; fill-opacity: 0.66; stroke: #00778d; stroke-opacity: 0.55; stroke-width: 1.4; }
+.erkRouteMapHubWave {
+  fill: none;
+  stroke: #00778d;
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: erkRouteHubWave 3.4s ease-out infinite;
+}
+.erkRouteMapHubWave--late { animation-delay: 1.7s; }
+
+/* paint-order puts the white stroke underneath the glyphs, so every label keeps
+   its own quiet halo wherever it crosses land, a border or a route. */
+.erkRouteMapLabel,
+.erkRouteMapHubName,
+.erkRouteMapKeyText {
+  paint-order: stroke fill;
+  stroke: #ffffff;
+  stroke-opacity: 0.92;
+  stroke-linejoin: round;
+}
+.erkRouteMapLabel { font-size: 12.5px; font-weight: 600; fill: #10181d; stroke-width: 3.4px; }
+.erkRouteMapHubName { font-size: 17px; font-weight: 700; letter-spacing: 0.09em; fill: #0a5567; stroke-width: 4.2px; }
+.erkRouteMapKeyText { font-size: 11px; font-weight: 500; fill: #5f6d76; stroke-width: 3.2px; }
+
+@keyframes erkRouteDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes erkRouteFade { to { opacity: 1; } }
+@keyframes erkRouteHubWave {
+  0% { transform: scale(0.55); stroke-opacity: 0.55; }
+  70% { stroke-opacity: 0; }
+  100% { transform: scale(2.9); stroke-opacity: 0; }
+}
+
+/* The map caption doubles as the accessible, always-legible market list — it is
+   what carries the section once the in-map labels drop out on narrow screens. */
+.erkRouteMapCaption { margin-top: clamp(18px, 3vw, 34px); }
+.erkRouteMapCount {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 14px;
+}
+.erkRouteMapList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px 26px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.erkRouteMapList li { display: flex; align-items: baseline; gap: 8px; position: relative; padding-left: 14px; }
+.erkRouteMapList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan);
+}
+.erkRouteMapList strong { font-size: 14px; font-weight: 600; color: var(--white); }
+.erkRouteMapList span { font-size: 12px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  /* The SVG scales with its container, so below this the 12.5px city labels would
+     render under ~10px. The caption list carries them instead; the hub keeps its
+     own name for orientation. */
+  .erkRouteMapLabel,
+  .erkRouteMapKey { display: none; }
+  .erkRouteMapHubName { font-size: 22px; stroke-width: 5px; }
+  .erkRouteMapList { grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erkRouteMapArcs path { animation: none; stroke-dashoffset: 0; }
+  .erkRouteMapPulse { display: none; }
+  .erkRouteMapHubWave { animation: none; opacity: 0; }
 }

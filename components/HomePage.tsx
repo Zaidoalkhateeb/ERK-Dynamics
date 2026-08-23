@@ -5,6 +5,8 @@ import Link from "next/link";
 import { CSSProperties, PointerEvent, useEffect, useRef } from "react";
 
 import { products } from "@/content/products";
+import { ROUTE_SUMMARY, RouteMapDefs, RouteMapLand, RouteMapRoutes } from "./RouteMapArt";
+import { MAP_HEIGHT, MAP_WIDTH } from "./worldMap.data";
 
 const technologies = [
   {
@@ -46,7 +48,7 @@ const partners = [
     origin: "",
     description:
       "Swiss developer of passive industrial exoskeletons, engineered around freedom of movement and fast daily use.",
-    tags: ["Wearable robotics", "Passive support", "Switzerland"],
+    tags: ["Wearable robotics", "Passive support"],
     website: "https://www.auxivo.com/",
   },
   {
@@ -56,7 +58,7 @@ const partners = [
     origin: "",
     description:
       "Sensing and measurement technologies supporting mapping, navigation, and spatial awareness in industrial settings.",
-    tags: ["LiDAR systems", "Remote sensing", "Measurement"],
+    tags: ["LiDAR systems", "Remote sensing"],
     website: "https://www.leice-lidar.com/en/",
   },
 ] as const;
@@ -69,10 +71,10 @@ const productImages: Record<string, string> = {
   "auxivo-carrysuit": "/media/home/carrysuit-card.webp",
 };
 
-// Every figure is countable from the site itself: two partners, four published
-// Auxivo systems, three technology categories, five industries on /industries.
+// Home-page headline figures: three partners, four published Auxivo systems,
+// three technology categories, and five industries on /industries.
 const figures = [
-  { value: 2, label: "Global technology partners", suffix: "" },
+  { value: 3, label: "Global technology partners", suffix: "" },
   { value: 4, label: "Exoskeleton solutions", suffix: "" },
   { value: 3, label: "Core technology areas", suffix: "" },
   { value: 5, label: "Industrial sectors", suffix: "+" },
@@ -196,76 +198,7 @@ export function HomePage() {
       >
         <div className="technology-hero__background" aria-hidden="true" />
 
-        <svg
-          className="technology-hero__objects"
-          viewBox="0 0 1600 900"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <defs>
-            <linearGradient id="homeCyanStroke" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#62d5e8" stopOpacity="0.1" />
-              <stop offset="0.5" stopColor="#0bb7d3" stopOpacity="0.45" />
-              <stop offset="1" stopColor="#0299b7" stopOpacity="0.75" />
-            </linearGradient>
-            <pattern id="homeDotPattern" width="28" height="28" patternUnits="userSpaceOnUse">
-              <circle cx="4" cy="4" r="3.6" fill="#37bdd5" fillOpacity="0.42" />
-            </pattern>
-          </defs>
-
-          {/* Outer orbit — the shared signature ring across the site's heroes. */}
-          <g className="parallax-layer" data-depth="9">
-            <g className="object-spin">
-              <circle cx="1195" cy="450" r="498" fill="none" stroke="url(#homeCyanStroke)" strokeWidth="8" strokeDasharray="640 1120" opacity="0.5" />
-              <circle cx="1195" cy="450" r="405" fill="none" stroke="#20b6cf" strokeWidth="2" strokeDasharray="170 52 38 90" opacity="0.25" />
-            </g>
-          </g>
-
-          {/* LiDAR sweep — concentric arcs radiating from the core. */}
-          <g className="parallax-layer" data-depth="16">
-            <g className="object-spin-reverse" fill="none" stroke="#0a9db9" strokeLinecap="round">
-              <path d="M1195 180a270 270 0 0 1 234 135" strokeWidth="3" opacity="0.34" />
-              <path d="M1195 245a205 205 0 0 1 178 103" strokeWidth="3" opacity="0.26" />
-              <path d="M1195 310a140 140 0 0 1 121 70" strokeWidth="3" opacity="0.2" />
-              <circle cx="1195" cy="450" r="268" strokeWidth="11" strokeDasharray="14 13" opacity="0.2" />
-            </g>
-          </g>
-
-          <g className="parallax-layer" data-depth="14">
-            <g className="object-float-reverse">
-              <path d="M1080 0H1600V628L1470 598L1398 474L1172 418L1082 240Z" fill="url(#homeDotPattern)" opacity="0.55" />
-            </g>
-          </g>
-
-          {/* Core diamond — the exoskeleton/support mark. */}
-          <g className="parallax-layer" data-depth="23">
-            <g className="object-float" fill="none" stroke="#08a8c5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="1115" y="370" width="160" height="160" rx="8" transform="rotate(45 1195 450)" strokeWidth="11" opacity="0.4" />
-              <rect x="1155" y="410" width="80" height="80" rx="5" transform="rotate(45 1195 450)" strokeWidth="8" opacity="0.3" />
-              <path d="M1347 295L1529 295L1620 452L1529 609L1347 609L1256 452Z" strokeWidth="6" opacity="0.2" />
-            </g>
-          </g>
-
-          {/* Power nodes — hex cells feeding the core. */}
-          <g className="parallax-layer" data-depth="19">
-            <g className="object-float" fill="none" stroke="#0a9db9" strokeWidth="2.5" opacity="0.32">
-              <path d="M905 300l30-17 30 17v34l-30 17-30-17z" />
-              <path d="M845 392l30-17 30 17v34l-30 17-30-17z" />
-              <path d="M905 484l30-17 30 17v34l-30 17-30-17z" />
-            </g>
-          </g>
-
-          {/* Line running under the hub. */}
-          <g className="parallax-layer" data-depth="19" fill="none" stroke="#17afc9" strokeLinecap="round">
-            <path className="object-line-flow" d="M700 640H1005L1113 531H1391" strokeWidth="5" strokeDasharray="16 30" opacity="0.3" />
-          </g>
-
-          <g className="parallax-layer" data-depth="27" fill="none" stroke="#49cadd" strokeWidth="1.5" opacity="0.35">
-            <path className="object-wave" d="M800 920C990 750 1160 796 1320 688C1445 603 1522 492 1657 443" strokeDasharray="15 10 2 12" />
-            <path className="object-wave object-wave--delayed" d="M840 925C1027 819 1195 850 1360 766C1489 701 1565 621 1679 585" strokeDasharray="22 12 3 16" />
-          </g>
-        </svg>
+        <HomeRouteMap />
 
         <div className="technology-hero__wash" aria-hidden="true" />
 
@@ -274,6 +207,10 @@ export function HomePage() {
             <span>Advanced technology</span>{" "}
             <span>for industrial work</span>
           </h1>
+
+          {/* Sits here so phones read headline, then map, then buttons. */}
+          <HomeRouteMapBlock />
+
           <p>
             ERK Dynamics brings proven industrial technologies to Türkiye, including wearable robotics,
             spatial sensing, and reliable power selected around real operational needs and evaluated in the
@@ -543,6 +480,85 @@ function TechGlyph({ id }: { id: string }) {
     default:
       return null;
   }
+}
+
+function HomeRouteMap() {
+  return (
+    <svg
+      className="technology-hero__objects home-route-map"
+      viewBox="0 0 1600 900"
+      preserveAspectRatio="xMidYMid slice"
+      role="img"
+      aria-label={`Routes from İstanbul to ${ROUTE_SUMMARY}`}
+      focusable="false"
+    >
+      <RouteMapDefs prefix="erkHeroMap" />
+      <defs>
+        {/* The map runs up against the headline on its left, so it dissolves into the
+            background there rather than ending on a hard vertical edge. */}
+        <linearGradient id="homeMapFadeRamp" gradientUnits="userSpaceOnUse" x1="652" y1="0" x2="800" y2="0">
+          <stop offset="0%" stopColor="#000000" />
+          <stop offset="100%" stopColor="#ffffff" />
+        </linearGradient>
+        <mask id="homeMapFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+          <rect x="0" y="0" width="1600" height="900" fill="url(#homeMapFadeRamp)" />
+        </mask>
+        {/* The frame is cropped just below Johannesburg, which clips the Patagonian
+            tail. Fading the last stretch turns that cut into a horizon. */}
+        <linearGradient id="homeMapFadeFloor" gradientUnits="userSpaceOnUse" x1="0" y1="655" x2="0" y2="716">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#000000" />
+        </linearGradient>
+        <mask id="homeMapFadeBottom" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+          <rect x="0" y="0" width="1600" height="900" fill="url(#homeMapFadeFloor)" />
+        </mask>
+      </defs>
+
+      {/* Both masks sit on untransformed wrappers on purpose: userSpaceOnUse resolves
+          against the masked element's own coordinate system, so hanging either on the
+          scaled group below would stretch the ramp along with the map. Nesting them
+          composes the two edges. */}
+      <g mask="url(#homeMapFade)">
+        <g mask="url(#homeMapFadeBottom)">
+          {/* The shared artwork is baked in its own 1000 x 516 space; this drops it into
+              the right half of the hero canvas, clear of the headline. Land and routes
+              keep their own parallax depth, so the routes drift a little ahead of the
+              continents as the cursor moves. */}
+          <g transform="translate(672 205) scale(0.98)">
+            <g className="parallax-layer" data-depth="10">
+              <RouteMapLand prefix="erkHeroMap" highlight />
+            </g>
+            <g className="parallax-layer" data-depth="16">
+              <RouteMapRoutes prefix="erkHeroMap" labels />
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * The phone version of the hero map. The backdrop above is framed for the 1600 x 900
+ * hero canvas and cropped to its right half, which is wrong once the hero stacks — so
+ * phones get the artwork in its own box instead, in flow between the headline and the
+ * buttons. Only one of the two is ever displayed.
+ */
+function HomeRouteMapBlock() {
+  return (
+    <svg
+      className="home-route-map-block"
+      viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label={`Routes from İstanbul to ${ROUTE_SUMMARY}`}
+      focusable="false"
+    >
+      <RouteMapDefs prefix="erkBlockMap" />
+      <RouteMapLand prefix="erkBlockMap" highlight />
+      <RouteMapRoutes prefix="erkBlockMap" labels />
+    </svg>
+  );
 }
 
 function Arrow() {
