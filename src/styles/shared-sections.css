@@ -1,0 +1,911 @@
+.hero-image {
+  object-fit: cover;
+  object-position: center;
+}
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  color: #ffffff;
+}
+.hero-copy .eyebrow {
+  color: #45ddf5;
+}
+.hero-copy h1 {
+  margin: 18px 0 28px;
+  font-size: clamp(55px, 8.5vw, 134px);
+}
+.hero-copy h1 em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 247, 248, 0.55);
+}
+.hero-copy > p:not(.eyebrow) {
+  font-size: clamp(16px, 1.4vw, 20px);
+  max-width: 680px;
+  color: #bac3c9;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 35px;
+}
+.product-stage {
+  background: #f4f6f7;
+}
+.product-stage-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 55px;
+}
+.product-stage-head h2 {
+  font-size: clamp(38px, 5vw, 72px);
+  margin-top: 20px;
+}
+.switcher {
+  display: flex;
+  gap: 2px;
+}
+.switcher button {
+  border: 1px solid var(--line);
+  background: transparent;
+  padding: 15px 22px;
+  cursor: pointer;
+}
+.switcher button span {
+  color: var(--muted);
+  margin-right: 13px;
+  font: 10px "IBM Plex Mono";
+}
+.switcher button.active {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.product-display {
+  min-height: 620px;
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+}
+.tech-visual {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(69, 221, 245, 0.12), transparent 45%),
+    linear-gradient(135deg, #121920, #080b0f);
+}
+.lime .tech-visual {
+  background:
+    radial-gradient(circle, rgba(185, 243, 74, 0.1), transparent 45%),
+    linear-gradient(135deg, #121920, #080b0f);
+}
+.orbit {
+  position: absolute;
+  border: 1px solid rgba(69, 221, 245, 0.25);
+  border-radius: 50%;
+}
+.lime .orbit {
+  border-color: rgba(185, 243, 74, 0.25);
+}
+.orbit.one {
+  width: 52%;
+  aspect-ratio: 1;
+}
+.orbit.two {
+  width: 76%;
+  aspect-ratio: 1;
+  border-style: dashed;
+  animation: rotate 45s linear infinite;
+}
+.tech-visual .orbit {
+  border-color: rgba(69, 221, 245, 0.32);
+}
+.tech-visual > span {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  font: 10px "IBM Plex Mono";
+  letter-spacing: 0.12em;
+  color: #61717c;
+}
+.product-copy {
+  padding: clamp(40px, 6vw, 90px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.product-copy h3 {
+  font-size: clamp(55px, 7vw, 100px);
+  margin: 20px 0;
+}
+.product-copy > p:not(.eyebrow) {
+  font-size: 18px;
+}
+.product-copy > div {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 35px;
+}
+.process {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8vw;
+}
+.process h2 {
+  font-size: clamp(40px, 5vw, 70px);
+  margin-top: 20px;
+  position: sticky;
+  top: 120px;
+}
+.process ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.process li {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  border-top: 1px solid var(--line);
+  padding: 35px 0;
+}
+.process li > span {
+  font: 11px "IBM Plex Mono";
+  color: var(--cyan);
+}
+.process h3 {
+  font-size: 28px;
+}
+.process p {
+  max-width: 450px;
+}
+.page-hero,
+.contact-hero {
+  min-height: 690px;
+  padding: 190px var(--pad) 100px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff, #edf5f6);
+}
+.page-hero h1,
+.contact-hero h1 {
+  max-width: 1100px;
+  font-size: clamp(54px, 8vw, 115px);
+  margin: 35px 0;
+}
+.page-hero > p:last-of-type,
+.contact-hero > div > p:last-child {
+  max-width: 720px;
+  font-size: clamp(18px, 2vw, 25px);
+}
+.page-orbit {
+  position: absolute;
+  width: 46vw;
+  height: 46vw;
+  border: 1px solid rgba(69, 221, 245, 0.14);
+  border-radius: 50%;
+  right: -12vw;
+  top: -10vw;
+  box-shadow: 0 0 120px rgba(69, 221, 245, 0.05) inset;
+}
+.product-list > .eyebrow {
+  margin-bottom: 30px;
+}
+.product-list > a {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding: 35px 0;
+}
+.product-list > a > span {
+  font: 12px "IBM Plex Mono";
+  color: var(--cyan);
+}
+.product-list small {
+  color: var(--muted);
+  font: 10px "IBM Plex Mono";
+  text-transform: uppercase;
+}
+.product-list h2 {
+  font-size: clamp(40px, 6vw, 78px);
+  margin: 5px 0;
+}
+.product-list p {
+  margin: 0;
+}
+.product-list b {
+  font: 10px "IBM Plex Mono";
+}
+.product-hero {
+  min-height: 760px;
+  padding: 155px var(--pad) 70px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+  background: #f4f6f7;
+}
+.product-hero > div:first-child {
+  align-self: center;
+}
+.product-hero h1 {
+  margin: 20px 0;
+  font-size: clamp(70px, 10vw, 145px);
+}
+.product-hero > div:first-child > p:not(.eyebrow) {
+  font-size: clamp(21px, 2.5vw, 35px);
+  max-width: 600px;
+}
+.product-hero > div > div {
+  display: flex;
+  gap: 10px;
+  margin-top: 35px;
+}
+.product-intro {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 5vw;
+}
+.product-intro h2 {
+  font-size: clamp(35px, 4.7vw, 65px);
+}
+.product-intro > p:last-child {
+  grid-column: 2;
+  max-width: 700px;
+  font-size: 18px;
+}
+.applications > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+.applications article {
+  background: var(--carbon);
+  padding: 35px 25px;
+  min-height: 250px;
+}
+.applications article > span {
+  font: 11px "IBM Plex Mono";
+  color: var(--cyan);
+}
+.applications h3 {
+  font-size: 26px;
+  margin-top: 65px;
+}
+.applications p {
+  font-size: 13px;
+}
+.form-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8vw;
+}
+.form-section h2 {
+  font-size: clamp(38px, 5vw, 68px);
+  margin-top: 20px;
+}
+.form {
+  display: grid;
+  gap: 28px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.form label {
+  display: grid;
+  gap: 9px;
+  font: 11px "IBM Plex Mono";
+  letter-spacing: 0.06em;
+  color: #34434b;
+}
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  background: transparent;
+  color: var(--white);
+  border: 0;
+  border-bottom: 1px solid #9da8ae;
+  padding: 13px 0;
+  outline: none;
+}
+.form select option {
+  background: var(--graphite);
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  border-color: var(--cyan);
+}
+.honeypot {
+  position: absolute !important;
+  left: -9999px;
+}
+.form .button {
+  justify-self: start;
+}
+.form-error {
+  color: #ff9b93;
+}
+.form-success {
+  border: 1px solid var(--line);
+  padding: 50px;
+}
+.form-success > span {
+  font-size: 40px;
+  color: var(--cyan);
+}
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--pad);
+}
+.error-page h1 {
+  max-width: 900px;
+}
+.error-page p:not(.eyebrow) {
+  font-size: 20px;
+}
+footer {
+  padding: 44px var(--pad);
+  background: var(--cyan);
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+.footer-grid {
+  position: relative;
+  z-index: 2;
+}
+.footer-tech-motifs {
+  display: contents;
+  pointer-events: none;
+}
+.footer-tech-motif {
+  position: relative;
+  z-index: 1;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.58);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.55;
+}
+/* Each motif lives in a spacer column between the link columns and is capped at
+   that column's width, so it stays centred in the gap instead of spilling over
+   the text on either side when the tracks are at their minimum. */
+.footer-tech-motif--wearable {
+  grid-column: 3;
+  width: min(92px, 86%);
+}
+.footer-tech-motif--lidar {
+  grid-column: 5;
+  width: min(108px, 86%);
+}
+.footer-tech-motif--shared {
+  grid-column: 7;
+  width: min(142px, 86%);
+}
+.footer-object-orbits,
+.footer-lidar-rings {
+  stroke: rgba(190, 244, 250, 0.45);
+  stroke-dasharray: 5 9;
+}
+.footer-wearable-energy,
+.footer-shared-wire {
+  stroke: rgba(155, 243, 255, 0.9);
+  stroke-width: 2.4;
+  stroke-dasharray: 7 8;
+  animation: footerEnergyFlow 2.8s linear infinite;
+}
+.footer-wearable-joints,
+.footer-shared-points {
+  fill: #a4f5ff;
+  stroke: none;
+}
+.footer-wearable-joints circle,
+.footer-shared-points circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: footerTechPulse 2.7s ease-in-out infinite;
+}
+.footer-wearable-joints circle:nth-child(2n),
+.footer-shared-points circle:nth-child(2n) {
+  animation-delay: -1.35s;
+}
+.footer-lidar-rings {
+  stroke-dasharray: 4 7;
+  transform-origin: 126px 112px;
+  animation: footerTechOrbit 22s linear infinite;
+}
+.footer-lidar-scan {
+  stroke: rgba(160, 245, 255, 0.95);
+  transform-origin: 126px 108px;
+  animation: footerLidarScan 7s linear infinite;
+}
+.footer-lidar-scan circle {
+  fill: #a4f5ff;
+  stroke: none;
+}
+.footer-lidar-unit,
+.footer-shared-ring {
+  fill: rgba(164, 245, 255, 0.04);
+  stroke: rgba(210, 250, 255, 0.68);
+}
+.footer-shared-ring--left {
+  transform-origin: 128px 108px;
+  animation: footerSharedBreathe 5.5s ease-in-out infinite;
+}
+.footer-shared-ring--right {
+  transform-origin: 192px 108px;
+  animation: footerSharedBreathe 5.5s -2.75s ease-in-out infinite;
+}
+.footer-shared-core rect {
+  fill: rgba(0, 76, 91, 0.22);
+  stroke: rgba(255, 255, 255, 0.8);
+}
+.footer-shared-core circle {
+  fill: #a4f5ff;
+  stroke: none;
+}
+.footer-shared-label {
+  fill: rgba(255, 255, 255, 0.72);
+  stroke: none;
+  font:
+    700 9px "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.14em;
+}
+.footer-shared-label--core {
+  fill: #c6f8ff;
+}
+@keyframes footerEnergyFlow {
+  to {
+    stroke-dashoffset: -45;
+  }
+}
+@keyframes footerTechPulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.65);
+  }
+}
+@keyframes footerTechOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes footerLidarScan {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes footerSharedBreathe {
+  50% {
+    transform: scale(1.035);
+    opacity: 0.72;
+  }
+}
+footer h2,
+footer p,
+footer a,
+footer .logo,
+footer .logo b {
+  color: #ffffff;
+}
+footer .company-logo-mark img {
+  filter: brightness(0) invert(1);
+}
+/* Footer lockup stacks: dragonfly above the wordmark, both centred on the cell. */
+footer .logo {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: clamp(26px, 2.2vw, 36px);
+  text-align: center;
+  white-space: nowrap;
+}
+footer .logo > span:last-child {
+  white-space: nowrap;
+}
+footer .company-logo-mark {
+  width: clamp(100px, 8vw, 138px);
+  height: auto;
+}
+footer .button.primary {
+  background: #ffffff;
+  color: var(--cyan);
+  border-color: #ffffff;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 30px;
+  padding: 24px 0;
+}
+.footer-grid.expanded {
+  /* The link columns take exactly their content width, so all the slack goes to
+     the spacer columns. A motif centred in its spacer is then centred in the
+     gap the eye actually sees, instead of being pushed right by the empty
+     tail of a stretched link column. */
+  grid-template-columns:
+    minmax(280px, 1fr) max-content
+    minmax(76px, 0.45fr) max-content
+    minmax(82px, 0.48fr) max-content
+    minmax(104px, 0.58fr);
+  gap: clamp(8px, 1.2vw, 22px);
+  /* Without a cap the row keeps stretching on wide screens and all the extra
+     width piles up as dead space beside the logo. */
+  max-width: 1500px;
+  margin-inline: auto;
+}
+.footer-brand {
+  grid-column: 1;
+  grid-row: 1;
+}
+.footer-links--explore {
+  grid-column: 2;
+  grid-row: 1;
+}
+.footer-links--products {
+  grid-column: 4;
+  grid-row: 1;
+}
+.footer-links--contact {
+  grid-column: 6;
+  grid-row: 1;
+}
+.footer-grid > div:not(.footer-tech-motifs) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+/* The link columns stay left-aligned; the brand lockup centres in its own cell. */
+.footer-grid > .footer-brand {
+  align-items: center;
+  justify-content: center;
+}
+.footer-grid > div > b {
+  font:
+    600 13px/1.4 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.footer-grid p {
+  font-size: 15px;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+.footer-grid a:not(.logo) {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #ffffff;
+}
+/* The contact column carries the full address, which is wider than its track. */
+.footer-links--contact a {
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  overflow-wrap: anywhere;
+}
+.footer-contact-icon {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  /* Nudged onto the first line's optical centre rather than its box top. */
+  margin-top: 3px;
+  display: block;
+  opacity: 0.72;
+  transition: opacity 0.2s ease;
+}
+.footer-contact-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.footer-links--contact a:hover .footer-contact-icon,
+.footer-links--contact a:focus-visible .footer-contact-icon {
+  opacity: 1;
+}
+.footer-grid a:not(.logo):hover,
+.footer-grid a:not(.logo):focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+*:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+}
+@media (max-width: 1100px) {
+  .desktop-nav {
+    display: none;
+  }
+  .menu-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+  .menu-button span {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+  }
+  .menu-button i {
+    display: block;
+    width: 23px;
+    height: 1px;
+    background: currentColor;
+  }
+  .product-display {
+    grid-template-columns: 1fr;
+  }
+  .tech-visual {
+    min-height: 480px;
+  }
+  .product-stage-head {
+    display: block;
+  }
+  .switcher {
+    margin-top: 30px;
+  }
+  .applications > div {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .contact-rail {
+    top: auto;
+    right: 50%;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    flex-direction: row;
+    transform: translateX(50%);
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .contact-rail > a {
+    width: 50px;
+    height: 48px;
+    border-right: 1px solid rgba(255, 255, 255, 0.22);
+    border-bottom: 0;
+  }
+  .contact-rail > a:first-child,
+  .contact-rail > a:last-child {
+    border-radius: 0;
+  }
+  .contact-rail > a:last-child {
+    border-right: 0;
+  }
+  .contact-rail--on-footer > a {
+    border-color: rgba(0, 119, 141, 0.16);
+  }
+  .contact-rail__label {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-rail > a,
+  .contact-rail__label {
+    transition: none;
+  }
+}
+@media (max-width: 700px) {
+  .header {
+    height: 72px;
+  }
+  .logo b {
+    display: none;
+  }
+  .header .button {
+    display: none;
+  }
+  .header-actions {
+    gap: 7px;
+  }
+  .lang {
+    padding: 12px 4px;
+  }
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .hero {
+    min-height: 760px;
+    padding-bottom: 78px;
+    align-items: flex-end;
+  }
+  .hero-image {
+    object-position: 64% center;
+  }
+  .hero-copy h1 {
+    font-size: clamp(50px, 15vw, 70px);
+  }
+  .hero-copy > p:not(.eyebrow) {
+    font-size: 15px;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .product-stage-head h2 {
+    font-size: 39px;
+  }
+  .switcher {
+    width: 100%;
+  }
+  .switcher button {
+    flex: 1;
+    padding: 12px 8px;
+  }
+  .product-display {
+    min-height: 0;
+  }
+  .tech-visual {
+    min-height: 390px;
+  }
+  .orbit.two {
+    width: 95%;
+  }
+  .product-copy {
+    padding: 40px 25px;
+  }
+  .product-copy > div {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .process {
+    grid-template-columns: 1fr;
+  }
+  .process h2 {
+    position: static;
+  }
+  .page-hero,
+  .contact-hero {
+    min-height: 600px;
+    padding-top: 150px;
+  }
+  .page-hero h1,
+  .contact-hero h1 {
+    font-size: clamp(49px, 14vw, 70px);
+  }
+  .contact-hero {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .contact-portrait {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .product-list > a {
+    grid-template-columns: 55px 1fr;
+  }
+  .product-list > a > b {
+    display: none;
+  }
+  .product-hero {
+    grid-template-columns: 1fr;
+    padding-top: 130px;
+  }
+  .product-hero .tech-visual {
+    min-height: 390px;
+  }
+  .product-intro {
+    grid-template-columns: 1fr;
+  }
+  .product-intro > p:last-child {
+    grid-column: 1;
+  }
+  .applications > div {
+    grid-template-columns: 1fr;
+  }
+  .contact-hero {
+    grid-template-columns: 1fr;
+  }
+  .contact-hero aside {
+    align-self: auto;
+  }
+  .form-section {
+    grid-template-columns: 1fr;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  .menu-panel {
+    padding-top: 100px;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  .menu-links a {
+    font-size: 34px;
+  }
+  .menu-grid aside {
+    display: none;
+  }
+  .menu-product-categories {
+    grid-template-columns: 1fr;
+  }
+  .menu-links .menu-product-categories a {
+    min-height: 88px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-grid > div:first-child {
+    grid-column: 1/-1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero-image {
+    transform: none !important;
+  }
+}
+.product-experience .eyebrow {
+  color: #67d8e8;
+}
+
+.motion-hero {
+  /* Scroll position writes this at runtime; the resting value belongs here so the
+     markup ships without a style attribute. */
+  --hero-progress: 0;
+  height: 190svh;
+  position: relative;
+  background: #080b0e;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size:
+    100% 12.5%,
+    8.333% 100%;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent 70%);
+  mask-image: linear-gradient(90deg, #000, transparent 70%);
+}
+
+.product-transition {
+  --lens-progress: 0;
+  height: 310svh;
+  background: #080b0e;
+  position: relative;
+}

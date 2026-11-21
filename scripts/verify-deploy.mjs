@@ -22,7 +22,7 @@ async function htmlFiles(dir) {
   const found = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) found.push(...await htmlFiles(full));
+    if (entry.isDirectory()) found.push(...(await htmlFiles(full)));
     else if (entry.name.endsWith(".html")) found.push(full);
   }
   return found;
@@ -34,7 +34,13 @@ if (!pages.length) throw new Error("dist/ has no HTML — run `npm run dist` fir
 // Root-relative URLs only: anything on another host is not ours to verify.
 const urls = new Set();
 for (const page of pages) {
-  const route = "/" + path.relative(root, page).split(path.sep).join("/").replace(/(^|\/)index\.html$/, "$1");
+  const route =
+    "/" +
+    path
+      .relative(root, page)
+      .split(path.sep)
+      .join("/")
+      .replace(/(^|\/)index\.html$/, "$1");
   urls.add(route);
   const html = await readFile(page, "utf8");
   for (const [, url] of html.matchAll(/(?:src|href)="(\/[^"]*)"/g)) {
@@ -51,18 +57,25 @@ console.log(`Checking ${targets.length} URLs against ${base} …\n`);
 const failures = [];
 const queue = targets.slice();
 
-await Promise.all(Array.from({ length: CONCURRENCY }, async () => {
-  while (queue.length) {
-    const target = queue.shift();
-    const probe = `${base}${target}${target.includes("?") ? "&" : "?"}__verify=${Date.now()}`;
-    try {
-      const response = await fetch(probe, { redirect: "follow", cache: "no-store" });
-      if (!response.ok) failures.push({ target, detail: `HTTP ${response.status}` });
-    } catch (error) {
-      failures.push({ target, detail: error.message });
+await Promise.all(
+  Array.from({ length: CONCURRENCY }, async () => {
+    while (queue.length) {
+      const target = queue.shift();
+      const probe = `${base}${target}${target.includes("?") ? "&" : "?"}__verify=${Date.now()}`;
+      try {
+        const response = await fetch(probe, {
+          redirect: "follow",
+          cache: "no-store",
+          signal: AbortSignal.timeout(15_000),
+        });
+        if (!response.ok) failures.push({ target, detail: `HTTP ${response.status}` });
+        await response.body?.cancel();
+      } catch (error) {
+        failures.push({ target, detail: error.message });
+      }
     }
-  }
-}));
+  }),
+);
 
 if (!failures.length) {
   console.log(`All ${targets.length} URLs served correctly.`);
@@ -75,7 +88,9 @@ for (const { target, detail } of failures.sort((a, b) => a.target.localeCompare(
 }
 
 // Files failing together under one directory means that directory, not the build.
-const directories = new Set(failures.map(({ target }) => target.slice(0, target.lastIndexOf("/") + 1)));
+const directories = new Set(
+  failures.map(({ target }) => target.slice(0, target.lastIndexOf("/") + 1)),
+);
 console.error(`\nAffected directories: ${[...directories].join(", ")}`);
 console.error("A whole directory failing usually means its permissions or ownership on the host,");
 console.error("not a bad build — compare against the same paths in dist/.");

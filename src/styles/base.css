@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+@font-face {
+  font-family: "ERK Helvetica";
+  src: url("/fonts/helvetica/helvetica-light-587ebe5a59211.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ERK Helvetica";
+  src: url("/fonts/helvetica/Helvetica.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ERK Helvetica";
+  src: url("/fonts/helvetica/Helvetica-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ERK Helvetica";
+  src: url("/fonts/helvetica/Helvetica-Oblique.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ERK Helvetica";
+  src: url("/fonts/helvetica/Helvetica-BoldOblique.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 700 900;
+  font-display: swap;
+}
+:root {
+  --carbon: #ffffff;
+  --graphite: #f4f6f7;
+  --panel: #eef2f4;
+  --white: #10181d;
+  --muted: #5f6d76;
+  --cyan: #00778d;
+  --lime: #b9f34a;
+  --line: rgba(16, 24, 29, 0.14);
+  --pad: clamp(20px, 5vw, 82px);
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  background: var(--carbon);
+}
+body {
+  margin: 0;
+  background: var(--carbon);
+  color: var(--white);
+  font-family: "ERK Helvetica", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  color: inherit;
+}
+::selection {
+  background: var(--cyan);
+  color: #071014;
+}
+.skip {
+  position: fixed;
+  left: 20px;
+  top: -80px;
+  z-index: 1000;
+  background: var(--cyan);
+  color: #071014;
+  padding: 12px 20px;
+}
+.skip:focus {
+  top: 20px;
+}
+.eyebrow {
+  font:
+    500 11px/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.13em;
+  color: var(--cyan);
+}
+.section {
+  padding: clamp(84px, 11vw, 180px) var(--pad);
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1,
+h2,
+h3 {
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+h1 {
+  font-size: clamp(54px, 9vw, 138px);
+}
+h2 {
+  font-size: clamp(42px, 6vw, 86px);
+}
+h3 {
+  font-size: clamp(25px, 3vw, 42px);
+}
+p {
+  color: var(--muted);
+}
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: 100px;
+  padding: 0 var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: 0.3s;
+}

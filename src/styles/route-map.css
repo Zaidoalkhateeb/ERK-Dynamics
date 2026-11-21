@@ -1,0 +1,235 @@
+/* ============================================================================
+   Flat route map (About > One bridge, two worlds)
+   Static SVG baked by scripts/make-world-map.mjs — the arcs, the travelling
+   beads and the hub pulse are all CSS/SMIL, so the section ships no JS.
+   ========================================================================== */
+.erkRouteMap {
+  margin: 0;
+  width: 100%;
+}
+.erkRouteMapSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* fill and stroke are set inline: the gradient ids are namespaced per instance. */
+/* Only the home hero tints these; the About card stays a plain silhouette so its
+   labels and arcs carry the story on their own. */
+.erkRouteMapMarketCountry {
+  fill: #8ab6c4;
+}
+.erkRouteMapHubCountry {
+  fill: #0c7d95;
+}
+
+.erkRouteMapArcGlow,
+.erkRouteMapArcLine {
+  fill: none;
+  stroke-linecap: round;
+}
+.erkRouteMapArcGlow {
+  stroke: #12a2bb;
+  stroke-opacity: 0.13;
+  stroke-width: 7;
+}
+.erkRouteMapArcLine {
+  stroke-width: 2.5;
+}
+/* pathLength="1" on every arc lets one dash rule draw routes of any length.
+   The resting state is drawn, and the animation runs *from* hidden with a backwards
+   fill covering its delay. That way a route is never invisible because its animation
+   did not run — only because it has not been drawn in yet. */
+.erkRouteMapArcs path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: erkRouteDraw 1.5s cubic-bezier(0.32, 0.72, 0.2, 1) backwards;
+  animation-delay: calc(var(--erk-route-index) * 0.12s + 0.2s);
+}
+.erkRouteMapPulse {
+  fill: #ffffff;
+  stroke: #0e94ab;
+  stroke-width: 1.2;
+  opacity: 0;
+  animation: erkRouteFade 0.6s ease forwards;
+  animation-delay: calc(var(--erk-route-index) * 0.12s + 1.4s);
+}
+
+.erkRouteMapDotHalo {
+  fill: #ffffff;
+  fill-opacity: 0.72;
+}
+.erkRouteMapDot {
+  fill: #ffffff;
+  stroke: #00778d;
+  stroke-width: 2.2;
+}
+
+.erkRouteMapHubCore {
+  fill: #00778d;
+}
+.erkRouteMapHubBadge {
+  fill: #ffffff;
+  stroke: #00778d;
+  stroke-opacity: 0.55;
+  stroke-width: 1.3;
+  filter: drop-shadow(0 1px 2px rgba(6, 60, 74, 0.28));
+}
+.erkRouteMapHubRing {
+  fill: #ffffff;
+  fill-opacity: 0.66;
+  stroke: #00778d;
+  stroke-opacity: 0.55;
+  stroke-width: 1.4;
+}
+.erkRouteMapHubWave {
+  fill: none;
+  stroke: #00778d;
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: erkRouteHubWave 3.4s ease-out infinite;
+}
+.erkRouteMapHubWave--late {
+  animation-delay: 1.7s;
+}
+
+/* paint-order puts the white stroke underneath the glyphs, so every label keeps
+   its own quiet halo wherever it crosses land, a border or a route. */
+.erkRouteMapLabel,
+.erkRouteMapHubName,
+.erkRouteMapKeyText {
+  paint-order: stroke fill;
+  stroke: #ffffff;
+  stroke-opacity: 0.92;
+  stroke-linejoin: round;
+}
+.erkRouteMapLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: #10181d;
+  stroke-width: 3.4px;
+}
+.erkRouteMapHubName {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  fill: #0a5567;
+  stroke-width: 4.2px;
+}
+.erkRouteMapKeyText {
+  font-size: 11px;
+  font-weight: 500;
+  fill: #5f6d76;
+  stroke-width: 3.2px;
+}
+
+@keyframes erkRouteDraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes erkRouteFade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes erkRouteHubWave {
+  0% {
+    transform: scale(0.55);
+    stroke-opacity: 0.55;
+  }
+  70% {
+    stroke-opacity: 0;
+  }
+  100% {
+    transform: scale(2.9);
+    stroke-opacity: 0;
+  }
+}
+
+/* The map caption doubles as the accessible, always-legible market list — it is
+   what carries the section once the in-map labels drop out on narrow screens. */
+.erkRouteMapCaption {
+  margin-top: clamp(18px, 3vw, 34px);
+}
+.erkRouteMapCount {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 14px;
+}
+.erkRouteMapList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px 26px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.erkRouteMapList li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  position: relative;
+  padding-left: 14px;
+}
+.erkRouteMapList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan);
+}
+.erkRouteMapList strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+}
+.erkRouteMapList span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  /* The SVG scales with its container, so below this the 12.5px city labels would
+     render under ~10px. The caption list carries them instead; the hub keeps its
+     own name for orientation. */
+  .erkRouteMapLabel,
+  .erkRouteMapKey {
+    display: none;
+  }
+  .erkRouteMapHubName {
+    font-size: 22px;
+    stroke-width: 5px;
+  }
+  .erkRouteMapList {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erkRouteMapArcs path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .erkRouteMapPulse {
+    display: none;
+  }
+  .erkRouteMapHubWave {
+    animation: none;
+    opacity: 0;
+  }
+}
