@@ -3,6 +3,7 @@ node_modules/
 out/
 dist/
 dist.zip
+deploy/generated/
 .env
 .env.*
 !.env.example

@@ -1,5 +1,12 @@
 import { HomePage } from "@/components/home/HomePage";
-export const metadata = { alternates: { canonical: "/" } };
+import { PageSchema } from "@/components/seo/StructuredData";
+import { staticPageMetadata } from "@/lib/metadata";
+export const metadata = staticPageMetadata("/");
 export default function Page() {
-  return <HomePage />;
+  return (
+    <>
+      <PageSchema pathname="/" />
+      <HomePage />
+    </>
+  );
 }

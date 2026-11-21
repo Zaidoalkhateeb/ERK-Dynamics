@@ -11,6 +11,7 @@ function respond(int $status, array $payload): never
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
+    header('X-Robots-Tag: noindex, nofollow');
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -19,6 +20,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');
     respond(405, ['error' => 'Method not allowed.']);
 }
+// Browser cross-site submissions are rejected. This supplements host rate limits;
+// Origin is not authentication and can be forged by non-browser clients.
+$allowedOrigins = array_map('trim', explode(',', getenv('ERK_ALLOWED_ORIGINS') ?: 'https://www.erkdynamics.com,https://erkdynamics.com'));
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (($origin !== '' && !in_array($origin, $allowedOrigins, true)) ||
+    ($_SERVER['HTTP_SEC_FETCH_SITE'] ?? '') === 'cross-site') {
+    respond(403, ['error' => 'This origin is not allowed.']);
+}
 if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 65536) {
     respond(413, ['error' => 'The enquiry is too large.']);
 }
@@ -26,13 +35,21 @@ if (!empty($_FILES)) {
     respond(422, ['error' => 'File attachments are not supported.']);
 }
 
+$contentType = strtolower(trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0]));
+if (!in_array($contentType, ['', 'application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'], true)) {
+    respond(415, ['error' => 'Unsupported content type.']);
+}
 $data = $_POST;
-if (str_contains(strtolower($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json')) {
-    $data = json_decode(file_get_contents('php://input', false, null, 0, 65537), true);
-    if (!is_array($data)) respond(400, ['error' => 'Invalid JSON body.']);
+if ($contentType === 'application/json') {
+    $body = file_get_contents('php://input', false, null, 0, 65537);
+    if ($body === false) respond(400, ['error' => 'Unable to read the request.']);
+    if (strlen($body) > 65536) respond(413, ['error' => 'The enquiry is too large.']);
+    $object = json_decode($body);
+    if (!$object instanceof stdClass) respond(400, ['error' => 'Invalid JSON object.']);
+    $data = (array) $object;
 }
 foreach ($data as $value) {
-    if (!is_scalar($value) && $value !== null) {
+    if (!is_string($value)) {
         respond(422, ['error' => 'Form fields must contain text.']);
     }
 }
@@ -48,7 +65,7 @@ $required = $isPartner
 foreach ($required as $field) {
     if (empty($data[$field])) respond(422, ['error' => 'Please complete all required fields.']);
 }
-if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+if (preg_match('/[\x00-\x1F\x7F]/', $data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
     respond(422, ['error' => 'Please provide a valid email address.']);
 }
 foreach ($data as $key => $value) {
@@ -86,7 +103,14 @@ $headers = [
     'Content-Type: text/plain; charset=utf-8',
     'MIME-Version: 1.0',
 ];
-if (!mail($recipient, $subject, implode("\r\n", $lines), implode("\r\n", $headers))) {
+$accepted = false;
+try {
+    // Log transport diagnostics server-side; never leak warnings into the response.
+    $accepted = @mail($recipient, $subject, implode("\r\n", $lines), implode("\r\n", $headers));
+} catch (Throwable $error) {
+    error_log('ERK enquiry mail transport failed.');
+}
+if (!$accepted) {
     respond(500, ['error' => 'Unable to send the message. Please try again later.']);
 }
 // Acceptance by the local mail service does not guarantee final inbox delivery.

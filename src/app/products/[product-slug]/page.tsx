@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { publishedProducts, getPublishedProduct } from "@/content/products";
-import { site } from "@/content/site";
+import { productSeoDescriptions } from "@/content/seo";
+import { productImages } from "@/content/home";
 import { ProductExperience } from "@/components/products/ProductExperience";
-import { pageMetadata, serializeJsonLd } from "@/lib/metadata";
-
+import { PageSchema } from "@/components/seo/StructuredData";
+import { pageMetadata } from "@/lib/metadata";
 type ProductPageProps = { params: Promise<{ "product-slug": string }> };
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -12,27 +13,22 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ProductPageProps) {
   const { "product-slug": slug } = await params;
   const product = getPublishedProduct(slug);
-  return product ? pageMetadata(product.name, product.summary, `/products/${product.slug}`) : {};
+  if (!product) notFound();
+  return pageMetadata(
+    `${product.manufacturer} ${product.name} | ${product.category}`,
+    productSeoDescriptions[slug] ?? product.summary,
+    `/products/${slug}`,
+    productImages[slug],
+  );
 }
 export default async function Page({ params }: ProductPageProps) {
   const { "product-slug": slug } = await params;
   const product = getPublishedProduct(slug);
   if (!product) notFound();
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: `${product.manufacturer} ${product.name}`,
-    description: product.summary,
-    brand: { "@type": "Brand", name: product.manufacturer },
-    url: `${site.url}/products/${product.slug}/`,
-  };
   return (
     <>
+      <PageSchema pathname={`/products/${slug}`} product={product} />
       <ProductExperience product={product} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
-      />
     </>
   );
 }

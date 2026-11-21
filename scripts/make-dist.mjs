@@ -15,6 +15,8 @@ import { cp, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/prom
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { writeZip } from "./zip.mjs";
+import { securityHeaders, apacheRules } from "./lib/security-headers.mjs";
+import { mkdir } from "node:fs/promises";
 
 const root = path.resolve(import.meta.dirname, "..");
 const out = path.join(root, "out");
@@ -111,8 +113,30 @@ for (const file of cssFiles) {
 const rewritten = await rewrite(dist, cssMap);
 // After the rewrite, so the copies carry the corrected asset URLs too.
 const flattened = await addFlatSegmentPayloads(dist);
+const htmlPages = await Promise.all(
+  (await findFiles(dist, ".html")).map((file) => readFile(file, "utf8")),
+);
+const headers = securityHeaders(htmlPages);
+const canonical = htmlPages
+  .map((html) => html.match(/<link rel="canonical" href="([^"]+)"/)?.[1])
+  .find(Boolean);
+if (!canonical) throw new Error("Cannot generate deployment rules without a canonical origin.");
+const origin = new URL(canonical).origin;
+await writeFile(path.join(dist, ".htaccess"), apacheRules(origin, headers));
+const generated = path.join(root, "deploy/generated");
+await mkdir(generated, { recursive: true });
+await writeFile(path.join(generated, "security-headers.json"), JSON.stringify(headers, null, 2));
+await writeFile(
+  path.join(generated, "security-headers.nginx.conf"),
+  "# Generated for this exact build. Include in the existing HTTPS server block.\n" +
+    Object.entries(headers)
+      .map(([name, value]) => `add_header ${name} "${value}" always;`)
+      .join("\n") +
+    "\n",
+);
 console.log(`dist/ built — rewrote /_next/ in ${rewritten} files, stylesheets: ${cssMap.size}`);
 console.log(`assets published under /${ASSET_DIR}/, ${flattened} prefetch payloads flattened`);
+console.log("Generated Apache rules and deploy/generated/ security headers for this exact build.");
 
 // Entries must sit at the archive root (no dist/ prefix) for the host's uploader,
 // and must use forward slashes, which is what the ZIP format requires.

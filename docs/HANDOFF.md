@@ -12,6 +12,10 @@
 - Review desktop and phone layouts, navigation, all four product pages, and industry details.
 - Confirm real delivery from both forms on the PHP host.
 - Confirm the canonical domain and company contact details.
+- Install and verify the generated HTTPS/canonical redirects and security headers on the actual host; Nginx does not apply `.htaccess`.
+- Purge stale Cloudflare HTML, robots and sitemap caches, then run the live audit.
+- Transfer Search Console ownership, submit the sitemap and inspect indexing/canonical selection using [SEO.md](SEO.md).
+- Configure form rate limits and complete the operational checks in [SECURITY.md](SECURITY.md).
 - Record the source revision and deployment date, and retain the previous deployment for rollback.
 
 ## Content items to confirm with the client

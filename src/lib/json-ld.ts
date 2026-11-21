@@ -1,0 +1,4 @@
+/** Prevent editorial text from terminating an HTML script element. */
+export function serializeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}

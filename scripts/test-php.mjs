@@ -21,6 +21,23 @@ const cases = [
     status: 422,
   },
   { name: "Nested field", data: { ...valid, name: ["unexpected"] }, status: 422 },
+  { name: "Boolean field", data: { ...valid, company: true }, status: 422 },
+  { name: "Null field", data: { ...valid, company: null }, status: 422 },
+  {
+    name: "Cross-site form rejected",
+    data: valid,
+    origin: "https://attacker.example",
+    status: 403,
+  },
+  {
+    name: "Origin suffix attack rejected",
+    data: valid,
+    origin: "https://www.erkdynamics.com.attacker.example",
+    status: 403,
+  },
+  { name: "Fetch metadata rejected", data: valid, fetchSite: "cross-site", status: 403 },
+  { name: "Unsupported body rejected", data: valid, contentType: "text/plain", status: 415 },
+  { name: "File upload rejected", data: valid, files: true, status: 422 },
   { name: "Oversized message", data: { ...valid, message: "x".repeat(10001) }, status: 422 },
   { name: "Oversized body", data: valid, length: 65537, status: 413 },
   { name: "Honeypot", data: { website: "bot" }, status: 200, ok: true },
@@ -38,17 +55,31 @@ const cases = [
     ok: true,
   },
   { name: "Mail failure is reported", data: valid, status: 500, mail: false },
+  {
+    name: "Trusted origin accepted",
+    data: valid,
+    origin: "https://www.erkdynamics.com",
+    status: 200,
+    mail: true,
+    ok: true,
+  },
+  { name: "Missing mail transport is handled", data: valid, status: 500, throws: true },
 ];
 for (const item of cases) {
   const encoded = Buffer.from(JSON.stringify(item.data)).toString("base64");
   // Disable the real mail() function: these tests must never contact an inbox.
-  const fakeMail =
-    item.mail === undefined
+  const fakeMail = item.throws
+    ? 'throw new RuntimeException("Mail transport unavailable");'
+    : item.mail === undefined
       ? 'throw new RuntimeException("Unexpected mail call");'
       : `return ${item.mail ? "true" : "false"};`;
   const code = `function mail($to, $subject, $body, $headers) { ${fakeMail} }
     $_SERVER['REQUEST_METHOD'] = '${item.method || "POST"}';
     $_SERVER['CONTENT_LENGTH'] = ${item.length || 0};
+    $_SERVER['HTTP_ORIGIN'] = '${item.origin || ""}';
+    $_SERVER['HTTP_SEC_FETCH_SITE'] = '${item.fetchSite || "same-origin"}';
+    $_SERVER['CONTENT_TYPE'] = '${item.contentType || "application/x-www-form-urlencoded"}';
+    $_FILES = ${item.files ? "['attachment' => ['name' => 'test.txt']]" : "[]"};
     $_POST = json_decode(base64_decode('${encoded}'), true);
     register_shutdown_function(function () { fwrite(STDERR, (string) http_response_code()); });
     require '${handler}';`;
@@ -61,7 +92,7 @@ for (const item of cases) {
       `PHP CLI is required. Install PHP 8.1+ or set PHP_BINARY. ${result.error.message}`,
     );
   assert.equal(result.status, 0, `${item.name}: ${result.stdout} ${result.stderr}`);
-  assert.equal(result.stderr.trim(), String(item.status), item.name);
+  assert.ok(result.stderr.trim().endsWith(String(item.status)), item.name);
   assert.equal(JSON.parse(result.stdout).ok, item.ok, item.name);
   console.log(`ok ${item.name}`);
 }

@@ -21,13 +21,17 @@ const MIME = {
 };
 
 /** Local preview only. Never expose PHP source or accept form submissions. */
-export function createStaticServer(directory) {
+export function createStaticServer(directory, { headers = {} } = {}) {
   const root = path.resolve(directory);
   return createServer(async (req, res) => {
     try {
+      for (const [name, value] of Object.entries(headers)) res.setHeader(name, value);
       const pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
       const filePath = path.resolve(root, "." + pathname);
-      if (filePath !== root && !filePath.startsWith(root + path.sep)) {
+      if (
+        (filePath !== root && !filePath.startsWith(root + path.sep)) ||
+        pathname.split("/").some((part) => part.startsWith("."))
+      ) {
         res.writeHead(403).end("Forbidden");
         return;
       }

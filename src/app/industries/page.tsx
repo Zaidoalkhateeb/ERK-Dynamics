@@ -1,12 +1,14 @@
-import { pageMetadata } from "@/lib/metadata";
+import { PageSchema } from "@/components/seo/StructuredData";
+import { staticPageMetadata } from "@/lib/metadata";
 import { IndustriesExperience } from "@/components/industries/IndustriesExperience";
 
-export const metadata = pageMetadata(
-  "Industries",
-  "Explore potential applications for industrial technology across manufacturing, logistics, automotive, construction, maintenance, and food & beverage.",
-  "/industries",
-);
+export const metadata = staticPageMetadata("/industries");
 
 export default function Page() {
-  return <IndustriesExperience />;
+  return (
+    <>
+      <PageSchema pathname="/industries" />
+      <IndustriesExperience />
+    </>
+  );
 }

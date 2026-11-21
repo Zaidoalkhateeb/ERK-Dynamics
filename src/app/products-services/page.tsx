@@ -1,12 +1,14 @@
-import { pageMetadata } from "@/lib/metadata";
+import { PageSchema } from "@/components/seo/StructuredData";
+import { staticPageMetadata } from "@/lib/metadata";
 import { ProductsServicesExperience } from "@/components/products/ProductsServicesExperience";
 
-export const metadata = pageMetadata(
-  "Products & Services",
-  "Explore industrial exoskeletons, LiDAR systems, remote power supply systems, and deployment support from ERK Dynamics.",
-  "/products-services",
-);
+export const metadata = staticPageMetadata("/products-services");
 
 export default function Page() {
-  return <ProductsServicesExperience />;
+  return (
+    <>
+      <PageSchema pathname="/products-services" />
+      <ProductsServicesExperience />
+    </>
+  );
 }

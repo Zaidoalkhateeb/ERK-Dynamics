@@ -1,24 +1,39 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
+import { pageSeo } from "@/content/seo";
+import { canonicalPath } from "./site-url";
 
-export function pageMetadata(title: string, description: string, pathname: string): Metadata {
-  const canonical = pathname === "/" ? "/" : `${pathname.replace(/\/+$/, "")}/`;
+export function pageMetadata(
+  title: string,
+  description: string,
+  pathname: string,
+  image: string = site.socialImage,
+): Metadata {
+  const canonical = `${site.url}${canonicalPath(pathname)}`;
+  const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+  const socialImage = {
+    url: `${site.url}${image}`,
+    alt: title,
+    ...(image === site.socialImage ? { width: 1200, height: 630 } : {}),
+  };
   return {
-    title,
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical },
     openGraph: {
-      title: `${title} | ${site.name}`,
+      title: fullTitle,
       description,
       url: canonical,
       siteName: site.name,
       type: "website",
-      images: ["/media/liftsuit-hero.webp"],
+      locale: "en_US",
+      images: [socialImage],
     },
+    twitter: { card: "summary_large_image", title: fullTitle, description, images: [socialImage] },
   };
 }
 
-/** Escape less-than signs so editorial text cannot terminate a JSON-LD script. */
-export function serializeJsonLd(value: unknown): string {
-  return JSON.stringify(value).replace(/</g, "\\u003c");
+export function staticPageMetadata(pathname: keyof typeof pageSeo): Metadata {
+  const page = pageSeo[pathname];
+  return pageMetadata(page.title, page.description, pathname);
 }

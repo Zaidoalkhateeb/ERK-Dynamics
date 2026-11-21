@@ -1,20 +1,18 @@
+import { PageSchema } from "@/components/seo/StructuredData";
 import { PartnerMotion } from "@/components/partners/PartnerMotion";
 import { partners } from "@/content/partners";
-import { pageMetadata } from "@/lib/metadata";
+import { staticPageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 import Link from "next/link";
 import { PartnerTechnologyHero } from "@/components/partners/PartnerTechnologyHero";
 import { PartnerReveal } from "@/components/partners/PartnerReveal";
 
-export const metadata = pageMetadata(
-  "Partners",
-  "Explore ERK Dynamics technology partners Auxivo and LEICE, and discover their industrial products and solutions.",
-  "/partners",
-);
+export const metadata = staticPageMetadata("/partners");
 
 export default function PartnersPage() {
   return (
     <main className="partners-page">
+      <PageSchema pathname="/partners" />
       <PartnerTechnologyHero />
 
       <section

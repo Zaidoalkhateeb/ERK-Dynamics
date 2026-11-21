@@ -1,13 +1,11 @@
-import { pageMetadata } from "@/lib/metadata";
+import { PageSchema } from "@/components/seo/StructuredData";
+import { staticPageMetadata } from "@/lib/metadata";
 import { InquiryForm } from "@/components/forms/InquiryForm";
-export const metadata = pageMetadata(
-  "Become a Partner",
-  "Explore partnership opportunities with ERK Dynamics in the Turkish industrial technology market.",
-  "/become-a-partner",
-);
+export const metadata = staticPageMetadata("/become-a-partner");
 export default function Page() {
   return (
     <main className="partner-application-page">
+      <PageSchema pathname="/become-a-partner" />
       <section className="page-hero partner-application-hero">
         <p className="eyebrow"></p>
         <h1>
