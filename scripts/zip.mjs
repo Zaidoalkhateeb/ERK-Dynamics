@@ -27,8 +27,8 @@ function crc32(buffer) {
 
 const FILE_MODE = (0o100644 << 16) >>> 0; // regular file, rw-r--r--
 const UTF8_FLAG = 0x0800;
-const MADE_BY_UNIX = (3 << 8) | 20;       // so the host honours the mode above
-const DOS_DATE = 0x21;                     // 1980-01-01; content hashes handle freshness
+const MADE_BY_UNIX = (3 << 8) | 20; // so the host honours the mode above
+const DOS_DATE = 0x21; // 1980-01-01; content hashes handle freshness
 
 /**
  * @param {{ name: string, path: string }[]} files  `name` uses forward slashes.
@@ -36,9 +36,10 @@ const DOS_DATE = 0x21;                     // 1980-01-01; content hashes handle 
  */
 export async function writeZip(files, destination) {
   const out = createWriteStream(destination);
-  const write = (chunk) => new Promise((resolve, reject) => {
-    out.write(chunk, (error) => (error ? reject(error) : resolve()));
-  });
+  const write = (chunk) =>
+    new Promise((resolve, reject) => {
+      out.write(chunk, (error) => (error ? reject(error) : resolve()));
+    });
 
   const directory = [];
   let offset = 0;
@@ -69,8 +70,12 @@ export async function writeZip(files, destination) {
     await write(body);
 
     directory.push({
-      name, offset, method: stored ? 0 : 8,
-      crc: crc32(contents), compressed: body.length, size: contents.length,
+      name,
+      offset,
+      method: stored ? 0 : 8,
+      crc: crc32(contents),
+      compressed: body.length,
+      size: contents.length,
     });
     offset += header.length + name.length + body.length;
   }

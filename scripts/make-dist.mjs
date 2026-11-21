@@ -32,7 +32,7 @@ async function findFiles(dir, extension) {
   const matches = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) matches.push(...await findFiles(full, extension));
+    if (entry.isDirectory()) matches.push(...(await findFiles(full, extension)));
     else if (path.extname(entry.name) === extension) matches.push(full);
   }
   return matches;
@@ -65,17 +65,19 @@ async function addFlatSegmentPayloads(dir) {
   return copied;
 }
 
-async function rewrite(dir, cssHref) {
+async function rewrite(dir, cssMap) {
   let rewritten = 0;
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      rewritten += await rewrite(full, cssHref);
+      rewritten += await rewrite(full, cssMap);
       continue;
     }
     if (!REWRITABLE.has(path.extname(entry.name))) continue;
     const source = await readFile(full, "utf8");
-    let output = source.replaceAll("/_next/", `/${ASSET_DIR}/`).replace(CHUNK_CSS, cssHref);
+    let output = source
+      .replaceAll("/_next/", `/${ASSET_DIR}/`)
+      .replace(CHUNK_CSS, (href) => cssMap.get(href) || href);
     if (path.extname(entry.name) === ".html") {
       // React adds this optional hint to script preloads, but Firefox flags it as unsupported.
       output = output.replace(/\sfetchpriority=(["'])(?:high|low|auto)\1/gi, "");
@@ -97,21 +99,19 @@ await cp(out, dist, { recursive: true });
 await rename(path.join(dist, "_next"), path.join(dist, ASSET_DIR));
 
 const cssFiles = await findFiles(path.join(dist, ASSET_DIR), ".css");
-if (cssFiles.length !== 1) {
-  throw new Error(`Expected one generated stylesheet, found ${cssFiles.length}.`);
+if (!cssFiles.length) throw new Error("The static export contains no stylesheet.");
+const cssMap = new Map();
+for (const file of cssFiles) {
+  const bytes = await readFile(file);
+  const hash = createHash("sha256").update(bytes).digest("hex").slice(0, 12);
+  const name = `style.${hash}.css`;
+  await cp(file, path.join(dist, name));
+  cssMap.set("/" + path.relative(dist, file).split(path.sep).join("/"), "/" + name);
 }
-// The stylesheet keeps a fixed path, but hosts serve it with a long max-age, so a
-// build that reuses `style.css` stays invisible behind CDN and browser caches.
-// Hashing the contents into the name makes every changed build a fresh URL.
-const cssBytes = await readFile(cssFiles[0]);
-const cssHash = createHash("sha256").update(cssBytes).digest("hex").slice(0, 8);
-const cssName = `style.${cssHash}.css`;
-await cp(cssFiles[0], path.join(dist, cssName));
-
-const rewritten = await rewrite(dist, `/${cssName}`);
+const rewritten = await rewrite(dist, cssMap);
 // After the rewrite, so the copies carry the corrected asset URLs too.
 const flattened = await addFlatSegmentPayloads(dist);
-console.log(`dist/ built — rewrote /_next/ in ${rewritten} files, stylesheet: ${cssName}`);
+console.log(`dist/ built — rewrote /_next/ in ${rewritten} files, stylesheets: ${cssMap.size}`);
 console.log(`assets published under /${ASSET_DIR}/, ${flattened} prefetch payloads flattened`);
 
 // Entries must sit at the archive root (no dist/ prefix) for the host's uploader,
@@ -120,7 +120,7 @@ async function collectFiles(dir, prefix = "") {
   const files = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) files.push(...await collectFiles(full, `${prefix}${entry.name}/`));
+    if (entry.isDirectory()) files.push(...(await collectFiles(full, `${prefix}${entry.name}/`)));
     else files.push({ name: `${prefix}${entry.name}`, path: full });
   }
   return files;

@@ -1,0 +1,597 @@
+/* Partner application typography and locked two-line hero. */
+.partner-application-hero h1 {
+  max-width: none;
+  font-size: clamp(48px, 6vw, 92px);
+  line-height: 0.98;
+}
+.partner-application-hero h1 span {
+  display: block;
+  white-space: nowrap;
+}
+.partner-application-page .form label {
+  gap: 11px;
+  font:
+    600 13px/1.35 "IBM Plex Mono",
+    monospace;
+}
+.partner-application-page .form input,
+.partner-application-page .form select,
+.partner-application-page .form textarea {
+  padding: 15px 0;
+  font-size: 17px;
+}
+.partner-application-page .form .button {
+  min-height: 62px;
+  padding-inline: 28px;
+  font-size: 15px;
+}
+.partner-application-page .form .button span {
+  font-size: 25px;
+  line-height: 1;
+}
+@media (max-width: 700px) {
+  .partner-application-hero h1 {
+    font-size: clamp(29px, 8.5vw, 48px);
+  }
+  .partner-application-hero h1 span {
+    white-space: normal;
+  }
+}
+
+/* Mobile navigation: high contrast and compact product hierarchy. */
+@media (max-width: 700px) {
+  .header.menu-open,
+  .header.menu-open.scrolled {
+    height: 78px;
+    color: #fff;
+    background: #0b2f3d;
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .header.menu-open .logo,
+  .header.menu-open .logo b,
+  .header.menu-open .menu-button {
+    color: #fff;
+  }
+  .header.menu-open .company-logo-mark img {
+    filter: brightness(0) invert(1);
+  }
+  .menu-panel {
+    padding: 100px 20px 32px;
+    color: #fff;
+    background: #0b2f3d;
+  }
+  .menu-grid {
+    gap: 0;
+  }
+  .menu-links > a,
+  .menu-disclosure {
+    min-height: 64px;
+    padding: 12px 0;
+    align-items: center;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.16);
+    font-size: 31px;
+  }
+  .menu-links small {
+    margin-top: 0;
+    color: #64d3e3;
+  }
+  .menu-links > a > small,
+  .menu-disclosure-link > small {
+    display: none;
+  }
+  .menu-disclosure {
+    width: 100%;
+    gap: 14px;
+  }
+  .menu-disclosure-toggle {
+    padding: 12px 5px 12px 18px;
+  }
+  .menu-chevron {
+    margin-right: 0;
+  }
+  .menu-product-categories {
+    padding: 12px 0 18px;
+    gap: 8px;
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+  .menu-exoskeleton-category {
+    min-height: 0;
+    padding: 8px 0;
+    color: #fff;
+    background: transparent;
+    border: 0;
+  }
+  .menu-category-disclosure {
+    min-height: 48px;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.11);
+  }
+  .menu-category-disclosure > strong {
+    margin: 0;
+    color: #fff;
+  }
+  .menu-exoskeleton-products {
+    padding-left: 14px;
+  }
+  .menu-links .menu-product-categories .menu-exoskeleton-category a {
+    min-height: 42px;
+    padding: 9px 0;
+    color: #fff;
+    border-top-color: rgba(255, 255, 255, 0.11);
+  }
+  .menu-links .menu-product-categories > a {
+    min-height: 48px;
+    padding: 12px 0;
+    justify-content: center;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.11);
+  }
+  .menu-links .menu-product-categories > a strong {
+    color: #fff;
+  }
+}
+
+/* Mobile contact alignment and one consistent outbound-link arrow. */
+@media (max-width: 680px) {
+  .contact-routing-diagram {
+    display: block;
+    position: relative;
+    left: 50%;
+    bottom: auto;
+    margin-top: 72px;
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateX(-50%);
+  }
+  .contact-location-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .contact-location-link .site-arrow {
+    margin-right: 4px;
+  }
+}
+
+/* Keep the contact illustration before its actions at every mobile width. */
+@media (max-width: 680px) {
+  .contact-hero__copy {
+    display: contents;
+  }
+  .contact-hero h1 {
+    order: 1;
+  }
+  .contact-hero__description {
+    order: 2;
+  }
+  .contact-hero__visual {
+    order: 3;
+  }
+  .contact-hero__actions {
+    order: 4;
+  }
+}
+
+@media (max-width: 680px) {
+  .ind-kicker {
+    display: none;
+  }
+  .hero-industries .ind-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 26px;
+  }
+  .ind-button {
+    width: 100%;
+  }
+}
+
+/* Final About Us mobile alignment override. */
+@media (max-width: 680px) {
+  .erkAboutPage {
+    --erk-about-page-width: calc(100% - 40px);
+  }
+  /* The About hero holds no in-flow artwork any more, so the shared 620px floor
+     was pure dead space — and because the hero centres its content, that slack
+     also pushed the title 45px below where every other page starts it. Tablets
+     keep the 620px floor; only phones hug the copy. */
+  .erkAboutHero {
+    min-height: 0;
+  }
+  .erkAboutHeroInner {
+    padding-top: 104px;
+    padding-bottom: 38px;
+  }
+  .erkAboutHeroLead {
+    margin-top: 20px;
+  }
+  .erkAboutHeroActions {
+    margin-top: 26px;
+  }
+  .erkAboutStatementPanel {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+  .erkAboutStatementCopy {
+    margin-top: 24px;
+  }
+  .erkAboutOutcomes {
+    margin-top: 34px;
+    padding-top: 20px;
+  }
+  .erkAboutPrinciplesPanel {
+    padding-top: 36px;
+    padding-bottom: 48px;
+  }
+  .erkAboutPrinciple {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+  .erkAboutPrincipleCopy p {
+    margin-top: 12px;
+  }
+  .erkAboutBridge {
+    padding-top: 58px;
+    padding-bottom: 64px;
+  }
+  .erkAboutBridgeCopy {
+    margin-top: 22px;
+  }
+  .erkAboutBridgeCopy p + p {
+    margin-top: 16px;
+  }
+  .erkAboutJourney {
+    margin-top: 30px;
+  }
+  .erkAboutHeroTitle,
+  .erkAboutStatementTitle,
+  .erkAboutPrincipleCopy h3,
+  .erkAboutBridgeHeading h2,
+  .erkAboutOutcomes {
+    text-align: left;
+  }
+  .erkAboutHeroLead,
+  .erkAboutStatementCopy,
+  .erkAboutPrincipleCopy p,
+  .erkAboutBridgeCopy p {
+    width: 100%;
+    max-width: none;
+    text-align: justify;
+    text-align-last: left;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-spacing: -0.035em;
+    letter-spacing: -0.008em;
+  }
+  .erkAboutHeroLead,
+  .erkAboutStatementCopy {
+    font-size: 16px;
+    line-height: 1.58;
+  }
+  .erkAboutPrincipleCopy p {
+    font-size: 15px;
+    line-height: 1.58;
+  }
+  .erkAboutBridgeCopy p {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+}
+
+/* Consistent compact paragraph alignment across every mobile page. */
+@media (max-width: 680px) {
+  main
+    p:not(.eyebrow):not(.portfolio-kicker):not(.ind-kicker):not(.erkAboutKicker):not(
+      .erkAboutSectionEyebrow
+    ) {
+    text-align: justify !important;
+    text-align-last: left;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-spacing: -0.035em;
+    letter-spacing: -0.008em;
+  }
+}
+
+/* Match the compact About Us typography rhythm across other mobile pages. */
+@media (max-width: 680px) {
+  main:not(.erkAboutPage) .section {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  main:not(.erkAboutPage) :is(h1, h2, h3):has(+ p:not(.eyebrow)) {
+    margin-bottom: 0;
+  }
+  main:not(.erkAboutPage) :is(h1, h2, h3) + p:not(.eyebrow) {
+    margin-top: 16px;
+  }
+
+  .page-hero:not(.hero-about),
+  .hero-partners {
+    padding-top: 104px;
+  }
+  .animated-page-hero,
+  .partner-application-hero,
+  .hero-partners {
+    min-height: 0;
+    padding-bottom: 56px;
+  }
+  .contact-hero__inner,
+  .portfolio-hero-inner {
+    padding-top: 104px;
+  }
+
+  .page-hero:not(.hero-about) h1,
+  .hero-partners h1,
+  .contact-hero h1,
+  .portfolio-hero-copy h1,
+  .motion-hero-copy h1,
+  .product-motion-title h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: clamp(29px, 9vw, 50px);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .page-hero:not(.hero-about) > p:last-of-type,
+  .partners-hero-copy > p,
+  .contact-hero__description,
+  .portfolio-hero-intro,
+  .motion-hero-copy > p:not(.eyebrow),
+  .product-motion-title > p:not(.eyebrow) {
+    max-width: none;
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.58;
+  }
+
+  .portfolio-hero-actions,
+  .ind-hero-actions,
+  .motion-hero-copy > div,
+  .product-motion-title > div {
+    margin-top: 26px;
+  }
+}
+
+@media (max-width: 900px) {
+  .erkAboutJourney {
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .erkAboutHeroInner {
+    row-gap: 0;
+  }
+  .erkAboutHeroActions {
+    margin-top: 26px;
+  }
+  .erkAboutHeroCopy {
+    max-width: none;
+  }
+  .erkAboutVisual {
+    opacity: 0.72;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 26%,
+      #000 58%,
+      #000 100%
+    );
+    mask-image: linear-gradient(180deg, transparent 0%, transparent 26%, #000 58%, #000 100%);
+  }
+}
+
+/* Mobile footer brand and navigation alignment. */
+@media (max-width: 700px) {
+  footer {
+    /* Trimmed from 20px: the three-column row needs every pixel it can get. */
+    padding: 34px 16px;
+  }
+  /* All three link columns share one row on phones, so every pixel of the width
+     goes to the text. The spacer motifs are what made that impossible — the
+     phone number and address had nowhere near enough room beside them. */
+  .footer-tech-motifs {
+    display: none;
+  }
+  footer .footer-grid.expanded {
+    /* All three tracks at max-content — a minmax(0, …) here let the contact
+       column shrink under its own nowrap text and clip the address. */
+    grid-template-columns: max-content max-content max-content;
+    justify-content: space-between;
+    column-gap: clamp(6px, 2vw, 16px);
+    row-gap: 30px;
+    padding-top: 0;
+  }
+  footer .footer-brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 150px;
+    margin-bottom: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  footer .footer-links--explore {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  footer .footer-links--products {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  footer .footer-links--contact {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  /* Never let the number or the address break — a wrapped phone number is
+     unreadable, and one unbroken line is the whole point of this row. */
+  footer .footer-links--contact a {
+    width: auto;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    gap: 6px;
+    font-size: 12px;
+  }
+  footer .footer-contact-icon {
+    width: 13px;
+    height: 13px;
+    margin-top: 2px;
+  }
+  footer .logo {
+    width: 100%;
+    gap: clamp(14px, 4vw, 20px);
+    justify-content: center;
+    font-size: clamp(24px, 7vw, 34px);
+    white-space: nowrap;
+  }
+  footer .logo b {
+    display: inline;
+  }
+  footer .company-logo-mark {
+    width: clamp(96px, 27vw, 130px);
+    height: auto;
+  }
+  footer .footer-grid > div:first-child p {
+    display: none;
+  }
+  footer .footer-grid > div:first-child p br {
+    display: none;
+  }
+  footer .footer-grid > div > b {
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+  footer .footer-grid a:not(.logo) {
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  footer .footer-bottom {
+    margin-top: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-tech-motif * {
+    animation: none !important;
+  }
+}
+@media (max-width: 380px) {
+  footer .footer-grid > div:first-child p {
+    font-size: 13px;
+  }
+  /* Below this the three columns cannot hold the address on one line, so
+     contact drops to its own full-width row rather than being clipped. */
+  footer .footer-grid.expanded {
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+  footer .footer-links--products {
+    grid-column: 2;
+  }
+  footer .footer-links--contact {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  footer .footer-grid a:not(.logo) {
+    font-size: 13px;
+  }
+  footer .footer-links--contact a {
+    font-size: 13px;
+  }
+  footer .footer-contact-icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Reveal more of the Partners hero artwork on mobile. */
+@media (max-width: 680px) {
+  .technology-hero__objects {
+    inset: -4% -2% -4% auto;
+    width: 112%;
+    height: 108%;
+    transform: translateX(-10vw) scale(0.86);
+    transform-origin: right center;
+  }
+}
+
+/* Become a Partner mobile sequence: copy, shared-value object, then actions. */
+@media (max-width: 800px) {
+  .partner-feature--join {
+    row-gap: 0;
+  }
+
+  .partner-feature--join .partner-feature-copy {
+    display: contents;
+  }
+
+  .partner-feature--join .partner-feature-copy > .eyebrow {
+    order: 1;
+  }
+
+  .partner-feature--join .partner-feature-copy > h3 {
+    order: 2;
+  }
+
+  .partner-feature--join .partner-feature-copy > p:not(.eyebrow) {
+    order: 3;
+    margin-bottom: 0;
+  }
+
+  .partner-feature--join .partner-join-stage {
+    order: 4;
+    width: 100%;
+    margin-top: 32px;
+  }
+
+  .partner-feature--join .partner-actions {
+    order: 5;
+    margin-top: 32px;
+  }
+}
+
+/* Industries mobile sequence and option-card behavior. */
+@media (max-width: 900px) {
+  .hero-industries .ind-hero-actions {
+    width: 100%;
+    margin-top: 62px;
+  }
+
+  .ind-panel {
+    display: none;
+  }
+  .ind-directory-inner {
+    gap: 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .ind-modal-backdrop {
+    display: none;
+  }
+}
+
+/* Industries hero on phones: hugs its copy like every other hero. Filling a
+   640px band and pushing the buttons to its floor with `margin-top: auto` just
+   moved the dead space above them, where it read as a hole in the hero. */
+@media (max-width: 680px) {
+  .hero-industries {
+    min-height: 0;
+  }
+  .hero-industries .ind-hero-actions {
+    margin-top: 26px;
+    padding-top: 0;
+  }
+}

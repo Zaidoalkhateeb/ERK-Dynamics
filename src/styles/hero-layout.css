@@ -1,0 +1,91 @@
+/* Shared hero alignment for the three completed information pages. */
+@media (min-width: 961px) {
+  .contact-hero__inner,
+  .erkAboutHeroInner,
+  .portfolio-hero-inner {
+    width: auto;
+    margin-right: var(--pad);
+    margin-left: var(--pad);
+  }
+  .hero-partners,
+  .contact-hero,
+  .erkAboutHero {
+    min-height: clamp(720px, 100svh, 820px);
+  }
+  .contact-hero__inner,
+  .erkAboutHeroInner {
+    min-height: clamp(720px, 100svh, 820px);
+    padding-top: 190px;
+    padding-bottom: 100px;
+  }
+  /* `width: auto` above makes this flex item shrink to its copy's max-content
+     width now that the artwork no longer occupies a second column. */
+  .erkAboutHeroInner {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .partners-hero-copy,
+  .contact-hero-copy,
+  .erkAboutHeroCopy {
+    margin-top: 80px;
+  }
+  .hero-partners h1,
+  .contact-hero h1,
+  .erkAboutHeroTitle {
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+}
+@media (max-width: 1300px) and (min-width: 961px) {
+  .erkAboutBridgeHeading h2 {
+    font-size: clamp(48px, 4vw, 60px);
+  }
+}
+@media (max-width: 960px) {
+  .hero-partners,
+  .contact-hero,
+  .erkAboutHero {
+    height: auto;
+    min-height: 620px;
+  }
+  .hero-partners {
+    padding-top: 150px;
+    padding-bottom: 70px;
+  }
+  .contact-hero__inner,
+  .erkAboutHeroInner {
+    min-height: 0;
+    padding-top: 150px;
+    padding-bottom: 70px;
+  }
+  .partners-hero-copy,
+  .contact-hero-copy,
+  .erkAboutHeroCopy {
+    margin-top: 0;
+  }
+  .hero-partners h1,
+  .contact-hero h1,
+  .erkAboutHeroTitle {
+    font-size: clamp(29px, 6vw, 50px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+  /* The About hero opens the page with nothing above it, so its title carries the
+     whole entrance — 6vw leaves it smaller than the section headings further down. */
+  .erkAboutHeroTitle {
+    font-size: clamp(34px, 11vw, 52px);
+    line-height: 1.03;
+  }
+  .partners-hero-copy > p,
+  .contact-hero__copy > .contact-hero__description,
+  .erkAboutHeroLead {
+    font-size: clamp(18px, 1.4vw, 20px);
+    line-height: 1.65;
+  }
+  .erkAboutBridgeHeading h2 {
+    white-space: normal;
+  }
+}

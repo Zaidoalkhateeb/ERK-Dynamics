@@ -1,0 +1,1574 @@
+/* Products & Services — motion-led portfolio */
+.portfolio-page {
+  --portfolio-ink: #101a20;
+  --portfolio-muted: #5c6c74;
+  --portfolio-paper: #f2f5f6;
+  --portfolio-line: rgba(15, 67, 82, 0.14);
+  --portfolio-accent: #07879b;
+  color: var(--portfolio-ink);
+  background: var(--portfolio-paper);
+  overflow: clip;
+}
+.portfolio-kicker {
+  margin: 0;
+  color: var(--portfolio-accent);
+  font:
+    700 clamp(13px, 0.9vw, 15px)/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.portfolio-button {
+  min-height: 58px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border: 1px solid var(--portfolio-line);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  transition:
+    color 220ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portfolio-button svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+.portfolio-button:hover {
+  transform: translateY(-3px);
+}
+.portfolio-button--primary {
+  color: #fff;
+  background: var(--portfolio-accent);
+  border-color: var(--portfolio-accent);
+}
+.portfolio-button--primary:hover {
+  background: #066f81;
+  border-color: #066f81;
+}
+.portfolio-button--secondary {
+  color: var(--portfolio-ink);
+  background: rgba(255, 255, 255, 0.7);
+}
+.portfolio-button--secondary:hover {
+  color: var(--portfolio-accent);
+  border-color: rgba(7, 135, 155, 0.4);
+}
+.portfolio-button--light {
+  color: #fff;
+  background: var(--portfolio-accent);
+  border-color: var(--portfolio-accent);
+}
+.portfolio-button--light:hover {
+  color: #fff;
+  background: #066f81;
+  border-color: #066f81;
+}
+
+.portfolio-hero {
+  position: relative;
+  min-height: clamp(720px, 100svh, 820px);
+  overflow: hidden;
+  background: #f3f6f7;
+  border-bottom: 1px solid var(--portfolio-line);
+}
+.portfolio-hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.58;
+  background-image:
+    linear-gradient(rgba(20, 82, 98, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 82, 98, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent 78%);
+  mask-image: linear-gradient(90deg, #000, transparent 78%);
+}
+.portfolio-hero-glow {
+  position: absolute;
+  z-index: 1;
+  right: -18vw;
+  top: -33vw;
+  width: 70vw;
+  aspect-ratio: 1;
+  border: 1px solid rgba(7, 135, 155, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.portfolio-hero-glow::before,
+.portfolio-hero-glow::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(7, 135, 155, 0.1);
+  border-radius: 50%;
+}
+.portfolio-hero-glow::before {
+  inset: 10%;
+}
+.portfolio-hero-glow::after {
+  inset: 22%;
+}
+.portfolio-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1710px, calc(100% - 8vw));
+  min-height: clamp(720px, 100svh, 820px);
+  margin-inline: auto;
+  padding: 190px 0 100px;
+  display: grid;
+  grid-template-columns: minmax(480px, 0.88fr) minmax(560px, 1.12fr);
+  /* Top-aligned like every other hero, so the headline starts at the same
+     height on all pages instead of floating with the content. */
+  align-items: start;
+  gap: clamp(48px, 5vw, 100px);
+}
+.portfolio-hero-copy {
+  position: relative;
+  z-index: 3;
+  margin-top: 80px;
+}
+/* The photo pair keeps its centred composition within the taller row. */
+.portfolio-hero-visual {
+  align-self: center;
+}
+.portfolio-hero-copy h1 {
+  max-width: 900px;
+  margin: 0;
+  color: var(--portfolio-ink);
+  animation: contactTextEnter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  font-size: clamp(44px, 5vw, 72px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+.portfolio-hero-intro {
+  max-width: 720px;
+  margin: 34px 0 0;
+  color: var(--portfolio-muted);
+  font-size: clamp(18px, 1.35vw, 21px);
+  line-height: 1.63;
+  text-align: justify;
+  text-align-last: left;
+  animation: contactTextEnter 620ms 55ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.portfolio-hero-actions {
+  margin-top: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  animation: contactTextEnter 620ms 110ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.portfolio-hero-visual {
+  --portfolio-x: 0px;
+  --portfolio-y: 0px;
+  position: relative;
+  min-height: clamp(410px, 55svh, 500px);
+  transform: translate3d(var(--portfolio-x), var(--portfolio-y), 0);
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.portfolio-exoskeleton-system {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 108%;
+  max-width: none;
+  height: auto;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+}
+.portfolio-exo-frame {
+  fill: none;
+  stroke: rgba(7, 124, 144, 0.3);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: portfolioExoFrame 5.5s ease-in-out infinite alternate;
+}
+.portfolio-exo-support-paths {
+  fill: none;
+  stroke: #12a3b9;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 12 12;
+  filter: drop-shadow(0 0 7px rgba(18, 163, 185, 0.28));
+  animation: portfolioExoEnergy 2.6s linear infinite;
+}
+.portfolio-exo-joints circle {
+  fill: #22b4c7;
+  stroke: #fff;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(34, 180, 199, 0.45));
+  animation: portfolioExoJoint 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.portfolio-exo-joints circle:nth-child(2n) {
+  animation-delay: -1.5s;
+}
+.portfolio-exo-core {
+  fill: rgba(255, 255, 255, 0.74);
+  stroke: rgba(7, 135, 155, 0.4);
+  stroke-width: 1.8;
+}
+.portfolio-exo-core circle:last-of-type {
+  fill: rgba(16, 163, 183, 0.13);
+  stroke: #07879b;
+}
+.portfolio-exo-core path {
+  fill: none;
+  stroke: #07879b;
+  stroke-width: 2;
+}
+.portfolio-exo-measure {
+  fill: none;
+  stroke: rgba(7, 123, 143, 0.15);
+  stroke-width: 1;
+  stroke-dasharray: 5 8;
+}
+.portfolio-hero-image {
+  position: absolute;
+  overflow: hidden;
+  background: #dce5e8;
+  box-shadow: 0 32px 80px rgba(18, 63, 76, 0.16);
+}
+.portfolio-hero-image img {
+  object-fit: cover;
+}
+.portfolio-hero-image--rear {
+  left: 1%;
+  top: 2%;
+  width: 48%;
+  height: 58%;
+  opacity: 0.82;
+  clip-path: polygon(0 0, 100% 0, 83% 100%, 0 88%);
+  animation:
+    portfolioRearEnter 1.15s cubic-bezier(0.16, 1, 0.3, 1) both,
+    portfolioRearFloat 8s 1.15s ease-in-out infinite alternate;
+}
+.portfolio-hero-image--front {
+  right: 0;
+  bottom: 2%;
+  width: 67%;
+  height: 75%;
+  clip-path: polygon(15% 0, 100% 10%, 100% 100%, 0 100%);
+  animation:
+    portfolioFrontEnter 1.25s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both,
+    portfolioFrontFloat 9s 1.4s ease-in-out infinite alternate;
+}
+.portfolio-hero-image--front img {
+  object-position: 52% center;
+}
+.portfolio-hero-orbit {
+  position: absolute;
+  border: 1px solid rgba(7, 135, 155, 0.23);
+  border-radius: 50%;
+  animation: portfolioOrbit 24s linear infinite;
+}
+.portfolio-hero-orbit::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  aspect-ratio: 1;
+  top: 12%;
+  left: 20%;
+  border-radius: 50%;
+  background: #26b7ca;
+  box-shadow: 0 0 18px rgba(38, 183, 202, 0.65);
+}
+.portfolio-hero-orbit--one {
+  width: 490px;
+  height: 490px;
+  right: 3%;
+  top: 4%;
+}
+.portfolio-hero-orbit--two {
+  width: 310px;
+  height: 310px;
+  left: 5%;
+  bottom: 0;
+  animation-direction: reverse;
+  animation-duration: 19s;
+}
+/* Two-column hero only: the photo pair sits below the headline's optical centre. */
+@media (min-width: 961px) {
+  .portfolio-hero-visual {
+    margin-top: 56px;
+  }
+}
+
+.portfolio-category-nav {
+  /* Sits in normal flow at every width — sticking it under the fixed header made it
+     ride over the header and its Products dropdown. */
+  position: static;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  color: var(--portfolio-ink);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--portfolio-line);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+}
+.portfolio-category-nav a {
+  min-height: 92px;
+  padding: 0 clamp(24px, 4vw, 74px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 15px;
+  border-right: 1px solid var(--portfolio-line);
+  transition:
+    color 220ms,
+    background 220ms;
+}
+.portfolio-category-nav a:last-child {
+  border-right: 0;
+}
+.portfolio-category-nav span {
+  color: var(--portfolio-accent);
+  font:
+    700 10px "IBM Plex Mono",
+    monospace;
+}
+.portfolio-category-nav strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.portfolio-category-nav i {
+  color: #7a898f;
+  font:
+    600 9px "IBM Plex Mono",
+    monospace;
+  font-style: normal;
+  text-transform: uppercase;
+}
+.portfolio-category-nav a:hover {
+  color: #fff;
+  background: var(--portfolio-accent);
+}
+.portfolio-category-nav a:hover span,
+.portfolio-category-nav a:hover i {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* The nav is a tab bar: only the selected category is shown, at every width. */
+.portfolio-page[data-active-category="exoskeletons"]
+  [data-category]:not([data-category="exoskeletons"]),
+.portfolio-page[data-active-category="lidar"] [data-category]:not([data-category="lidar"]),
+.portfolio-page[data-active-category="remote-power"]
+  [data-category]:not([data-category="remote-power"]) {
+  display: none;
+}
+.portfolio-category-nav {
+  scroll-margin-top: 78px;
+}
+.portfolio-category-nav a.is-active {
+  color: #fff;
+  background: var(--portfolio-accent);
+}
+.portfolio-category-nav a.is-active span,
+.portfolio-category-nav a.is-active i {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.portfolio-exo {
+  padding: 120px 4vw 130px;
+  background: #fff;
+}
+.portfolio-section-heading {
+  width: min(1580px, 100%);
+  margin: 0 auto 30px;
+  display: grid;
+  grid-template-columns: 1fr minmax(360px, 0.58fr);
+  align-items: end;
+  gap: 7vw;
+}
+.portfolio-section-heading span {
+  color: var(--portfolio-accent);
+  font:
+    700 clamp(15px, 1vw, 17px)/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.portfolio-section-heading h2 {
+  margin: 22px 0 0;
+  font-size: clamp(58px, 6.1vw, 100px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.058em;
+}
+.portfolio-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.portfolio-product-stage {
+  width: min(1660px, 100%);
+  min-height: 620px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(500px, 0.9fr);
+  background: #edf2f3;
+  border: 1px solid var(--portfolio-line);
+}
+.portfolio-product-media {
+  position: relative;
+  min-height: 620px;
+  overflow: hidden;
+  background: #dce4e6;
+}
+.portfolio-product-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 58%, rgba(9, 24, 30, 0.12)),
+    linear-gradient(0deg, rgba(8, 22, 29, 0.2), transparent 38%);
+  pointer-events: none;
+}
+.portfolio-product-image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  clip-path: inset(0 100% 0 0);
+  transition:
+    opacity 650ms ease,
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 950ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portfolio-product-image.is-active {
+  opacity: 1;
+  transform: scale(1);
+  clip-path: inset(0);
+}
+.portfolio-product-image img {
+  object-fit: cover;
+  object-position: center;
+}
+.portfolio-product-detail {
+  position: absolute;
+  z-index: 3;
+  right: 28px;
+  bottom: 28px;
+  width: 158px;
+  height: 195px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 18px 45px rgba(5, 25, 32, 0.23);
+  clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 92%);
+}
+.portfolio-product-detail img {
+  object-fit: cover;
+  animation: portfolioDetailEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.portfolio-product-motion-label {
+  position: absolute;
+  z-index: 4;
+  left: 28px;
+  bottom: 28px;
+  padding: 11px 14px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(7, 28, 36, 0.56);
+  font:
+    700 9px/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.portfolio-product-panel {
+  padding: 42px clamp(30px, 3vw, 58px) 55px;
+  display: flex;
+  flex-direction: column;
+  background: #f4f6f7;
+}
+.portfolio-product-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  border: 0;
+}
+.portfolio-product-switcher button {
+  position: relative;
+  min-height: 76px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #607178;
+  border: 1px solid var(--portfolio-line);
+  background: rgba(255, 255, 255, 0.48);
+  font:
+    600 15px "ERK Helvetica",
+    Arial,
+    sans-serif;
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+.portfolio-product-switcher button::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: 100%;
+  bottom: -1px;
+  height: 3px;
+  background: var(--portfolio-accent);
+  transition: right 280ms ease;
+}
+.portfolio-product-switcher button:hover {
+  color: var(--portfolio-ink);
+  border-color: rgba(7, 135, 155, 0.35);
+  transform: translateY(-2px);
+}
+.portfolio-product-switcher button.is-active {
+  color: var(--portfolio-ink);
+  border-color: rgba(7, 135, 155, 0.45);
+  background: #fff;
+}
+.portfolio-product-switcher button.is-active::after {
+  right: -1px;
+}
+.portfolio-product-switcher button span {
+  color: var(--portfolio-accent);
+  font:
+    700 18px/1 "IBM Plex Mono",
+    monospace;
+}
+.portfolio-product-copy {
+  margin-top: auto;
+  animation: portfolioCopyEnter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.portfolio-product-copy h3 {
+  margin: 15px 0 0;
+  font-size: clamp(60px, 5vw, 88px);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+.portfolio-product-copy > p:not(.portfolio-kicker) {
+  margin: 0;
+  color: var(--portfolio-muted);
+  font-size: 17px;
+  line-height: 1.62;
+}
+.portfolio-task-list {
+  margin-top: 27px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.portfolio-task-list span {
+  min-height: 46px;
+  padding: 12px 16px;
+  display: inline-flex;
+  align-items: center;
+  color: #37515a;
+  border: 1px solid var(--portfolio-line);
+  background: rgba(255, 255, 255, 0.7);
+  font:
+    700 clamp(11px, 0.8vw, 13px)/1.2 "IBM Plex Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.portfolio-product-copy dl {
+  margin: 32px 0;
+  border-top: 1px solid var(--portfolio-line);
+}
+.portfolio-product-copy dl div {
+  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  border-bottom: 1px solid var(--portfolio-line);
+}
+.portfolio-product-copy dt {
+  color: #77868c;
+  font:
+    600 9px "IBM Plex Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.portfolio-product-copy dd {
+  margin: 0;
+  color: #263a43;
+  font-size: 13px;
+}
+
+.portfolio-tech {
+  min-height: 720px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(440px, 0.9fr);
+  align-items: stretch;
+}
+.portfolio-tech-copy {
+  padding: 92px max(5vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.portfolio-tech-copy h2 {
+  margin: 23px 0 0;
+  font-size: clamp(46px, 3.9vw, 78px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+.portfolio-tech-copy h2 > span {
+  display: block;
+  white-space: nowrap;
+}
+.portfolio-tech-copy > p:not(.portfolio-kicker) {
+  max-width: 680px;
+  margin: 34px 0 0;
+  color: var(--portfolio-muted);
+  font-size: 18px;
+  line-height: 1.65;
+}
+.portfolio-tech-copy ul {
+  margin: 36px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  list-style: none;
+  border-top: 1px solid var(--portfolio-line);
+}
+.portfolio-tech-copy li {
+  padding: 14px 0;
+  color: #334d56;
+  border-bottom: 1px solid var(--portfolio-line);
+  font:
+    600 11px/1.35 "IBM Plex Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.portfolio-group-note {
+  margin: 34px 0;
+  padding-left: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-left: 2px solid var(--portfolio-accent);
+}
+.portfolio-group-note span {
+  color: var(--portfolio-accent);
+  font:
+    700 clamp(13px, 0.9vw, 15px)/1.2 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.portfolio-group-note strong {
+  color: #324a53;
+  font-size: 14px;
+  font-weight: 500;
+}
+.portfolio-tech-copy .portfolio-button {
+  align-self: flex-start;
+}
+.portfolio-tech-visual {
+  position: relative;
+  min-height: 620px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.portfolio-tech-visual svg {
+  width: min(86%, 760px);
+  height: auto;
+  overflow: visible;
+}
+.portfolio-tech--lidar {
+  background: #eff5f6;
+  border-bottom: 1px solid var(--portfolio-line);
+}
+.portfolio-lidar-visual {
+  background:
+    radial-gradient(circle at 50% 52%, rgba(44, 185, 206, 0.13), transparent 47%),
+    linear-gradient(rgba(7, 135, 155, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 135, 155, 0.045) 1px, transparent 1px);
+  background-size:
+    auto,
+    54px 54px,
+    54px 54px;
+}
+.portfolio-lidar-rings {
+  fill: none;
+  stroke: rgba(7, 135, 155, 0.24);
+  stroke-width: 1;
+  stroke-dasharray: 7 10;
+  transform-origin: 380px 322px;
+  animation: portfolioOrbit 24s linear infinite;
+}
+.portfolio-lidar-crosshair {
+  fill: none;
+  stroke: rgba(7, 135, 155, 0.11);
+  stroke-width: 1;
+}
+.portfolio-lidar-beam {
+  opacity: 0.8;
+  transform-origin: 380px 500px;
+  animation: portfolioLidarBeam 5.5s ease-in-out infinite alternate;
+}
+.portfolio-lidar-scan {
+  fill: none;
+  stroke: #16aec3;
+  stroke-width: 2;
+  transform-origin: 380px 500px;
+  animation: portfolioLidarScan 5.5s linear infinite;
+}
+.portfolio-lidar-scan circle {
+  fill: #36c6d9;
+  stroke: #fff;
+  stroke-width: 3;
+}
+.portfolio-lidar-unit {
+  fill: rgba(255, 255, 255, 0.85);
+  stroke: #087f94;
+  stroke-width: 2;
+  filter: drop-shadow(0 18px 18px rgba(9, 89, 105, 0.16));
+}
+.portfolio-data-tag {
+  position: absolute;
+  padding: 12px 15px;
+  color: #2f5964;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(7, 135, 155, 0.18);
+  font:
+    700 clamp(12px, 0.82vw, 14px) "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: portfolioDataFloat 5s ease-in-out infinite alternate;
+}
+.portfolio-data-tag--one {
+  left: 12%;
+  top: 24%;
+}
+.portfolio-data-tag--two {
+  right: 10%;
+  top: 38%;
+  animation-delay: -2s;
+}
+.portfolio-data-tag--three {
+  left: 20%;
+  bottom: 18%;
+  animation-delay: -3.5s;
+}
+
+.portfolio-tech--power {
+  grid-template-columns: minmax(440px, 0.9fr) minmax(0, 1.1fr);
+  color: var(--portfolio-ink);
+  background: #f2f5f6;
+  border-bottom: 1px solid var(--portfolio-line);
+}
+.portfolio-tech--power .portfolio-kicker {
+  color: var(--portfolio-accent);
+}
+.portfolio-tech--power .portfolio-tech-copy h2 {
+  color: var(--portfolio-ink);
+}
+.portfolio-tech--power .portfolio-tech-copy > p:not(.portfolio-kicker) {
+  color: var(--portfolio-muted);
+}
+.portfolio-tech--power .portfolio-tech-copy ul {
+  border-color: var(--portfolio-line);
+}
+.portfolio-tech--power .portfolio-tech-copy li {
+  color: #334d56;
+  border-color: var(--portfolio-line);
+}
+.portfolio-tech--power .portfolio-group-note {
+  border-color: var(--portfolio-accent);
+}
+.portfolio-tech--power .portfolio-group-note span {
+  color: var(--portfolio-accent);
+}
+.portfolio-tech--power .portfolio-group-note strong {
+  color: #324a53;
+}
+.portfolio-power-visual {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(23, 183, 205, 0.14), transparent 52%), #f2f5f6;
+}
+.portfolio-power-grid {
+  fill: url(#power-cell);
+  stroke: rgba(7, 135, 155, 0.24);
+  stroke-width: 1;
+  opacity: 0.42;
+}
+.portfolio-power-grid path {
+  animation: portfolioCell 5s ease-in-out infinite alternate;
+}
+.portfolio-power-grid path:nth-child(3n) {
+  animation-delay: -1.4s;
+}
+.portfolio-power-grid path:nth-child(4n) {
+  animation-delay: -2.8s;
+}
+.portfolio-power-lines {
+  fill: none;
+  stroke: rgba(7, 135, 155, 0.48);
+  stroke-width: 2;
+  stroke-dasharray: 7 9;
+  animation: portfolioPowerFlow 1.5s linear infinite;
+}
+.portfolio-power-core {
+  fill: rgba(255, 255, 255, 0.9);
+  stroke: #07879b;
+  stroke-width: 2;
+  filter: drop-shadow(0 24px 28px rgba(13, 72, 85, 0.16));
+}
+.portfolio-power-core path {
+  fill: none;
+  stroke: #087f94;
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.portfolio-power-pulses {
+  fill: #6de0ee;
+  filter: drop-shadow(0 0 9px #38c6d9);
+}
+.portfolio-power-pulses circle {
+  animation: portfolioPowerPulse 2.3s ease-in-out infinite;
+}
+.portfolio-power-pulses circle:nth-child(2) {
+  animation-delay: -0.8s;
+}
+.portfolio-power-pulses circle:nth-child(3) {
+  animation-delay: -1.6s;
+}
+.portfolio-power-status {
+  position: absolute;
+  top: 10%;
+  right: 9%;
+  padding: 12px 15px;
+  color: #087f94;
+  border: 1px solid rgba(7, 135, 155, 0.28);
+  background: rgba(255, 255, 255, 0.82);
+  font:
+    700 clamp(12px, 0.82vw, 14px) "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.portfolio-services {
+  padding: 130px max(5vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(430px, 0.78fr) minmax(600px, 1.22fr);
+  gap: 10vw;
+  background: #fff;
+}
+.portfolio-services header {
+  align-self: start;
+  position: sticky;
+  top: 195px;
+}
+.portfolio-services header h2 {
+  margin: 22px 0 0;
+  font-size: clamp(58px, 5.7vw, 94px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.058em;
+}
+.portfolio-services header > p:last-child {
+  max-width: 590px;
+  margin: 32px 0 0;
+  color: var(--portfolio-muted);
+  font-size: 18px;
+  line-height: 1.63;
+}
+.portfolio-services ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.portfolio-services li {
+  min-height: 220px;
+  padding: 47px 0;
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 28px;
+  border-top: 1px solid var(--portfolio-line);
+}
+.portfolio-services li:last-child {
+  border-bottom: 1px solid var(--portfolio-line);
+}
+.portfolio-services li > span {
+  padding-top: 8px;
+  color: var(--portfolio-accent);
+  font:
+    700 11px "IBM Plex Mono",
+    monospace;
+}
+.portfolio-services h3 {
+  margin: 0;
+  font-size: clamp(40px, 3.4vw, 58px);
+  font-weight: 400;
+}
+.portfolio-services li p {
+  max-width: 650px;
+  margin: 19px 0 0;
+  color: var(--portfolio-muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+.portfolio-contact {
+  min-height: 430px;
+  padding: 90px max(5vw, 72px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "eyebrow button" "title button";
+  align-items: center;
+  column-gap: 7vw;
+  color: #fff;
+  background: var(--portfolio-accent);
+}
+.portfolio-contact > p {
+  grid-area: eyebrow;
+  align-self: end;
+  margin: 0 0 15px;
+  color: rgba(255, 255, 255, 0.75);
+  font:
+    700 10px "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.portfolio-contact h2 {
+  grid-area: title;
+  align-self: start;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(57px, 6.5vw, 104px);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+.portfolio-contact .portfolio-button {
+  grid-area: button;
+  min-width: 220px;
+}
+
+@keyframes portfolioRearEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(-45px, 25px, 0) scale(1.08);
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+}
+@keyframes portfolioFrontEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(55px, 35px, 0) scale(1.1);
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  }
+}
+@keyframes portfolioRearFloat {
+  to {
+    transform: translate3d(-8px, 11px, 0) rotate(-0.5deg);
+  }
+}
+@keyframes portfolioFrontFloat {
+  to {
+    transform: translate3d(9px, -12px, 0) rotate(0.6deg);
+  }
+}
+@keyframes portfolioOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes portfolioDetailEnter {
+  from {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+@keyframes portfolioCopyEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes portfolioLidarBeam {
+  from {
+    transform: rotate(-22deg);
+    opacity: 0.38;
+  }
+  to {
+    transform: rotate(22deg);
+    opacity: 0.9;
+  }
+}
+@keyframes portfolioLidarScan {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes portfolioDataFloat {
+  to {
+    transform: translate3d(8px, -10px, 0);
+  }
+}
+@keyframes portfolioCell {
+  from {
+    opacity: 0.22;
+  }
+  to {
+    opacity: 0.86;
+  }
+}
+@keyframes portfolioPowerFlow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+@keyframes portfolioPowerPulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(1.65);
+    transform-origin: center;
+  }
+}
+@keyframes portfolioExoFrame {
+  to {
+    stroke: rgba(7, 124, 144, 0.48);
+    transform: translateY(-4px);
+  }
+}
+@keyframes portfolioExoEnergy {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+@keyframes portfolioExoJoint {
+  50% {
+    opacity: 0.52;
+    transform: scale(0.78);
+  }
+}
+
+@media (max-width: 1200px) {
+  .portfolio-hero-inner {
+    grid-template-columns: minmax(430px, 0.9fr) minmax(460px, 1.1fr);
+    gap: 35px;
+  }
+  .portfolio-hero-visual {
+    min-height: 540px;
+  }
+  .portfolio-category-nav a {
+    padding-inline: 24px;
+  }
+  .portfolio-category-nav i {
+    display: none;
+  }
+  .portfolio-product-stage {
+    grid-template-columns: minmax(0, 1fr) minmax(460px, 0.9fr);
+  }
+  .portfolio-tech-copy {
+    padding-inline: 5vw;
+  }
+  .portfolio-services {
+    gap: 6vw;
+    grid-template-columns: minmax(360px, 0.75fr) minmax(500px, 1.25fr);
+  }
+}
+@media (max-width: 960px) {
+  .portfolio-hero,
+  .portfolio-hero-inner {
+    min-height: 940px;
+  }
+  .portfolio-hero-inner {
+    padding: 150px 0 80px;
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+  .portfolio-hero-copy {
+    max-width: 760px;
+    margin-top: 0;
+  }
+  .portfolio-hero-copy h1 {
+    font-size: clamp(52px, 9vw, 78px);
+  }
+  .portfolio-hero-visual {
+    width: min(760px, 100%);
+    min-height: 500px;
+    margin-inline: auto;
+  }
+  .portfolio-category-nav a {
+    min-height: 76px;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .portfolio-exo {
+    padding: 90px 24px 100px;
+  }
+  .portfolio-section-heading {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .portfolio-product-stage {
+    grid-template-columns: 1fr;
+  }
+  .portfolio-product-media {
+    min-height: 465px;
+  }
+  .portfolio-product-switcher {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 22px;
+  }
+  .portfolio-product-panel {
+    min-height: 590px;
+  }
+  .portfolio-tech,
+  .portfolio-tech--power {
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+  .portfolio-tech-copy {
+    min-height: 700px;
+    padding: 100px 7vw;
+  }
+  .portfolio-tech--power .portfolio-tech-copy {
+    order: 2;
+  }
+  .portfolio-tech-visual {
+    min-height: 650px;
+  }
+  .portfolio-services {
+    grid-template-columns: 1fr;
+    padding: 100px 7vw;
+  }
+  .portfolio-services header {
+    position: relative;
+    top: auto;
+  }
+  .portfolio-contact {
+    min-height: 380px;
+    grid-template-columns: 1fr;
+    grid-template-areas: "eyebrow" "title" "button";
+  }
+  .portfolio-contact .portfolio-button {
+    justify-self: start;
+    margin-top: 38px;
+  }
+}
+@media (max-width: 680px) {
+  /* Hero — shorter, stacked, no dead space above the tab bar. */
+  .portfolio-hero,
+  .portfolio-hero-inner {
+    min-height: 0;
+  }
+  .portfolio-hero-inner {
+    width: calc(100% - 32px);
+    padding: 112px 0 46px;
+    gap: 26px;
+  }
+  .portfolio-hero-copy h1 {
+    font-size: clamp(38px, 10.5vw, 52px);
+    letter-spacing: -0.035em;
+  }
+  .portfolio-hero-copy h1 br {
+    display: none;
+  }
+  .portfolio-hero-intro {
+    margin-top: 22px;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: left;
+  }
+  .portfolio-hero-actions {
+    margin-top: 28px;
+    display: grid;
+    gap: 9px;
+  }
+  .portfolio-button {
+    width: 100%;
+    min-height: 54px;
+  }
+  /* The paired hero photos are dropped on phones — the copy carries the hero. */
+  .portfolio-hero-visual {
+    display: none;
+  }
+  .portfolio-exoskeleton-system {
+    width: 132%;
+  }
+  .portfolio-hero-image--rear {
+    width: 52%;
+    height: 56%;
+  }
+  .portfolio-hero-image--front {
+    width: 70%;
+    height: 74%;
+  }
+  .portfolio-hero-orbit--one {
+    width: 300px;
+    height: 300px;
+  }
+  .portfolio-hero-orbit--two {
+    width: 190px;
+    height: 190px;
+  }
+
+  /* Tab bar — compact, three across. */
+  .portfolio-category-nav {
+    grid-template-columns: repeat(3, 1fr);
+    background: rgba(255, 255, 255, 0.96);
+  }
+  .portfolio-category-nav a {
+    min-height: 56px;
+    padding: 0 6px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0;
+    border-right: 1px solid var(--portfolio-line);
+    border-bottom: 0;
+  }
+  .portfolio-category-nav a:last-child {
+    border-right: 0;
+  }
+  .portfolio-category-nav strong {
+    font-size: 13px;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  /* Exoskeletons — switcher on top, then the image, then the copy. */
+  .portfolio-exo {
+    padding: 26px 20px 64px;
+  }
+  .portfolio-section-heading {
+    margin-bottom: 18px;
+  }
+  .portfolio-section-heading h2 {
+    font-size: clamp(44px, 13vw, 60px);
+  }
+  .portfolio-product-stage {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f4f6f7;
+  }
+  .portfolio-product-panel {
+    display: contents;
+  }
+  .portfolio-product-switcher {
+    order: 1;
+    display: flex;
+    gap: 8px;
+    padding: 16px 16px 0;
+    overflow-x: auto;
+  }
+  .portfolio-product-switcher::-webkit-scrollbar {
+    display: none;
+  }
+  .portfolio-product-switcher button {
+    flex: 1 0 auto;
+    min-height: 0;
+    padding: 12px 14px;
+    justify-content: center;
+    font-size: 13px;
+  }
+  .portfolio-product-media {
+    order: 2;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    margin: 16px 16px 0;
+  }
+  .portfolio-product-detail {
+    right: 12px;
+    bottom: 12px;
+    width: 104px;
+    height: 130px;
+  }
+  .portfolio-product-motion-label {
+    left: 12px;
+    bottom: 12px;
+  }
+  .portfolio-product-copy {
+    order: 3;
+    margin-top: 0;
+    padding: 24px 20px 30px;
+  }
+  .portfolio-product-copy > p:not(.portfolio-kicker) {
+    font-size: 16px;
+  }
+  .portfolio-task-list {
+    margin-top: 20px;
+    gap: 8px;
+  }
+  .portfolio-task-list span {
+    min-height: 40px;
+    padding: 10px 12px;
+  }
+  .portfolio-product-copy dl {
+    margin: 24px 0;
+  }
+  .portfolio-product-copy .portfolio-button {
+    width: 100%;
+  }
+
+  /* LiDAR / power — headline and intro, then the diagram, then the application
+     list, group note and call to action. The copy block collapses so its
+     children can be ordered around the diagram; the section carries the padding
+     they used to get from it, and the diagram bleeds back out to full width. */
+  .portfolio-tech,
+  .portfolio-tech--power {
+    display: flex;
+    flex-direction: column;
+    padding: 34px 20px 46px;
+  }
+  .portfolio-tech-copy,
+  .portfolio-tech--power .portfolio-tech-copy {
+    display: contents;
+  }
+  .portfolio-tech-copy > .portfolio-kicker {
+    order: 1;
+  }
+  .portfolio-tech-copy > h2 {
+    order: 2;
+  }
+  .portfolio-tech-copy > p:not(.portfolio-kicker) {
+    order: 3;
+  }
+  .portfolio-tech-copy > ul {
+    order: 5;
+  }
+  .portfolio-tech-copy > .portfolio-group-note {
+    order: 6;
+  }
+  .portfolio-tech-copy > .portfolio-button {
+    order: 7;
+  }
+  .portfolio-tech-copy h2 {
+    font-size: clamp(40px, 11.5vw, 56px);
+    letter-spacing: -0.04em;
+  }
+  .portfolio-tech-copy h2 br {
+    display: none;
+  }
+  .portfolio-tech-copy > p:not(.portfolio-kicker) {
+    margin-top: 24px;
+    font-size: 16px;
+  }
+  .portfolio-tech-copy ul {
+    margin-top: 28px;
+    grid-template-columns: 1fr;
+  }
+  .portfolio-tech-copy .portfolio-button {
+    width: 100%;
+  }
+  .portfolio-group-note {
+    margin: 28px 0;
+  }
+  .portfolio-tech-visual {
+    order: 4;
+    min-height: 0;
+    margin-inline: -20px;
+    aspect-ratio: 1 / 1;
+  }
+  .portfolio-tech-visual svg {
+    width: 104%;
+  }
+  .portfolio-data-tag,
+  .portfolio-power-status {
+    padding: 9px 11px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  .portfolio-data-tag--one {
+    left: 5%;
+    top: 16%;
+  }
+  .portfolio-data-tag--two {
+    right: 5%;
+    top: 40%;
+  }
+  .portfolio-data-tag--three {
+    left: 8%;
+    bottom: 12%;
+  }
+  .portfolio-power-status {
+    top: 6%;
+    right: 5%;
+  }
+
+  .portfolio-services {
+    padding: 85px 24px;
+  }
+  .portfolio-services header h2 {
+    font-size: clamp(49px, 15vw, 68px);
+  }
+  .portfolio-services li {
+    min-height: 0;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    padding: 38px 0;
+  }
+  .portfolio-services h3 {
+    font-size: 39px;
+  }
+  .portfolio-contact {
+    min-height: 360px;
+    padding: 70px 24px;
+  }
+  .portfolio-contact h2 {
+    font-size: clamp(52px, 16vw, 70px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-page *,
+  .portfolio-page *::before,
+  .portfolio-page *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .portfolio-hero-visual {
+    transform: none !important;
+  }
+}
+@media (max-width: 680px) {
+  .erkAboutPage {
+    --erk-about-page-width: calc(100% - 40px);
+  }
+  .erkAboutHeroInner {
+    padding: 118px 0 56px;
+  }
+  .erkAboutHeroTitle {
+    font-size: clamp(29px, 9vw, 50px);
+    line-height: 1.02;
+  }
+  .erkAboutHeroLead {
+    margin-top: 28px;
+    font-size: 17px;
+  }
+  .erkAboutHeroActions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .erkAboutButton {
+    width: 100%;
+  }
+  .erkAboutStatementPanel {
+    padding: 74px 20px;
+  }
+  .erkAboutStatementTitle {
+    font-size: clamp(48px, 14vw, 64px);
+  }
+  .erkAboutStatementCopy {
+    font-size: 17px;
+  }
+  .erkAboutOutcomes {
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .erkAboutOutcomes span {
+    width: 100%;
+    gap: 0;
+  }
+  .erkAboutOutcomes span::after {
+    display: none;
+  }
+  .erkAboutPrinciplesPanel {
+    padding: 58px 20px 74px;
+  }
+  .erkAboutPrinciple {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    padding: 38px 0;
+  }
+  .erkAboutPrinciple:hover {
+    padding-left: 0;
+    transform: none;
+  }
+  .erkAboutPrincipleCopy h3 {
+    font-size: clamp(34px, 10vw, 42px);
+  }
+  .erkAboutBridge {
+    padding: 80px 0 90px;
+  }
+  .erkAboutBridgeHeading h2 {
+    font-size: clamp(52px, 14vw, 70px);
+  }
+  .erkAboutBridgeCopy p {
+    font-size: 18px;
+  }
+  .erkAboutJourney {
+    margin-top: 48px;
+    min-height: 0;
+    display: block;
+  }
+  .erkAboutJourney::before {
+    top: 8%;
+    bottom: 8%;
+    left: 50%;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(8, 135, 155, 0.18) 14%,
+      rgba(8, 135, 155, 0.18) 86%,
+      transparent
+    );
+  }
+  .erkAboutGlobe {
+    margin: -18px 0;
+  }
+  .erkAboutHeroTitle,
+  .erkAboutStatementTitle,
+  .erkAboutPrincipleCopy h3,
+  .erkAboutBridgeHeading h2,
+  .erkAboutOutcomes {
+    text-align: left;
+  }
+  .erkAboutHeroLead,
+  .erkAboutStatementCopy,
+  .erkAboutPrincipleCopy p,
+  .erkAboutBridgeCopy p {
+    width: 100%;
+    max-width: none;
+    text-align: left;
+    text-align-last: auto;
+    word-spacing: normal;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .erkAboutPage *,
+  .erkAboutPage *::before,
+  .erkAboutPage *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .erkAboutVisualStage {
+    transform: none !important;
+  }
+  .erkAboutGlobe svg {
+    transform: none !important;
+    transition: none !important;
+  }
+}

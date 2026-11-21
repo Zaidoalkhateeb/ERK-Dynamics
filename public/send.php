@@ -1,94 +1,93 @@
 <?php
-/**
- * ERK Dynamics — contact / partner form mail handler.
- * Receives a form POST and emails the submission to the company inbox.
- * Works on standard Apache + PHP hosting (e.g. VestaCP with Exim).
- *
- * Configure the recipient below if it ever changes.
- */
+declare(strict_types=1);
 
-$COMPANY_INBOX = 'info@erkdynamics.com';
-// "From" must be an address on your own domain or mail servers may reject it.
-$FROM_ADDRESS  = 'no-reply@erkdynamics.com';
-$FROM_NAME     = 'ERK Dynamics Website';
+/** Contact and partnership enquiries. Configuration: docs/DEPLOYMENT.md. */
+$recipient = getenv('ERK_MAIL_TO') ?: 'info@erkdynamics.com';
+$sender = getenv('ERK_MAIL_FROM') ?: 'no-reply@erkdynamics.com';
 
-header('Content-Type: application/json; charset=utf-8');
-
-// Only accept POST.
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
+function respond(int $status, array $payload): never
+{
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Content-Type-Options: nosniff');
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Support both form-encoded/multipart ($_POST) and JSON bodies.
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+    header('Allow: POST');
+    respond(405, ['error' => 'Method not allowed.']);
+}
+if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 65536) {
+    respond(413, ['error' => 'The enquiry is too large.']);
+}
+if (!empty($_FILES)) {
+    respond(422, ['error' => 'File attachments are not supported.']);
+}
+
 $data = $_POST;
-if (empty($data)) {
-    $raw = file_get_contents('php://input');
-    $json = json_decode($raw, true);
-    if (is_array($json)) {
-        $data = $json;
+if (str_contains(strtolower($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json')) {
+    $data = json_decode(file_get_contents('php://input', false, null, 0, 65537), true);
+    if (!is_array($data)) respond(400, ['error' => 'Invalid JSON body.']);
+}
+foreach ($data as $value) {
+    if (!is_scalar($value) && $value !== null) {
+        respond(422, ['error' => 'Form fields must contain text.']);
     }
 }
+$data = array_map(static fn ($value) => trim((string) $value), $data);
 
-// Honeypot: bots fill hidden "website" field. Pretend success, send nothing.
-if (!empty($data['website'])) {
-    echo json_encode(['ok' => true]);
-    exit;
+// Silently discard honeypot submissions without sending mail.
+if (!empty($data['website'])) respond(200, ['ok' => true]);
+
+$isPartner = ($data['type'] ?? '') === 'partner';
+$required = $isPartner
+    ? ['name', 'email', 'company', 'region', 'organizationType']
+    : ['name', 'email', 'company', 'country', 'interest'];
+foreach ($required as $field) {
+    if (empty($data[$field])) respond(422, ['error' => 'Please complete all required fields.']);
+}
+if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+    respond(422, ['error' => 'Please provide a valid email address.']);
+}
+foreach ($data as $key => $value) {
+    if (strlen($value) > ($key === 'message' ? 10000 : 500)) {
+        respond(422, ['error' => 'One or more form fields are too long.']);
+    }
+}
+if (!filter_var($recipient, FILTER_VALIDATE_EMAIL) || !filter_var($sender, FILTER_VALIDATE_EMAIL)) {
+    respond(500, ['error' => 'Mail delivery is not configured.']);
 }
 
-// Basic sanitiser for header-relevant values.
-function clean_header($value) {
-    return trim(str_replace(["\r", "\n", "%0a", "%0d"], ' ', (string) $value));
-}
-
-$clientEmail = filter_var(clean_header($data['email'] ?? ''), FILTER_VALIDATE_EMAIL);
-$subject = clean_header($data['_subject'] ?? 'New website enquiry — ERK Dynamics');
-
-// Human-friendly labels for known fields; anything else is included as-is.
 $labels = [
-    'name' => 'Full name', 'firstName' => 'First name', 'lastName' => 'Last name',
-    'email' => 'Email', 'company' => 'Company', 'organization' => 'Organization',
-    'phone' => 'Phone', 'country' => 'Country / region', 'region' => 'Country / region',
-    'organizationType' => 'Organization type', 'interest' => 'Interest', 'intent' => 'Intent',
-    'reason' => 'Reason for contact', 'category' => 'Category', 'message' => 'Message',
+    'name' => 'Full name', 'email' => 'Email', 'company' => 'Company', 'phone' => 'Phone',
+    'country' => 'Country / region', 'region' => 'Country / region',
+    'organizationType' => 'Organization type', 'interest' => 'Reason for contact',
+    'product' => 'Product category', 'intent' => 'Intent', 'message' => 'Message',
     'reference' => 'Reference',
 ];
-$skip = ['website', '_subject', 'type'];
-
-$lines = [];
-$lines[] = 'New submission from the ERK Dynamics website';
-$lines[] = str_repeat('-', 44);
-foreach ($data as $key => $value) {
-    if (in_array($key, $skip, true)) continue;
-    if (is_array($value)) $value = implode(', ', $value);
-    $value = trim((string) $value);
-    if ($value === '') continue;
-    $label = $labels[$key] ?? ucfirst($key);
-    $lines[] = $label . ': ' . str_replace(["\r\n", "\r", "\n"], ' / ', $value);
-}
-// Note any uploaded files by name (attachments are not forwarded).
-if (!empty($_FILES)) {
-    foreach ($_FILES as $file) {
-        if (!empty($file['name'])) $lines[] = 'Attached file: ' . clean_header($file['name']);
+$lines = [
+    'New ' . ($isPartner ? 'partnership application' : 'enquiry') . ' from the ERK Dynamics website',
+    str_repeat('-', 44),
+];
+foreach ($labels as $key => $label) {
+    if (!empty($data[$key])) {
+        $lines[] = $label . ': ' . str_replace(["\r\n", "\r", "\n"], ' / ', $data[$key]);
     }
 }
-$lines[] = str_repeat('-', 44);
-$lines[] = 'Submitted: ' . date('Y-m-d H:i:s');
+$lines[] = 'Submitted (UTC): ' . gmdate('Y-m-d H:i:s');
 
-$body = implode("\r\n", $lines);
-
-$headers = [];
-$headers[] = 'From: ' . $FROM_NAME . ' <' . $FROM_ADDRESS . '>';
-$headers[] = 'Reply-To: ' . ($clientEmail ?: $FROM_ADDRESS);
-$headers[] = 'Content-Type: text/plain; charset=utf-8';
-$headers[] = 'MIME-Version: 1.0';
-
-$sent = @mail($COMPANY_INBOX, $subject, $body, implode("\r\n", $headers));
-
-if ($sent) {
-    echo json_encode(['ok' => true]);
-} else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Unable to send the message.']);
+// Build headers and subject on the server; ignore client-provided subjects.
+$subject = ($isPartner ? 'Partnership application' : 'Website enquiry') . ' - ERK Dynamics';
+$headers = [
+    'From: ERK Dynamics Website <' . $sender . '>',
+    'Reply-To: ' . $data['email'],
+    'Content-Type: text/plain; charset=utf-8',
+    'MIME-Version: 1.0',
+];
+if (!mail($recipient, $subject, implode("\r\n", $lines), implode("\r\n", $headers))) {
+    respond(500, ['error' => 'Unable to send the message. Please try again later.']);
 }
+// Acceptance by the local mail service does not guarantee final inbox delivery.
+respond(200, ['ok' => true]);

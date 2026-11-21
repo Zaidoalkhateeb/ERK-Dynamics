@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+dist/
+package-lock.json
+next-env.d.ts
+src/components/maps/worldMap.data.ts
+public/

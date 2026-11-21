@@ -1,0 +1,657 @@
+/* Product detail: sticky visual demonstration */
+.product-experience {
+  background: #080b0e;
+  color: #f5f7f7;
+}
+.product-motion-hero {
+  height: 100svh;
+  min-height: 720px;
+  position: relative;
+  overflow: hidden;
+}
+.product-motion-hero::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(rgba(103, 216, 232, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 216, 232, 0.12) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9), transparent 84%);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9), transparent 84%);
+}
+.product-motion-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: -38vw;
+  right: -20vw;
+  width: 92vw;
+  aspect-ratio: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 0 38%,
+    rgba(103, 216, 232, 0.2) 38.1% 38.25%,
+    transparent 38.4% 57%,
+    rgba(103, 216, 232, 0.16) 57.1% 57.25%,
+    transparent 57.4% 76%,
+    rgba(103, 216, 232, 0.12) 76.1% 76.25%,
+    transparent 76.4%
+  );
+  animation: productHeroLines 16s ease-in-out infinite alternate;
+}
+@media (min-width: 801px) {
+  .auxivo-omnisuit .product-motion-hero::after {
+    top: -20vw;
+    right: -25vw;
+  }
+}
+.product-hero-media {
+  position: absolute;
+  inset: 0;
+  animation: productHeroIn 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.product-hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-hero-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 10, 0.9) 0%, rgba(5, 8, 10, 0.45) 45%, rgba(5, 8, 10, 0.08)),
+    linear-gradient(0deg, rgba(5, 8, 10, 0.75), transparent 50%);
+}
+.product-motion-title {
+  position: absolute;
+  z-index: 3;
+  left: var(--pad);
+  bottom: 10vh;
+  animation: heroReveal 0.85s 0.15s both;
+}
+.product-motion-title h1 {
+  font-size: 140px;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  margin: 10px 0;
+}
+.product-motion-title > p:not(.eyebrow) {
+  font-size: clamp(20px, 2.2vw, 32px);
+  color: #d5dde0;
+}
+.auxivo-omnisuit .product-motion-title > p:not(.eyebrow) {
+  padding-left: 0.25em;
+}
+.product-motion-title > div {
+  display: flex;
+  gap: 10px;
+  margin-top: 35px;
+}
+.product-motion-title .button {
+  padding-right: 30px;
+}
+.product-motion-title .button .site-arrow {
+  margin-right: 5px;
+}
+.button.glass {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.product-axis {
+  position: absolute;
+  z-index: 4;
+  right: 30px;
+  top: 20%;
+  bottom: 18%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #b4c0c5;
+  font: 8px "IBM Plex Mono";
+  writing-mode: vertical-rl;
+}
+.product-axis i {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(#67d8e8, rgba(255, 255, 255, 0.15));
+}
+@keyframes productHeroLines {
+  to {
+    transform: translate3d(-28px, 24px, 0) scale(1.025);
+  }
+}
+.product-scroll-story {
+  height: 400svh;
+  min-height: 2800px;
+  background: #0f1519;
+}
+.product-story-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  overflow: hidden;
+}
+.product-story-stage {
+  position: relative;
+  background: #080b0e;
+}
+.product-story-stage > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% center;
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity 0.65s,
+    transform 1.1s;
+}
+.product-story-stage > img.active {
+  opacity: 1;
+  transform: scale(1);
+}
+/* The default 68% framing suits shots where the worker stands right of centre.
+   OmniSuit slides 3 and 4 place him well left of that, so the shared crop cut
+   him out of frame; these pull the focal point back to where he actually is. */
+.auxivo-omnisuit .product-story-stage > img:nth-of-type(3) {
+  object-position: 26% center;
+}
+.auxivo-omnisuit .product-story-stage > img:nth-of-type(4) {
+  object-position: 38% center;
+}
+/* CarrySuit slide 1 frames the worker far left of the shared 68% focal point. */
+.auxivo-carrysuit .product-story-stage > img:nth-of-type(1) {
+  object-position: 8% center;
+}
+.product-story-stage:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 68%, rgba(15, 21, 25, 0.45));
+}
+.story-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 25% 25%;
+  opacity: 0.25;
+}
+.story-target {
+  position: absolute;
+  z-index: 3;
+  left: 54%;
+  top: 42%;
+  width: 130px;
+  height: 130px;
+  border: 1px solid rgba(103, 216, 232, 0.65);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  transition:
+    left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    top 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.auxivo-liftsuit .story-target.target-1 {
+  left: 47%;
+  top: 48%;
+}
+.auxivo-liftsuit .story-target.target-2 {
+  left: 27%;
+  top: 46%;
+}
+.auxivo-liftsuit .story-target.target-3 {
+  left: 57%;
+  top: 50%;
+}
+.auxivo-liftsuit .story-target.target-4 {
+  left: 66%;
+  top: 48%;
+}
+.auxivo-omnisuit .story-target.target-1 {
+  left: 60%;
+  top: 62%;
+}
+.auxivo-omnisuit .story-target.target-2 {
+  left: 37%;
+  top: 52%;
+}
+/* Slides 3 and 4 are reframed on the worker (see the object-position overrides),
+   so the reticle follows him instead of sitting out on the machinery. */
+.auxivo-omnisuit .story-target.target-3 {
+  left: 27%;
+  top: 44%;
+}
+.auxivo-omnisuit .story-target.target-4 {
+  left: 46%;
+  top: 40%;
+}
+.auxivo-deltasuit .story-target.target-1 {
+  left: 48%;
+  top: 42%;
+}
+.auxivo-deltasuit .story-target.target-2 {
+  left: 40%;
+  top: 38%;
+}
+.auxivo-deltasuit .story-target.target-3 {
+  left: 58%;
+  top: 44%;
+}
+.auxivo-deltasuit .story-target.target-4 {
+  left: 50%;
+  top: 50%;
+}
+.auxivo-carrysuit .story-target.target-1 {
+  left: 26%;
+  top: 34%;
+}
+.auxivo-carrysuit .story-target.target-2 {
+  left: 40%;
+  top: 42%;
+}
+.auxivo-carrysuit .story-target.target-3 {
+  left: 56%;
+  top: 44%;
+}
+.auxivo-carrysuit .story-target.target-4 {
+  left: 50%;
+  top: 50%;
+}
+.story-target i {
+  position: absolute;
+  background: #67d8e8;
+}
+.story-target i:first-child {
+  width: 145%;
+  height: 1px;
+}
+.story-target i:nth-child(2) {
+  height: 145%;
+  width: 1px;
+}
+.story-target span {
+  font: 11px "IBM Plex Mono";
+}
+.product-story-panel {
+  padding: clamp(80px, 10vh, 130px) clamp(35px, 5vw, 80px);
+  display: flex;
+  flex-direction: column;
+}
+.product-story-panel h2 {
+  font-size: 44px;
+  line-height: 1.04;
+  margin: 28px 0;
+  white-space: nowrap;
+}
+.product-story-panel h2.is-compact {
+  font-size: 32px;
+}
+.product-story-panel h2.is-long {
+  font-size: 30px;
+  line-height: 1.12;
+  white-space: normal;
+}
+.product-story-panel h2.has-no-batteries {
+  white-space: nowrap;
+}
+.product-story-panel > p:not(.eyebrow) {
+  font-size: 17px;
+  color: #abb8be;
+}
+.story-tabs {
+  display: flex;
+  gap: 9px;
+  margin-top: auto;
+}
+.story-tabs button {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: none;
+  color: #8b9aa1;
+  cursor: pointer;
+  position: relative;
+}
+.story-tabs button i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background: #67d8e8;
+  transition: 0.3s;
+}
+.story-tabs button.active {
+  color: #fff;
+}
+.story-tabs button.active i {
+  width: 100%;
+}
+.story-tabs button span {
+  font: 10px "IBM Plex Mono";
+}
+.story-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 30px;
+}
+.story-actions > span {
+  font: 9px "IBM Plex Mono";
+  letter-spacing: 0.12em;
+  color: #7f8e95;
+}
+.product-editorial {
+  background: #fff;
+  color: #11191e;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8vw;
+}
+.product-editorial h2 {
+  font-size: clamp(48px, 6vw, 84px);
+  margin-top: 25px;
+}
+.product-specifications {
+  background: #e9eeee;
+  color: #11191e;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 4vw;
+}
+.product-specifications h2 {
+  font-size: clamp(38px, 4vw, 56px);
+  margin: 22px 0;
+  white-space: nowrap;
+}
+.product-specifications header > p:last-child {
+  font-size: 17px;
+}
+.product-specifications .eyebrow {
+  color: var(--cyan);
+  font-size: clamp(13px, 0.9vw, 15px);
+  font-weight: 800;
+}
+.product-specifications dl {
+  margin: 0;
+}
+.product-specifications dl > div {
+  display: grid;
+  /* Label and value share the row evenly: two columns of equal width. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 24px;
+  align-items: center;
+  border-top: 1px solid rgba(16, 24, 29, 0.18);
+  padding: 16px 0;
+}
+.product-specifications dt {
+  /* Same size as the value beside it; the mono face and colour keep it reading
+     as the label. */
+  font: 700 clamp(17px, 1.2vw, 20px)/1.3 "IBM Plex Mono";
+  color: #65747c;
+}
+.product-specifications dd {
+  margin: 0;
+  font-size: clamp(17px, 1.2vw, 20px);
+}
+.product-spec-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 0;
+  list-style-position: outside;
+}
+.product-spec-list li::marker {
+  color: var(--cyan);
+}
+@media (max-width: 680px) {
+  .product-specifications dl > div {
+    padding: 13px 0;
+  }
+  .product-specifications dt,
+  .product-specifications dd {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .product-spec-list {
+    gap: 2px;
+  }
+}
+.product-final-cta {
+  height: 95svh;
+  min-height: 680px;
+  position: relative;
+  overflow: hidden;
+  background: #080c0f;
+}
+.product-final-media {
+  position: absolute;
+  inset: 0 0 0 34%;
+  overflow: hidden;
+}
+.product-final-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  animation: finalDrift 9s ease-in-out infinite alternate;
+}
+/* The CarrySuit closing shot puts the worker hard against the right edge under a
+   centred crop; biasing right pulls him back into the frame. */
+.auxivo-carrysuit .product-final-media img {
+  object-position: 78% center;
+}
+.product-final-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 10, 0.9), rgba(5, 8, 10, 0.1)),
+    linear-gradient(0deg, rgba(5, 8, 10, 0.7), transparent);
+}
+.product-final-cta article {
+  position: absolute;
+  z-index: 2;
+  left: var(--pad);
+  bottom: 12vh;
+}
+.product-final-cta h2 {
+  font-size: clamp(38px, 5vw, 68px);
+  margin: 20px 0;
+}
+.product-final-cta article > p:not(.eyebrow) {
+  color: #c9d3d7;
+  font-size: 19px;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes finalDrift {
+  to {
+    transform: scale(1.06) translateX(-1.5%);
+  }
+}
+@keyframes productHeroIn {
+  from {
+    transform: scale(1.12);
+    filter: blur(8px) brightness(0.5);
+  }
+  to {
+    transform: scale(1);
+    filter: none;
+  }
+}
+@media (max-width: 800px) {
+  .motion-hero {
+    height: 145svh;
+  }
+  .product-transition {
+    height: 235svh;
+  }
+  .product-motion-title {
+    left: 20px;
+    right: 20px;
+  }
+  .product-motion-title h1 {
+    font-size: 22vw;
+  }
+  .product-motion-title > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* Stacked, the two calls to action match each other rather than sizing to
+     their own label. */
+  .product-motion-title .button {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .product-axis {
+    display: none;
+  }
+  .product-hero-media img {
+    object-position: 62% center;
+  }
+  .product-scroll-story {
+    height: 500svh;
+  }
+  .product-story-sticky {
+    display: block;
+  }
+  .product-story-stage {
+    height: 56svh;
+  }
+  .product-story-stage:after {
+    background: linear-gradient(0deg, rgba(15, 21, 25, 0.65), transparent 45%);
+  }
+  .story-target {
+    width: 78px;
+    height: 78px;
+  }
+  .product-story-panel {
+    height: 44svh;
+    min-height: 350px;
+    padding: 28px 20px;
+  }
+  .product-story-panel h2 {
+    font-size: 8vw;
+    margin: 12px 0;
+    white-space: normal;
+  }
+  .product-story-panel h2.is-compact {
+    font-size: clamp(21px, 6vw, 30px);
+  }
+  .product-story-panel h2.is-compact:not(.has-no-batteries) {
+    white-space: nowrap;
+  }
+  .product-story-panel h2.is-long {
+    font-size: 6.8vw;
+  }
+  .product-story-panel > p:not(.eyebrow) {
+    font-size: 13px;
+  }
+  .story-actions {
+    position: absolute;
+    right: 20px;
+    bottom: 24px;
+  }
+  .story-actions .button {
+    min-height: 45px;
+    padding: 0 13px;
+  }
+  .story-actions > span {
+    display: none;
+  }
+  .story-tabs {
+    margin-top: 12px;
+  }
+  .product-editorial,
+  .product-specifications {
+    grid-template-columns: 1fr;
+  }
+  .product-final-cta article {
+    left: 20px;
+    right: 20px;
+  }
+  .product-final-media {
+    inset: 0;
+  }
+  .product-final-cta h2 {
+    font-size: 10.5vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-motion-hero::after {
+    animation: none;
+  }
+  .motion-hero {
+    height: 100svh;
+  }
+  .product-transition {
+    height: auto;
+  }
+  .hero-grid {
+    display: none;
+  }
+  .product-scroll-story {
+    height: auto;
+    min-height: 0;
+  }
+  .product-story-sticky {
+    position: relative;
+    min-height: 100svh;
+  }
+  .product-story-stage > img {
+    display: none;
+  }
+  .product-story-stage > img.active {
+    display: block;
+    opacity: 1;
+  }
+  .product-final-media img {
+    animation: none !important;
+  }
+}
+.page-orbit {
+  animation: pageOrbitFloat 8s ease-in-out infinite alternate;
+}
+@keyframes pageOrbitFloat {
+  to {
+    transform: translate(-5vw, 7vh) scale(0.82);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-orbit {
+    animation: none !important;
+  }
+}
